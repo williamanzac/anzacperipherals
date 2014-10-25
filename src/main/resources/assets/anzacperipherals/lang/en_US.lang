@@ -1,0 +1,30 @@
+# Items
+item.anzacperipherals:basiccpu.name=Basic Processor
+item.anzacperipherals:advancedcpu.name=Advanced Processor
+item.anzacperipherals:hdd.name=Storage Disk
+item.anzacperipherals:basicframe.name=Basic Peripheral Frame
+item.anzacperipherals:advancedframe.name=Advanced Peripheral Frame
+item.anzacperipherals:teleportframe.name=Teleporter Frame
+item.anzacperipherals:memorycard.name=Memory Card
+item.anzacperipherals:itemstorageunit.name=Item Storage Unit
+item.anzacperipherals:fluidstorageunit.name=Fluid Storage Unit
+
+# Blocks
+tile.anzacperipherals:workbench.name=Computerised Workbench
+tile.anzacperipherals:recipestorage.name=Recipe Storage
+tile.anzacperipherals:itemrouter.name=Item Router
+tile.anzacperipherals:fluidrouter.name=Fluid Router
+tile.anzacperipherals:itemstorage.name=Item Storage
+tile.anzacperipherals:fluidstorage.name=Fluid Storage
+tile.anzacperipherals:redstone.name=Redstone Control
+tile.anzacperipherals:note.name=Computerised Note Block
+tile.anzacperipherals:craftingrouter.name=Crafting Router
+tile.anzacperipherals:chargestation1.name=Iron Charging Station
+tile.anzacperipherals:chargestation2.name=Gold Charging Station
+tile.anzacperipherals:chargestation3.name=Diamond Charging Station
+tile.anzacperipherals:turtleteleporter1.name=Iron Turtle Teleporter
+tile.anzacperipherals:turtleteleporter2.name=Gold Turtle Teleporter
+tile.anzacperipherals:turtleteleporter3.name=Diamond Turtle Teleporter
+
+# Creative Tabs
+itemGroup.anzacperipherals=ANZAC Peripherals
