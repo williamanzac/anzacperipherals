@@ -1,0 +1,2 @@
+shell.setPath(shell.path() .. ":/rom/anzacperipherals/programs")
+help.setPath("/rom/help:/rom/anzacperipherals/help")

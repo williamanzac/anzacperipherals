@@ -1,0 +1,21 @@
+
+local note = peripheral.find("note")
+if note == nil then
+  print("No Computerised Note Block found")
+  return
+end
+
+print("Playing music")
+print("Press any key to stop")
+
+parallel.waitForAny(
+  function()
+    while true do
+      note.playNote(math.random(0, 4), math.random(0, 24))
+      sleep(0.25)
+    end
+  end,
+  function()
+    os.pullEvent("char")
+  end
+)
