@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import anzac.peripherals.peripherals.LuaManager;
 import anzac.peripherals.peripherals.PeripheralEvent;
 import anzac.peripherals.utility.ClassUtils;
 import dan200.computercraft.api.lua.ILuaContext;
@@ -44,11 +45,13 @@ public class BaseTileEntity extends TileEntity implements IPeripheral {
 	@Override
 	public void attach(final IComputerAccess computer) {
 		computers.add(computer);
+		LuaManager.mount(computer);
 	}
 
 	@Override
 	public void detach(final IComputerAccess computer) {
 		computers.remove(computer);
+		LuaManager.unmount(computer);
 	}
 
 	public boolean isConnected() {
@@ -70,5 +73,4 @@ public class BaseTileEntity extends TileEntity implements IPeripheral {
 			computer.queueEvent(event.name(), clone);
 		}
 	}
-
 }

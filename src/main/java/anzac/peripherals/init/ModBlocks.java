@@ -14,6 +14,7 @@ import anzac.peripherals.block.TurtleTeleporter;
 import anzac.peripherals.block.Workbench;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Reference;
+import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.NoteTileEntity;
 import anzac.peripherals.tile.RedstoneTileEntity;
 import anzac.peripherals.tile.WorkbenchTileEntity;
@@ -59,5 +60,6 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(NoteTileEntity.class, "anzac.peripherals.tile.NoteTileEntity");
 		GameRegistry.registerTileEntity(RedstoneTileEntity.class, "anzac.peripherals.tile.RedstoneTileEntity");
 		GameRegistry.registerTileEntity(WorkbenchTileEntity.class, "anzac.peripherals.tile.WorkbenchTileEntity");
+		GameRegistry.registerTileEntity(ItemStorageTileEntity.class, "anzac.peripherals.tile.ItemStorageTileEntity");
 	}
 }

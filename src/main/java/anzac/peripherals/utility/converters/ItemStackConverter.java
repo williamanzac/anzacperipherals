@@ -17,21 +17,23 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
-import anzac.peripherals.utility.UUIDUtils;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemStackConverter implements Converter<ItemStack> {
 
 	private static final String TAG = "tag";
-	private static final String SIZE = "size";
-	private static final String UUID = "uuid";
+	private static final String SIZE = "count";
+	private static final String NAME = "name";
+	private static final String DAMAGE = "damage";
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object javaToLUA(final Object object) {
 		final ItemStack itemStack = (ItemStack) object;
 		final Map<String, Object> map = new HashMap<String, Object>();
-		map.put(UUID, UUIDUtils.getUUID(itemStack));
 		map.put(SIZE, itemStack.stackSize);
+		map.put(DAMAGE, itemStack.getItemDamage());
+		map.put(NAME, GameRegistry.findUniqueIdentifierFor(itemStack.getItem()).toString());
 		if (itemStack.hasTagCompound()) {
 			final Map<String, Object> tagMap = (Map<String, Object>) nbtToJava(itemStack.getTagCompound());
 			map.put(TAG, tagMap);
@@ -43,9 +45,10 @@ public class ItemStackConverter implements Converter<ItemStack> {
 	@Override
 	public ItemStack luaToJava(final Object object) {
 		final Map<String, Object> map = (Map<String, Object>) object;
-		final int uuid = ((Double) map.get(UUID)).intValue();
 		final int count = ((Double) map.get(SIZE)).intValue();
-		final ItemStack itemStack = UUIDUtils.getItemStack(uuid, count);
+		final String name = (String) map.get(NAME);
+		final String[] parts = name.split(":");
+		final ItemStack itemStack = GameRegistry.findItemStack(parts[0], parts[1], count);
 		if (map.containsKey(TAG)) {
 			final NBTTagCompound tag = (NBTTagCompound) javaToNBT(map.get(TAG));
 			itemStack.setTagCompound(tag);

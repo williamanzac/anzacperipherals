@@ -1,8 +1,10 @@
 package anzac.peripherals.tile;
 
-import static anzac.peripherals.utility.InvUtils.canMergeItemStack;
-import static anzac.peripherals.utility.UUIDUtils.getUUID;
+import static cpw.mods.fml.common.registry.GameRegistry.findUniqueIdentifierFor;
 import static net.minecraft.item.ItemStack.loadItemStackFromNBT;
+
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -23,8 +25,16 @@ import anzac.peripherals.peripherals.PeripheralEvent;
 import anzac.peripherals.peripherals.Recipe;
 import anzac.peripherals.utility.InvUtils;
 
+/**
+ * This block allows you to craft items via a connected computer. The interface has a crafting area that can only be set
+ * via a connected Computer, it also has an internal input and output cache. This block is only usable when connected to
+ * a Computer. Use the {@link WorkbenchTileEntity#setRecipe(Recipe)} method to set the desired item to craft. The
+ * required items can be injected in to the internal cache or you can manually input the items. Use the
+ * {@link WorkbenchTileEntity#craft()} method to craft the item. The crafted item will automatically go in to the output
+ * cache. This peripheral should ignore item metadata of the supplied input items.
+ */
 @Peripheral(type = "workbench")
-public class WorkbenchTileEntity extends BaseTileEntity implements IInventory, ISidedInventory {
+public class WorkbenchTileEntity extends BaseTileEntity implements ISidedInventory {
 	private static final String INVENTORY = "inventory";
 	private static final String SLOT = "slot";
 	private static final String MATRIX = "matrix";
@@ -100,13 +110,13 @@ public class WorkbenchTileEntity extends BaseTileEntity implements IInventory, I
 	}
 
 	/**
-	 * Will return a table with the uuid and count of each item in the internal cache.
+	 * Will return a table with the {@link ItemStack} of each item in the internal cache.
 	 * 
 	 * @return A table of the internal contents.
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public ItemStack[] contents() throws Exception {
+	public Map<Integer, ItemStack> contents() throws Exception {
 		return InvUtils.contents(this);
 	}
 
@@ -143,11 +153,11 @@ public class WorkbenchTileEntity extends BaseTileEntity implements IInventory, I
 		if (!hasSpace()) {
 			throw new Exception("Not enough space in output");
 		}
-		resultStack = resultStack.copy();
+		final ItemStack notifyStack = resultStack.copy();
 		craftMatrix.setCrafting(true);
 		craftSlot.onPickupFromSlot(internalPlayer, resultStack);
 		craftMatrix.setCrafting(false);
-		output.setInventorySlotContents(0, resultStack);
+		InvUtils.transferToSlot(output, 0, resultStack);
 
 		// clean fake player inventory (crafting handler support)
 		final int sizeInventory = internalPlayer.inventory.getSizeInventory();
@@ -157,7 +167,7 @@ public class WorkbenchTileEntity extends BaseTileEntity implements IInventory, I
 				internalPlayer.inventory.setInventorySlotContents(slot, null);
 			}
 		}
-		fireCraftedEvent(getUUID(resultStack), resultStack.stackSize);
+		fireCraftedEvent(findUniqueIdentifierFor(notifyStack.getItem()).toString(), notifyStack.stackSize);
 	}
 
 	/**
@@ -166,17 +176,16 @@ public class WorkbenchTileEntity extends BaseTileEntity implements IInventory, I
 	@PeripheralMethod
 	public boolean hasSpace() {
 		final ItemStack stackInSlot = output.getStackInSlot(0);
-		final ItemStack resultStack = craftResult.getStackInSlot(0);
-		return stackInSlot == null || canMergeItemStack(stackInSlot, resultStack);
+		return stackInSlot == null;
 	}
 
 	/**
-	 * @param uuid
+	 * @param name
 	 * @param stackSize
 	 */
 	@Event(PeripheralEvent.crafted)
-	private void fireCraftedEvent(final int uuid, final int stackSize) {
-		fireEvent(PeripheralEvent.crafted, uuid, stackSize);
+	private void fireCraftedEvent(final String name, final int stackSize) {
+		fireEvent(PeripheralEvent.crafted, name, stackSize);
 	}
 
 	@Override
@@ -236,7 +245,7 @@ public class WorkbenchTileEntity extends BaseTileEntity implements IInventory, I
 
 	@Override
 	public boolean isUseableByPlayer(final EntityPlayer player) {
-		return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this
+		return isConnected() && worldObj.getTileEntity(xCoord, yCoord, zCoord) == this
 				&& player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D;
 	}
 

@@ -3,9 +3,12 @@ package anzac.peripherals.handler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import anzac.peripherals.client.gui.ItemStorageGUI;
 import anzac.peripherals.client.gui.WorkbenchGUI;
+import anzac.peripherals.inventory.ItemStorageContainer;
 import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
+import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.WorkbenchTileEntity;
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -27,7 +30,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new WorkbenchContainer(player.inventory, (WorkbenchTileEntity) tile);
-
+		case GuiIds.ITEMSTORAGE:
+			if (!(tile instanceof ItemStorageTileEntity)) {
+				return null;
+			}
+			return new ItemStorageContainer(player.inventory, (ItemStorageTileEntity) tile);
 		default:
 			return null;
 		}
@@ -49,7 +56,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new WorkbenchGUI(player.inventory, (WorkbenchTileEntity) tile);
-
+		case GuiIds.ITEMSTORAGE:
+			if (!(tile instanceof ItemStorageTileEntity)) {
+				return null;
+			}
+			return new ItemStorageGUI(player.inventory, (ItemStorageTileEntity) tile);
 		default:
 			return null;
 		}

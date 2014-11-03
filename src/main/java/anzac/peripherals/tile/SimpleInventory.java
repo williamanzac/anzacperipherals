@@ -1,5 +1,7 @@
 package anzac.peripherals.tile;
 
+import static net.minecraft.item.ItemStack.loadItemStackFromNBT;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +14,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 
 public class SimpleInventory implements IInventory {
+	private static final String INVENTORY = "inventory";
+	private static final String SLOT = "slot";
 
 	private final ItemStack[] inv;
 	private final Set<TileEntity> listeners = new HashSet<TileEntity>();
@@ -89,31 +93,33 @@ public class SimpleInventory implements IInventory {
 	}
 
 	public void readFromNBT(final NBTTagCompound tagCompound) {
-		// read slots
-		final NBTTagList list = tagCompound.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
-		for (byte entry = 0; entry < list.tagCount(); entry++) {
-			final NBTTagCompound itemTag = list.getCompoundTagAt(entry);
-			final int slot = itemTag.getByte("slot");
-			if (slot >= 0 && slot < getSizeInventory()) {
-				final ItemStack stack = ItemStack.loadItemStackFromNBT(itemTag);
-				setInventorySlotContents(slot, stack);
+		// read inventory slots
+		if (tagCompound.hasKey(INVENTORY)) {
+			final NBTTagList list = tagCompound.getTagList(INVENTORY, Constants.NBT.TAG_COMPOUND);
+			for (byte entry = 0; entry < list.tagCount(); entry++) {
+				final NBTTagCompound itemTag = list.getCompoundTagAt(entry);
+				final int slot = itemTag.getByte(SLOT);
+				if (slot >= 0 && slot < getSizeInventory()) {
+					final ItemStack stack = loadItemStackFromNBT(itemTag);
+					setInventorySlotContents(slot, stack);
+				}
 			}
 		}
 	}
 
 	public void writeToNBT(final NBTTagCompound tagCompound) {
-		// write slots
+		// write inventory slots
 		final NBTTagList list = new NBTTagList();
 		for (byte slot = 0; slot < getSizeInventory(); slot++) {
 			final ItemStack stack = getStackInSlot(slot);
 			if (stack != null) {
 				final NBTTagCompound itemTag = new NBTTagCompound();
-				itemTag.setByte("slot", slot);
+				itemTag.setByte(SLOT, slot);
 				stack.writeToNBT(itemTag);
 				list.appendTag(itemTag);
 			}
 		}
-		tagCompound.setTag("inventory", list);
+		tagCompound.setTag(INVENTORY, list);
 	}
 
 	public void addListner(final TileEntity listener) {

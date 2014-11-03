@@ -50,19 +50,20 @@ public class Redstone extends BaseBlock {
 		return true;
 	}
 
-	@Override
-	public int getComparatorInputOverride(World world, int x, int y, int z, int side) {
-		return isProvidingWeakPower(world, x, y, z, side);
-	}
+	// @Override
+	// public int getComparatorInputOverride(World world, int x, int y, int z, int side) {
+	// return isProvidingWeakPower(world, x, y, z, side);
+	// }
 
-	@Override
-	public int isProvidingWeakPower(final IBlockAccess world, final int x, final int y, final int z, final int side) {
-		final TileEntity entity = world.getTileEntity(x, y, z);
-		if (entity instanceof RedstoneTileEntity) {
-			return ((RedstoneTileEntity) entity).getOutput(Facing.oppositeSide[side]);
-		}
-		return super.isProvidingWeakPower(world, x, y, z, side);
-	}
+	// @Override
+	// public int isProvidingWeakPower(final IBlockAccess world, final int x, final int y, final int z, final int side)
+	// {
+	// final TileEntity entity = world.getTileEntity(x, y, z);
+	// if (entity instanceof RedstoneTileEntity) {
+	// return ((RedstoneTileEntity) entity).getOutput(Facing.oppositeSide[side]);
+	// }
+	// return super.isProvidingWeakPower(world, x, y, z, side);
+	// }
 
 	@Override
 	public void onNeighborBlockChange(final World world, final int x, final int y, final int z, final Block neighbor) {
@@ -115,6 +116,10 @@ public class Redstone extends BaseBlock {
 
 	@Override
 	public int isProvidingStrongPower(final IBlockAccess world, final int x, final int y, final int z, final int side) {
-		return isProvidingWeakPower(world, x, y, z, side);
+		final TileEntity entity = world.getTileEntity(x, y, z);
+		if (entity instanceof RedstoneTileEntity) {
+			return ((RedstoneTileEntity) entity).getOutput(Facing.oppositeSide[side]);
+		}
+		return super.isProvidingStrongPower(world, x, y, z, side);
 	}
 }

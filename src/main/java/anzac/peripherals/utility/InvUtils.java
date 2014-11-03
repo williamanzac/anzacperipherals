@@ -22,7 +22,12 @@ public class InvUtils {
 		return createSlotArray(0, count);
 	}
 
-	public static ItemStack[] contents(final IInventory inventory) throws Exception {
+	public static int[] createSlotArray(final ItemStack[] inventory) {
+		final int count = inventory.length;
+		return createSlotArray(0, count);
+	}
+
+	public static Map<Integer, ItemStack> contents(final IInventory inventory) throws Exception {
 		LogHelper.info("contents for " + inventory);
 		final Map<Integer, ItemStack> table = new HashMap<Integer, ItemStack>();
 		final int sizeInventory = inventory.getSizeInventory();
@@ -30,21 +35,12 @@ public class InvUtils {
 		for (int slot = 0; slot < sizeInventory; slot++) {
 			final ItemStack stackInSlot = inventory.getStackInSlot(slot);
 			if (stackInSlot != null) {
-				final int uuid = UUIDUtils.getUUID(stackInSlot);
-				final int amount = stackInSlot.stackSize;
-				if (table.containsKey(uuid)) {
-					final ItemStack ItemStack = table.get(uuid);
-					ItemStack.stackSize += amount;
-				} else {
-					final ItemStack ItemStack = UUIDUtils.getItemStack(uuid, amount);
-					table.put(uuid, ItemStack);
-				}
+				table.put(slot, stackInSlot);
 			}
 		}
 		// AnzacPeripheralsCore.logger.info("table:" + table);
-		final ItemStack[] array = table.values().toArray(new ItemStack[table.size()]);
-		LogHelper.info("table " + array);
-		return array;
+		LogHelper.info("table " + table);
+		return table;
 	}
 
 	public static boolean stacksMatch(final ItemStack targetStack, final ItemStack sourceStack) {
@@ -52,47 +48,57 @@ public class InvUtils {
 	}
 
 	public static boolean canMergeItemStack(final ItemStack sourceStack, final ItemStack targetStack) {
-		boolean merged = false;
-
 		if (sourceStack.isStackable()) {
 			if (stacksMatch(targetStack, sourceStack)) {
 				final int l = targetStack.stackSize + sourceStack.stackSize;
-
-				if (l <= sourceStack.getMaxStackSize()) {
+				final int maxStackSize = sourceStack.getMaxStackSize();
+				if (l <= maxStackSize) {
 					sourceStack.stackSize = 0;
-					merged = true;
-				} else if (targetStack.stackSize < sourceStack.getMaxStackSize()) {
-					sourceStack.stackSize -= sourceStack.getMaxStackSize() - targetStack.stackSize;
-					merged = true;
+					return true;
+				} else if (targetStack.stackSize < maxStackSize) {
+					sourceStack.stackSize -= maxStackSize - targetStack.stackSize;
+					return true;
 				}
 			}
 		}
 
-		return merged;
+		return false;
 	}
 
 	/**
 	 * merges provided ItemStack with the first avaliable one in the container/player inventory
 	 */
 	public static boolean mergeItemStack(final ItemStack sourceStack, final ItemStack targetStack) {
-		boolean merged = false;
-
 		if (sourceStack.isStackable()) {
 			if (stacksMatch(targetStack, sourceStack)) {
 				final int l = targetStack.stackSize + sourceStack.stackSize;
-
-				if (l <= sourceStack.getMaxStackSize()) {
+				final int maxStackSize = sourceStack.getMaxStackSize();
+				if (l <= maxStackSize) {
 					sourceStack.stackSize = 0;
 					targetStack.stackSize = l;
-					merged = true;
-				} else if (targetStack.stackSize < sourceStack.getMaxStackSize()) {
-					sourceStack.stackSize -= sourceStack.getMaxStackSize() - targetStack.stackSize;
-					targetStack.stackSize = sourceStack.getMaxStackSize();
-					merged = true;
+					return true;
+				} else if (targetStack.stackSize < maxStackSize) {
+					sourceStack.stackSize -= maxStackSize - targetStack.stackSize;
+					targetStack.stackSize = maxStackSize;
+					return true;
 				}
 			}
 		}
 
-		return merged;
+		return false;
+	}
+
+	public static void transferToSlot(final IInventory inv, final int slot, final ItemStack stack) {
+		final ItemStack stackInSlot = inv.getStackInSlot(slot);
+		if (stackInSlot == null) {
+			final ItemStack targetStack = stack.copy();
+			inv.setInventorySlotContents(slot, targetStack);
+			stack.stackSize -= targetStack.stackSize;
+		} else {
+			final boolean merged = mergeItemStack(stack, stackInSlot);
+			if (merged) {
+				inv.setInventorySlotContents(slot, stackInSlot);
+			}
+		}
 	}
 }
