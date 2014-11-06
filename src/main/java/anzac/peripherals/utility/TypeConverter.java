@@ -13,12 +13,14 @@ import anzac.peripherals.tile.NoteTileEntity.Instrument;
 import anzac.peripherals.utility.converters.BooleanConverter;
 import anzac.peripherals.utility.converters.Converter;
 import anzac.peripherals.utility.converters.DirectionConverter;
+import anzac.peripherals.utility.converters.ITriggerConverter;
 import anzac.peripherals.utility.converters.InstrumentConverter;
 import anzac.peripherals.utility.converters.IntConverter;
 import anzac.peripherals.utility.converters.ItemStackConverter;
 import anzac.peripherals.utility.converters.LongConverter;
 import anzac.peripherals.utility.converters.RecipeConverter;
 import anzac.peripherals.utility.converters.StringConverter;
+import buildcraft.api.gates.ITrigger;
 
 public class TypeConverter {
 
@@ -39,6 +41,7 @@ public class TypeConverter {
 		converters.put(Instrument.class, new InstrumentConverter());
 		converters.put(Recipe.class, new RecipeConverter());
 		converters.put(ItemStack.class, new ItemStackConverter());
+		converters.put(ITrigger.class, new ITriggerConverter());
 	}
 
 	public static Object[] convertArguments(final Object[] arguments, final Method method) throws Exception {
@@ -64,6 +67,7 @@ public class TypeConverter {
 				final Object value = objects[i];
 				rets[i] = javaToLUA(value, value.getClass());
 			}
+			// LogHelper.info("returning array: " + rets);
 			return rets;
 		} else if (object instanceof List) {
 			final List<Object> objects = (List<Object>) object;
@@ -72,6 +76,7 @@ public class TypeConverter {
 				final Object value = objects.get(i);
 				rets[i] = javaToLUA(value, value.getClass());
 			}
+			// LogHelper.info("returning list: " + rets);
 			return rets;
 		} else if (object instanceof Map) {
 			final Map<Object, Object> objects = (Map<Object, Object>) object;
@@ -81,9 +86,11 @@ public class TypeConverter {
 				final Object value = javaToLUA(entry.getValue(), entry.getValue().getClass());
 				rets.put(key, value);
 			}
+			// LogHelper.info("returning map: " + rets);
 			return new Object[] { rets };
 		}
 		final Object ret = javaToLUA(object, toClass);
+		// LogHelper.info("returning: " + ret);
 		return new Object[] { ret };
 	}
 
@@ -92,7 +99,7 @@ public class TypeConverter {
 			return null;
 		}
 		for (final Entry<Class<?>, Converter<?>> entry : converters.entrySet()) {
-			if (toClass.isAssignableFrom(entry.getKey())) {
+			if (entry.getKey().isAssignableFrom(toClass)) {
 				return entry.getValue().javaToLUA(object);
 			}
 		}
@@ -104,7 +111,7 @@ public class TypeConverter {
 			return null;
 		}
 		for (final Entry<Class<?>, Converter<?>> entry : converters.entrySet()) {
-			if (toClass.isAssignableFrom(entry.getKey())) {
+			if (entry.getKey().isAssignableFrom(toClass)) {
 				return entry.getValue().luaToJava(object);
 			}
 		}

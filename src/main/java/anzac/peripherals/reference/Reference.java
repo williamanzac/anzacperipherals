@@ -18,5 +18,6 @@ public class Reference {
 	public static class GuiIds {
 		public static final int WORKBENCH = 1;
 		public static final int ITEMSTORAGE = 2;
+		public static final int ITEMROUTER = 3;
 	}
 }

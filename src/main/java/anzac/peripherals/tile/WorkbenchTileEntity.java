@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 import anzac.peripherals.Peripherals;
 import anzac.peripherals.annotations.Event;
 import anzac.peripherals.annotations.Peripheral;
@@ -157,7 +158,7 @@ public class WorkbenchTileEntity extends BaseTileEntity implements ISidedInvento
 		craftMatrix.setCrafting(true);
 		craftSlot.onPickupFromSlot(internalPlayer, resultStack);
 		craftMatrix.setCrafting(false);
-		InvUtils.transferToSlot(output, 0, resultStack);
+		InvUtils.addItem(output, resultStack, true, ForgeDirection.UNKNOWN);
 
 		// clean fake player inventory (crafting handler support)
 		final int sizeInventory = internalPlayer.inventory.getSizeInventory();
@@ -176,7 +177,8 @@ public class WorkbenchTileEntity extends BaseTileEntity implements ISidedInvento
 	@PeripheralMethod
 	public boolean hasSpace() {
 		final ItemStack stackInSlot = output.getStackInSlot(0);
-		return stackInSlot == null;
+		final ItemStack resultStack = craftResult.getStackInSlot(0);
+		return stackInSlot == null || InvUtils.canMergeItemStack(stackInSlot, resultStack);
 	}
 
 	/**
@@ -230,17 +232,17 @@ public class WorkbenchTileEntity extends BaseTileEntity implements ISidedInvento
 
 	@Override
 	public String getInventoryName() {
-		return "";
+		return output.getInventoryName();
 	}
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		return false;
+		return output.hasCustomInventoryName();
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 64;
+		return output.getInventoryStackLimit();
 	}
 
 	@Override

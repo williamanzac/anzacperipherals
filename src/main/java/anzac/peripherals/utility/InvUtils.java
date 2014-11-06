@@ -4,8 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
+import buildcraft.api.transport.IPipeTile;
+import buildcraft.api.transport.IPipeTile.PipeType;
 
 public class InvUtils {
 
@@ -88,17 +94,114 @@ public class InvUtils {
 		return false;
 	}
 
-	public static void transferToSlot(final IInventory inv, final int slot, final ItemStack stack) {
-		final ItemStack stackInSlot = inv.getStackInSlot(slot);
-		if (stackInSlot == null) {
-			final ItemStack targetStack = stack.copy();
-			inv.setInventorySlotContents(slot, targetStack);
-			stack.stackSize -= targetStack.stackSize;
+	//
+	// public static void transferToSlot(final IInventory inv, final int slot, final ItemStack stack) {
+	// final ItemStack stackInSlot = inv.getStackInSlot(slot);
+	// if (stackInSlot == null) {
+	// final ItemStack targetStack = stack.copy();
+	// inv.setInventorySlotContents(slot, targetStack);
+	// stack.stackSize -= targetStack.stackSize;
+	// } else {
+	// final boolean merged = mergeItemStack(stack, stackInSlot);
+	// if (merged) {
+	// inv.setInventorySlotContents(slot, stackInSlot);
+	// }
+	// }
+	// }
+
+	public static int[] accessibleSlots(final ForgeDirection extractSide, final IInventory inv) {
+		final int[] slots;
+		if (inv instanceof ISidedInventory) {
+			slots = ((ISidedInventory) inv).getAccessibleSlotsFromSide(extractSide.ordinal());
 		} else {
-			final boolean merged = mergeItemStack(stack, stackInSlot);
-			if (merged) {
-				inv.setInventorySlotContents(slot, stackInSlot);
+			slots = createSlotArray(inv);
+		}
+		return slots;
+	}
+
+	public static int addItem(final IInventory inv, final ItemStack stack, final boolean doAdd,
+			final ForgeDirection from) {
+		final ItemStack copy;
+		final int size = stack.stackSize;
+		if (doAdd) {
+			copy = stack;
+		} else {
+			copy = stack.copy();
+		}
+		final int[] availableSlots = accessibleSlots(from, inv);
+		for (final int slot : availableSlots) {
+			final ItemStack stackInSlot = inv.getStackInSlot(slot);
+			if (stackInSlot != null && stacksMatch(stackInSlot, copy)) {
+				final ItemStack target = copy.copy();
+				final int l = stackInSlot.stackSize + copy.stackSize;
+				target.stackSize = l;
+				if (doAdd) {
+					inv.setInventorySlotContents(slot, target);
+				} else {
+					final int inventoryStackLimit = inv.getInventoryStackLimit();
+					if (target.stackSize > inventoryStackLimit) {
+						target.stackSize = inventoryStackLimit;
+					}
+				}
+				copy.stackSize -= (target.stackSize - stackInSlot.stackSize);
+			}
+			if (copy.stackSize == 0) {
+				break;
 			}
 		}
+		if (copy.stackSize > 0) {
+			for (final int slot : availableSlots) {
+				if (!inv.isItemValidForSlot(slot, stack)) {
+					continue;
+				}
+				final ItemStack stackInSlot = inv.getStackInSlot(slot);
+				if (stackInSlot == null) {
+					final ItemStack target = copy.copy();
+					if (doAdd) {
+						inv.setInventorySlotContents(slot, target);
+					} else {
+						final int inventoryStackLimit = inv.getInventoryStackLimit();
+						if (target.stackSize > inventoryStackLimit) {
+							target.stackSize = inventoryStackLimit;
+						}
+					}
+					copy.stackSize -= target.stackSize;
+				}
+				if (copy.stackSize == 0) {
+					break;
+				}
+			}
+		}
+		return size - copy.stackSize;
+	}
+
+	public static int routeTo(final World world, final int x, final int y, final int z, final ForgeDirection side,
+			final ForgeDirection insertSide, final ItemStack stack) throws Exception {
+		final Position pos = new Position(x, y, z, side);
+		pos.moveForwards(1);
+
+		final TileEntity tile = world.getTileEntity(pos.x, pos.y, pos.z);
+		if (tile instanceof IInventory) {
+			final IInventory inv = (IInventory) tile;
+			return addItem(inv, stack, true, insertSide);
+		} else if (tile instanceof IPipeTile) {
+			final IPipeTile pipe = (IPipeTile) tile;
+			if (pipe.getPipeType() != PipeType.ITEM) {
+				throw new Exception("The pipe dos not accept Items.");
+			}
+			if (!pipe.isPipeConnected(insertSide)) {
+				throw new Exception("The pipe is not connected.");
+			}
+			final ItemStack copy = stack.copy();
+			final int injected = pipe.injectItem(copy, true, insertSide);
+			return injected;
+			// } else if (tile instanceof IItemConduit) {
+			// final ItemStack insertItem = ((IItemConduit) tile).insertItem(insertSide, stack);
+			// if (insertItem == null) {
+			// return stack.stackSize;
+			// }
+			// return stack.stackSize - insertItem.stackSize;
+		}
+		throw new Exception("No inventory or pipe found.");
 	}
 }

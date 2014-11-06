@@ -70,12 +70,12 @@ public class Recipes {
 				'r', redstoneBlock, 'p', ModBlocks.ironchargestation, 'f', furnace));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.diamondchargestation, "iri", "rpr", "ifi", 'i', diamond,
 				'r', redstoneBlock, 'p', ModBlocks.goldchargestation, 'f', furnace));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.ironturtleteleporter, "igi", "gpg", "ifi", 'i', ironIngot,
-				'g', glass, 'p', ModItems.teleportframe, 'f', furnace));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.goldturtleteleporter, "iri", "rpr", "ifi", 'i', goldIngot,
-				'r', enderPearl, 'p', ModBlocks.ironturtleteleporter, 'f', furnace));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.diamondturtleteleporter, "iri", "rpr", "ifi", 'i',
-				diamond, 'r', enderPearl, 'p', ModBlocks.goldturtleteleporter, 'f', furnace));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.ironturtleteleporter, "igi", "gpg", "igi", 'i', ironIngot,
+				'g', glass, 'p', ModItems.teleportframe));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.goldturtleteleporter, "iri", "rpr", "iri", 'i', goldIngot,
+				'r', enderPearl, 'p', ModBlocks.ironturtleteleporter));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.diamondturtleteleporter, "iri", "rpr", "iri", 'i',
+				diamond, 'r', enderPearl, 'p', ModBlocks.goldturtleteleporter));
 	}
 
 	private static Object getOreDict(final Block block) {
