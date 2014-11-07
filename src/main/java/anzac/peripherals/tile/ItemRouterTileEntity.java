@@ -1,9 +1,9 @@
 package anzac.peripherals.tile;
 
 import static cpw.mods.fml.common.registry.GameRegistry.findUniqueIdentifierFor;
+import static net.minecraft.item.ItemStack.loadItemStackFromNBT;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import anzac.peripherals.annotations.Event;
 import anzac.peripherals.annotations.Peripheral;
@@ -24,11 +26,20 @@ import anzac.peripherals.utility.InvUtils;
 import anzac.peripherals.utility.LogHelper;
 import anzac.peripherals.utility.Position;
 import buildcraft.api.gates.ActionManager;
+import buildcraft.api.gates.ITileTrigger;
 import buildcraft.api.gates.ITrigger;
+import buildcraft.api.gates.ITriggerParameter;
 import buildcraft.api.transport.IPipeTile;
+import buildcraft.transport.IPipeTrigger;
+import buildcraft.transport.TileGenericPipe;
 
 @Peripheral(type = "itemrouter")
 public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInventory {
+	private static final String SIDE = "side";
+	private static final String PARAMETER = "parameter";
+	private static final String TAG = "tag";
+	private static final String TRIGGERS = "triggers";
+
 	private final SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
 	private final int[] SLOTS = InvUtils.createSlotArray(inv);
 
@@ -60,44 +71,35 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	}
 
 	/**
-	 * @param name
+	 * @param trigger
 	 * @param itemstack
 	 * @param side
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public void addTrigger(final String name, final ItemStack itemstack, final ForgeDirection side) throws Exception {
-		// if (getMount() == null) {
-		// throw new Exception("No disk loaded");
-		// }
-		final ITrigger iTrigger = ActionManager.triggers.get(name);
-		if (iTrigger == null) {
-			throw new Exception(name + " is not a valid trigger");
+	public void addTrigger(final ITrigger trigger, final ItemStack itemstack, final ForgeDirection side)
+			throws Exception {
+		if (trigger == null) {
+			throw new Exception("A valid trigger is required");
 		}
-		if (iTrigger.requiresParameter() && itemstack == null) {
-			throw new Exception(name + " requires a parameter");
+		if (trigger.requiresParameter() && itemstack == null) {
+			throw new Exception(trigger.getUniqueTag() + " requires a parameter");
 		}
-		final Trigger trigger = new Trigger(iTrigger, itemstack, side);
-		triggers.add(trigger);
+		final Trigger ret = new Trigger(trigger, itemstack, side);
+		triggers.add(ret);
 	}
 
 	/**
-	 * @param name
+	 * @param trigger
 	 * @param itemstack
 	 * @param side
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public void removeTrigger(final String name, final ItemStack itemstack, final ForgeDirection side) throws Exception {
-		// if (getMount() == null) {
-		// throw new Exception("No disk loaded");
-		// }
-		for (final Iterator<Trigger> it = triggers.iterator(); it.hasNext();) {
-			final Trigger trigger = it.next();
-			if (trigger.getUniqueTag().equals(name) && trigger.getParameter() == itemstack && trigger.getSide() == side) {
-				it.remove();
-			}
-		}
+	public void removeTrigger(final ITrigger trigger, final ItemStack itemstack, final ForgeDirection side)
+			throws Exception {
+		final Trigger ret = new Trigger(trigger, itemstack, side);
+		triggers.remove(ret);
 	}
 
 	/**
@@ -292,6 +294,57 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	// }
 
 	@Override
+	public void updateEntity() {
+		super.updateEntity();
+
+		if (worldObj.isRemote) {
+			return;
+		}
+
+		if (worldObj.getTotalWorldTime() % 10 == 0) {
+			resolveEvents();
+		}
+	}
+
+	protected void resolveEvents() {
+		// Computes the events depending on the triggers
+		for (final Trigger trigger : triggers) {
+			if (trigger != null) {
+				if (isTriggerActive(trigger)) {
+					fireTriggerEvent(trigger);
+				}
+			}
+		}
+	}
+
+	protected boolean isTriggerActive(final Trigger trigger) {
+		final ITrigger trigger2 = trigger.getTrigger();
+		if (trigger != null && trigger2 != null) {
+			final Position p = new Position(xCoord, yCoord, zCoord, trigger.getSide());
+			p.moveForwards(1);
+			LogHelper.info("position: " + p);
+			final TileEntity tile = worldObj.getTileEntity(p.x, p.y, p.z);
+
+			if (tile != null) {
+				final ITriggerParameter triggerParameter = trigger.getTriggerParameter();
+				final ForgeDirection opposite = trigger.getSide().getOpposite();
+				if (trigger2 instanceof IPipeTrigger) {
+					if (((IPipeTrigger) trigger2).isTriggerActive(((TileGenericPipe) tile).pipe, triggerParameter)) {
+						return true;
+					}
+				}
+				if (trigger2 instanceof ITileTrigger) {
+					if (((ITileTrigger) trigger2).isTriggerActive(opposite, tile, triggerParameter)) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	@Override
 	public int[] getAccessibleSlotsFromSide(final int side) {
 		return SLOTS;
 	}
@@ -382,11 +435,39 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
 
+		if (tagCompound.hasKey(TRIGGERS)) {
+			triggers.clear();
+			final NBTTagList tagList = tagCompound.getTagList(TRIGGERS, Constants.NBT.TAG_COMPOUND);
+			for (int i = 0; i < tagList.tagCount(); ++i) {
+				final NBTTagCompound tag = (NBTTagCompound) tagList.getCompoundTagAt(i);
+				if (tag.hasKey(TAG)) {
+					final ITrigger trigger = ActionManager.triggers.get(tag.getString(TAG));
+					final ItemStack parameter = loadItemStackFromNBT(tag.getCompoundTag(PARAMETER));
+					final int side = tag.getInteger(SIDE);
+					triggers.add(new Trigger(trigger, parameter, ForgeDirection.getOrientation(side)));
+				}
+			}
+		}
+
 		inv.readFromNBT(tagCompound);
 	}
 
 	public void writeToNBT(final NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
+
+		final NBTTagList tagList = new NBTTagList();
+		for (final Trigger trigger : triggers) {
+			final NBTTagCompound tag = new NBTTagCompound();
+			if (trigger != null) {
+				tag.setString(TAG, trigger.getUniqueTag());
+				final NBTTagCompound parameter = new NBTTagCompound();
+				trigger.getParameter().writeToNBT(parameter);
+				tag.setTag(PARAMETER, parameter);
+				tag.setInteger(SIDE, trigger.getSide().ordinal());
+			}
+			tagList.appendTag(tag);
+		}
+		tagCompound.setTag(TRIGGERS, tagList);
 
 		inv.writeToNBT(tagCompound);
 	}

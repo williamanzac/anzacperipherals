@@ -39,7 +39,7 @@ public class Trigger {
 		int result = 1;
 		result = prime * result + ((parameter == null) ? 0 : parameter.hashCode());
 		result = prime * result + ((side == null) ? 0 : side.hashCode());
-		result = prime * result + ((trigger == null) ? 0 : trigger.hashCode());
+		result = prime * result + ((trigger == null) ? 0 : trigger.getUniqueTag().hashCode());
 		return result;
 	}
 
@@ -53,17 +53,22 @@ public class Trigger {
 			return false;
 		Trigger other = (Trigger) obj;
 		if (parameter == null) {
-			if (other.parameter != null)
+			if (other.parameter != null) {
 				return false;
-		} else if (!parameter.equals(other.parameter))
+			}
+		} else if (!parameter.equals(other.parameter)) {
 			return false;
-		if (side != other.side)
+		}
+		if (side != other.side) {
 			return false;
+		}
 		if (trigger == null) {
-			if (other.trigger != null)
+			if (other.trigger != null) {
 				return false;
-		} else if (!trigger.equals(other.trigger))
+			}
+		} else if (!trigger.getUniqueTag().equals(other.trigger.getUniqueTag())) {
 			return false;
+		}
 		return true;
 	}
 

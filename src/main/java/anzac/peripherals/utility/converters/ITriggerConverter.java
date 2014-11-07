@@ -3,6 +3,7 @@ package anzac.peripherals.utility.converters;
 import java.util.HashMap;
 import java.util.Map;
 
+import buildcraft.api.gates.ActionManager;
 import buildcraft.api.gates.ITrigger;
 
 public class ITriggerConverter implements Converter<ITrigger> {
@@ -27,10 +28,16 @@ public class ITriggerConverter implements Converter<ITrigger> {
 		return map;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ITrigger luaToJava(Object object) {
-		// for now no way to send trigger from lua to java
-		return null;
+		final Map<String, Object> map = (Map<String, Object>) object;
+		final String uniqueTag = (String) map.get(UNIQUE_TAG);
+		// map.get(DESCRIPTION, description);
+		// map.get(HAS_PARAMETER, hasParameter);
+		// map.get(REQUIRES_PARAMETER, requiresParameter);
+		final ITrigger iTrigger = ActionManager.triggers.get(uniqueTag);
+		return iTrigger;
 	}
 
 }
