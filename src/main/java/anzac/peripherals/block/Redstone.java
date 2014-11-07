@@ -6,7 +6,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
@@ -55,15 +54,14 @@ public class Redstone extends BaseBlock {
 	// return isProvidingWeakPower(world, x, y, z, side);
 	// }
 
-	// @Override
-	// public int isProvidingWeakPower(final IBlockAccess world, final int x, final int y, final int z, final int side)
-	// {
-	// final TileEntity entity = world.getTileEntity(x, y, z);
-	// if (entity instanceof RedstoneTileEntity) {
-	// return ((RedstoneTileEntity) entity).getOutput(Facing.oppositeSide[side]);
-	// }
-	// return super.isProvidingWeakPower(world, x, y, z, side);
-	// }
+	@Override
+	public int isProvidingWeakPower(final IBlockAccess world, final int x, final int y, final int z, final int side) {
+		final TileEntity entity = world.getTileEntity(x, y, z);
+		if (entity instanceof RedstoneTileEntity) {
+			return ((RedstoneTileEntity) entity).getOutput(Facing.oppositeSide[side]);
+		}
+		return super.isProvidingWeakPower(world, x, y, z, side);
+	}
 
 	@Override
 	public void onNeighborBlockChange(final World world, final int x, final int y, final int z, final Block neighbor) {
@@ -85,7 +83,7 @@ public class Redstone extends BaseBlock {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
+	public boolean isNormalCube(final IBlockAccess world, final int x, final int y, final int z) {
 		return true;
 	}
 
@@ -97,9 +95,7 @@ public class Redstone extends BaseBlock {
 	protected int getInputStrength(final World world, final int x, final int y, final int z, final ForgeDirection side) {
 		final Position p = new Position(x, y, z, side);
 		p.moveForwards(1);
-		final int l1 = world.getIndirectPowerLevelTo(p.x, p.y, p.z, side.getOpposite().ordinal());
-		return l1 >= 15 ? l1 : Math.max(l1,
-				world.getBlock(p.x, p.y, p.z) == Blocks.redstone_wire ? world.getBlockMetadata(p.x, p.y, p.z) : 0);
+		return world.isBlockIndirectlyGettingPowered(p.x, p.y, p.z) ? 15 : world.getBlockPowerInput(p.x, p.y, p.z);
 	}
 
 	@Override
