@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import anzac.peripherals.peripherals.CraftingRecipe;
 import anzac.peripherals.peripherals.Recipe;
 import anzac.peripherals.tile.NoteTileEntity.Instrument;
 import anzac.peripherals.utility.converters.BooleanConverter;
@@ -39,7 +40,9 @@ public class TypeConverter {
 		converters.put(boolean.class, booleanConverter);
 		converters.put(ForgeDirection.class, new DirectionConverter());
 		converters.put(Instrument.class, new InstrumentConverter());
-		converters.put(Recipe.class, new RecipeConverter());
+		final RecipeConverter recipeConverter = new RecipeConverter();
+		converters.put(Recipe.class, recipeConverter);
+		converters.put(CraftingRecipe.class, recipeConverter);
 		converters.put(ItemStack.class, new ItemStackConverter());
 		converters.put(ITrigger.class, new ITriggerConverter());
 	}

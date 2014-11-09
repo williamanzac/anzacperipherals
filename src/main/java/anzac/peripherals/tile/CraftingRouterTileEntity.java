@@ -5,15 +5,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import anzac.peripherals.annotations.Peripheral;
 import anzac.peripherals.annotations.PeripheralMethod;
-import anzac.peripherals.peripherals.Recipe;
+import anzac.peripherals.peripherals.CraftingRecipe;
 import anzac.peripherals.utility.InvUtils;
 
 @Peripheral(type = "craftingrouter")
 public class CraftingRouterTileEntity extends ItemRouterTileEntity {
-
-	public static class CraftingRecipe extends Recipe {
-		public ItemStack[] craftResult = new ItemStack[3];
-	}
 
 	private SimpleInventory inv = new SimpleInventory(9, "Crafting Router", 64);
 
