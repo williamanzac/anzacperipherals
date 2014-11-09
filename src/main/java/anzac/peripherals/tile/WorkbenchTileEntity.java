@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -43,7 +42,7 @@ public class WorkbenchTileEntity extends BaseTileEntity implements ISidedInvento
 	public InternalInventoryCrafting craftMatrix = new InternalInventoryCrafting(3, this);
 	public IInventory craftResult = new InventoryCraftResult();
 
-	private final InventoryCrafting input = new InternalInventoryCrafting(3);
+	private final IInventory input = new SimpleInventory(9, "", 64);
 	public final IInventory output = new SimpleInventory(1, "Computerized Workbench", 64);
 
 	private final IInventory inv = InventoryWrapper.make().add(output).add(input);

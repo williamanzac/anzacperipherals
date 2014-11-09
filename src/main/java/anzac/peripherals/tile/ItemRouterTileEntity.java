@@ -40,13 +40,16 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	private static final String TAG = "tag";
 	private static final String TRIGGERS = "triggers";
 
-	private final SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
-	private final int[] SLOTS = InvUtils.createSlotArray(inv);
+	private SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
 
 	protected List<Trigger> triggers = new ArrayList<Trigger>();
 
 	public ItemRouterTileEntity() {
 		inv.addListner(this);
+	}
+
+	protected SimpleInventory getInventory() {
+		return inv;
 	}
 
 	/**
@@ -202,7 +205,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 		final IInventory inv = (IInventory) te;
 		final int[] slots = InvUtils.accessibleSlots(ForgeDirection.UNKNOWN, inv);
 		for (final int i : slots) {
-			final ItemStack stackInSlot = inv.getStackInSlot(i);
+			final ItemStack stackInSlot = getInventory().getStackInSlot(i);
 			if (InvUtils.stacksMatch(stackInSlot, itemstack)) {
 				return InvUtils.addItem(this, stackInSlot, true, ForgeDirection.UNKNOWN);
 			}
@@ -346,7 +349,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(final int side) {
-		return SLOTS;
+		return InvUtils.createSlotArray(getInventory());
 	}
 
 	@Override
@@ -361,27 +364,27 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 
 	@Override
 	public int getSizeInventory() {
-		return inv.getSizeInventory();
+		return getInventory().getSizeInventory();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(final int slot) {
-		return inv.getStackInSlot(slot);
+		return getInventory().getStackInSlot(slot);
 	}
 
 	@Override
 	public ItemStack decrStackSize(final int slot, final int amt) {
-		return inv.decrStackSize(slot, amt);
+		return getInventory().decrStackSize(slot, amt);
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(final int slot) {
-		return inv.getStackInSlotOnClosing(slot);
+		return getInventory().getStackInSlotOnClosing(slot);
 	}
 
 	@Override
 	public void setInventorySlotContents(final int slot, final ItemStack stack) {
-		inv.setInventorySlotContents(slot, stack);
+		getInventory().setInventorySlotContents(slot, stack);
 		if (stack != null) {
 			fireRouteEvent(findUniqueIdentifierFor(stack.getItem()).toString(), stack.stackSize);
 		}
@@ -398,17 +401,17 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 
 	@Override
 	public String getInventoryName() {
-		return inv.getInventoryName();
+		return getInventory().getInventoryName();
 	}
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		return inv.hasCustomInventoryName();
+		return getInventory().hasCustomInventoryName();
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		return inv.getInventoryStackLimit();
+		return getInventory().getInventoryStackLimit();
 	}
 
 	@Override
@@ -419,17 +422,17 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 
 	@Override
 	public void openInventory() {
-		inv.openInventory();
+		getInventory().openInventory();
 	}
 
 	@Override
 	public void closeInventory() {
-		inv.closeInventory();
+		getInventory().closeInventory();
 	}
 
 	@Override
 	public boolean isItemValidForSlot(final int i, final ItemStack itemstack) {
-		return inv.isItemValidForSlot(i, itemstack);
+		return getInventory().isItemValidForSlot(i, itemstack);
 	}
 
 	public void readFromNBT(final NBTTagCompound tagCompound) {
@@ -449,7 +452,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 			}
 		}
 
-		inv.readFromNBT(tagCompound);
+		getInventory().readFromNBT(tagCompound);
 	}
 
 	public void writeToNBT(final NBTTagCompound tagCompound) {
@@ -469,6 +472,6 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 		}
 		tagCompound.setTag(TRIGGERS, tagList);
 
-		inv.writeToNBT(tagCompound);
+		getInventory().writeToNBT(tagCompound);
 	}
 }

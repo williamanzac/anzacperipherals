@@ -3,13 +3,16 @@ package anzac.peripherals.handler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import anzac.peripherals.client.gui.CraftingRouterGUI;
 import anzac.peripherals.client.gui.ItemRouterGUI;
 import anzac.peripherals.client.gui.ItemStorageGUI;
 import anzac.peripherals.client.gui.WorkbenchGUI;
+import anzac.peripherals.inventory.CraftingRouterContainer;
 import anzac.peripherals.inventory.ItemRouterContainer;
 import anzac.peripherals.inventory.ItemStorageContainer;
 import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
+import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
 import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.WorkbenchTileEntity;
@@ -43,6 +46,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new ItemRouterContainer(player.inventory, (ItemRouterTileEntity) tile);
+		case GuiIds.CRAFTINGROUTER:
+			if (!(tile instanceof CraftingRouterTileEntity)) {
+				return null;
+			}
+			return new CraftingRouterContainer(player.inventory, (CraftingRouterTileEntity) tile);
 		default:
 			return null;
 		}
@@ -74,6 +82,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new ItemRouterGUI(player.inventory, (ItemRouterTileEntity) tile);
+		case GuiIds.CRAFTINGROUTER:
+			if (!(tile instanceof CraftingRouterTileEntity)) {
+				return null;
+			}
+			return new CraftingRouterGUI(player.inventory, (CraftingRouterTileEntity) tile);
 		default:
 			return null;
 		}
