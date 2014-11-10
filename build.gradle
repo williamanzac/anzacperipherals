@@ -22,7 +22,7 @@ group= "anzac.peripherals" // http://maven.apache.org/guides/mini/guide-naming-c
 archivesBaseName = "ANZACPeripherals"
 
 minecraft {
-    version = "1.7.10-10.13.0.1200"
+    version = "1.7.10-10.13.2.1230"
     runDir = "eclipse/assets"
 }
 
@@ -34,7 +34,7 @@ dependencies {
     //compile "dan200.computercraft:ComputerCraft:1.64pr4"
       
     // real examples
-    compile 'com.mod-buildcraft:buildcraft:6.0.18:dev'  // adds buildcraft to the dev env
+    compile 'com.mod-buildcraft:buildcraft:6.1.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
     //compile "thermalexpansion:ThermalExpansion:4.0.0B3"
     //compile 'codechicken.core:CodeChickenCore:1.0.2.9:universal'

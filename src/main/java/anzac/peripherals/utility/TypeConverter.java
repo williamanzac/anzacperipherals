@@ -14,14 +14,12 @@ import anzac.peripherals.tile.NoteTileEntity.Instrument;
 import anzac.peripherals.utility.converters.BooleanConverter;
 import anzac.peripherals.utility.converters.Converter;
 import anzac.peripherals.utility.converters.DirectionConverter;
-import anzac.peripherals.utility.converters.ITriggerConverter;
 import anzac.peripherals.utility.converters.InstrumentConverter;
 import anzac.peripherals.utility.converters.IntConverter;
 import anzac.peripherals.utility.converters.ItemStackConverter;
 import anzac.peripherals.utility.converters.LongConverter;
 import anzac.peripherals.utility.converters.RecipeConverter;
 import anzac.peripherals.utility.converters.StringConverter;
-import buildcraft.api.gates.ITrigger;
 
 public class TypeConverter {
 
@@ -44,7 +42,6 @@ public class TypeConverter {
 		converters.put(Recipe.class, recipeConverter);
 		converters.put(CraftingRecipe.class, recipeConverter);
 		converters.put(ItemStack.class, new ItemStackConverter());
-		converters.put(ITrigger.class, new ITriggerConverter());
 	}
 
 	public static Object[] convertArguments(final Object[] arguments, final Method method) throws Exception {

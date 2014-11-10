@@ -11,7 +11,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import anzac.peripherals.peripherals.LuaManager;
 import anzac.peripherals.peripherals.PeripheralEvent;
-import anzac.peripherals.peripherals.Trigger;
 import anzac.peripherals.utility.ClassUtils;
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
@@ -76,14 +75,6 @@ public class BaseTileEntity extends TileEntity implements IPeripheral {
 			final Object[] clone = ArrayUtils.clone(values);
 			ArrayUtils.add(clone, 0, computer.getAttachmentName());
 			computer.queueEvent(eventName, clone);
-		}
-	}
-
-	protected void fireTriggerEvent(final Trigger trigger) {
-		if (trigger.getParameter() == null) {
-			fireEvent(trigger.getUniqueTag());
-		} else {
-			fireEvent(trigger.getUniqueTag(), trigger.getParameter());
 		}
 	}
 }
