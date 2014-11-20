@@ -15,6 +15,25 @@ buildscript {
     }
 }
 
+repositories {
+	maven { // The repo from which to get waila
+		name "Mobius Repo"
+		url "http://mobiusstrip.eu/maven"
+	}
+	maven { // the repo from which to get NEI and stuff
+		name 'CB Repo'
+		url "http://chickenbones.net/maven/"
+	}
+	maven {
+		name = "ic2"
+		url = "http://maven.ic2.player.to/"
+	}
+	maven {
+		name = "IGW"
+		url = "http://maven.k-4u.nl/"
+	}
+}
+
 apply plugin: 'forge'
 
 version = "1.7.10-1.0"
@@ -37,7 +56,12 @@ dependencies {
     compile 'com.mod-buildcraft:buildcraft:6.1.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
     //compile "thermalexpansion:ThermalExpansion:4.0.0B3"
-    //compile 'codechicken.core:CodeChickenCore:1.0.2.9:universal'
+	compile "codechicken:CodeChickenLib:1.7.10-1.1.1.99:dev"
+	compile "codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev"
+	compile "codechicken:NotEnoughItems:1.7.10-1.0.3.67:dev"
+	compile "codechicken:EnderStorage:1.7.10-1.4.5.25:dev"
+	compile "mcp.mobius.waila:Waila:1.5.3_1.7.10"
+	compile 'net.industrial-craft:industrialcraft-2:2.2.504-experimental:api'
 
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

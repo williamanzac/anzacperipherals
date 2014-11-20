@@ -20,10 +20,6 @@ import anzac.peripherals.utility.Position;
 
 @Peripheral(type = "itemrouter")
 public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInventory {
-	private static final String SIDE = "side";
-	private static final String PARAMETER = "parameter";
-	private static final String TAG = "tag";
-	private static final String TRIGGERS = "triggers";
 
 	private SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
 

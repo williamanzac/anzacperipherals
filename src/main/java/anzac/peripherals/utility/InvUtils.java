@@ -204,4 +204,18 @@ public class InvUtils {
 		}
 		throw new Exception("No inventory or pipe found.");
 	}
+
+	public static ItemStack consumeItem(ItemStack stack) {
+		if (stack.stackSize == 1) {
+			if (stack.getItem().hasContainerItem(stack)) {
+				return stack.getItem().getContainerItem(stack);
+			} else {
+				return null;
+			}
+		} else {
+			stack.splitStack(1);
+
+			return stack;
+		}
+	}
 }

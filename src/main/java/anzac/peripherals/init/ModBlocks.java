@@ -15,6 +15,9 @@ import anzac.peripherals.block.Workbench;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Reference;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
+import anzac.peripherals.tile.DiamondChargeStationTileEntity;
+import anzac.peripherals.tile.GoldChargeStationTileEntity;
+import anzac.peripherals.tile.IronChargeStationTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
 import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.NoteTileEntity;
@@ -66,5 +69,11 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(ItemRouterTileEntity.class, "anzac.peripherals.tile.ItemRouterTileEntity");
 		GameRegistry.registerTileEntity(CraftingRouterTileEntity.class,
 				"anzac.peripherals.tile.CraftingRouterTileEntity");
+		GameRegistry.registerTileEntity(IronChargeStationTileEntity.class,
+				"anzac.peripherals.tile.IronChargeStationTileEntity");
+		GameRegistry.registerTileEntity(GoldChargeStationTileEntity.class,
+				"anzac.peripherals.tile.GoldChargeStationTileEntity");
+		GameRegistry.registerTileEntity(DiamondChargeStationTileEntity.class,
+				"anzac.peripherals.tile.DiamondChargeStationTileEntity");
 	}
 }

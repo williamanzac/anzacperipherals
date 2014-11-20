@@ -19,6 +19,7 @@ tile.anzacperipherals:fluidstorage.name=Fluid Storage
 tile.anzacperipherals:redstone.name=Redstone Control
 tile.anzacperipherals:note.name=Computerised Note Block
 tile.anzacperipherals:craftingrouter.name=Crafting Router
+tile.anzacperipherals:chargestation.name=Charging Station
 tile.anzacperipherals:chargestation1.name=Iron Charging Station
 tile.anzacperipherals:chargestation2.name=Gold Charging Station
 tile.anzacperipherals:chargestation3.name=Diamond Charging Station

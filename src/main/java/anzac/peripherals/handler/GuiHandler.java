@@ -3,15 +3,18 @@ package anzac.peripherals.handler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import anzac.peripherals.client.gui.ChargeStationGUI;
 import anzac.peripherals.client.gui.CraftingRouterGUI;
 import anzac.peripherals.client.gui.ItemRouterGUI;
 import anzac.peripherals.client.gui.ItemStorageGUI;
 import anzac.peripherals.client.gui.WorkbenchGUI;
+import anzac.peripherals.inventory.ChargeStationContainer;
 import anzac.peripherals.inventory.CraftingRouterContainer;
 import anzac.peripherals.inventory.ItemRouterContainer;
 import anzac.peripherals.inventory.ItemStorageContainer;
 import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
+import anzac.peripherals.tile.ChargeStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
 import anzac.peripherals.tile.ItemStorageTileEntity;
@@ -23,7 +26,6 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getServerGuiElement(final int id, final EntityPlayer player, final World world, final int x,
 			final int y, final int z) {
-
 		if (!world.blockExists(x, y, z)) {
 			return null;
 		}
@@ -51,6 +53,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new CraftingRouterContainer(player.inventory, (CraftingRouterTileEntity) tile);
+		case GuiIds.CHARGESTATION:
+			if (!(tile instanceof ChargeStationTileEntity)) {
+				return null;
+			}
+			return new ChargeStationContainer(player.inventory, (ChargeStationTileEntity) tile);
 		default:
 			return null;
 		}
@@ -59,7 +66,6 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(final int id, final EntityPlayer player, final World world, final int x,
 			final int y, final int z) {
-
 		if (!world.blockExists(x, y, z)) {
 			return null;
 		}
@@ -87,6 +93,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new CraftingRouterGUI(player.inventory, (CraftingRouterTileEntity) tile);
+		case GuiIds.CHARGESTATION:
+			if (!(tile instanceof ChargeStationTileEntity)) {
+				return null;
+			}
+			return new ChargeStationGUI(player.inventory, (ChargeStationTileEntity) tile);
 		default:
 			return null;
 		}

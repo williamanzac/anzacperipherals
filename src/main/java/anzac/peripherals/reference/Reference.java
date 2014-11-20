@@ -20,5 +20,6 @@ public class Reference {
 		public static final int ITEMSTORAGE = 2;
 		public static final int ITEMROUTER = 3;
 		public static final int CRAFTINGROUTER = 4;
+		public static final int CHARGESTATION = 5;
 	}
 }

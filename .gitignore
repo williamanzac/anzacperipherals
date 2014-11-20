@@ -28,3 +28,4 @@ release.properties
 /.gradle/
 /.classpath
 /resourcepacks/
+/usernamecache.json

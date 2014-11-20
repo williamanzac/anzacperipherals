@@ -11,7 +11,7 @@ import anzac.peripherals.utility.InvUtils;
 import buildcraft.core.gui.slots.SlotPhantom;
 
 public abstract class BaseContainer<T extends BaseTileEntity> extends Container {
-	private final T tileEntity;
+	protected final T tileEntity;
 
 	public BaseContainer(final T tileEntity) {
 		super();
@@ -20,7 +20,10 @@ public abstract class BaseContainer<T extends BaseTileEntity> extends Container 
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer player) {
-		return ((IInventory) tileEntity).isUseableByPlayer(player);
+		if (tileEntity instanceof IInventory) {
+			return ((IInventory) tileEntity).isUseableByPlayer(player);
+		}
+		return true;
 	}
 
 	@Override
