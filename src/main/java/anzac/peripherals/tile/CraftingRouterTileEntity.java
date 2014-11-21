@@ -17,7 +17,7 @@ public class CraftingRouterTileEntity extends ItemRouterTileEntity {
 	public IInventory craftResult = new SimpleInventory(3, "", 64);
 
 	public CraftingRouterTileEntity() {
-		inv.addListner(this);
+		inv.addListener(this);
 	}
 
 	protected SimpleInventory getInventory() {

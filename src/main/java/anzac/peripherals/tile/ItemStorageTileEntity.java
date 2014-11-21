@@ -16,7 +16,7 @@ public class ItemStorageTileEntity extends BaseTileEntity implements ISidedInven
 	private final int[] SLOTS = InvUtils.createSlotArray(inv);
 
 	public ItemStorageTileEntity() {
-		inv.addListner(this);
+		inv.addListener(this);
 	}
 
 	/**

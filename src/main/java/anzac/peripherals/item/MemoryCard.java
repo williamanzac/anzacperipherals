@@ -13,6 +13,7 @@ import anzac.peripherals.reference.Names;
 public class MemoryCard extends BaseItem {
 	public MemoryCard() {
 		setUnlocalizedName(Names.Items.memorycard);
+		setMaxStackSize(1);
 	}
 
 	public boolean shouldPassSneakingClickToBlock(final World par2World, final int par4, final int par5, final int par6) {

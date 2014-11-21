@@ -122,7 +122,7 @@ public class SimpleInventory implements IInventory {
 		tagCompound.setTag(INVENTORY, list);
 	}
 
-	public void addListner(final TileEntity listener) {
+	public void addListener(final TileEntity listener) {
 		listeners.add(listener);
 	}
 

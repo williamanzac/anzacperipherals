@@ -18,7 +18,6 @@ import anzac.peripherals.handler.ConfigurationHandler;
 import anzac.peripherals.utility.ClassUtils;
 import anzac.peripherals.utility.InvUtils;
 import anzac.peripherals.utility.Position;
-import buildcraft.core.inventory.SimpleInventory;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import dan200.computercraft.api.turtle.ITurtleAccess;

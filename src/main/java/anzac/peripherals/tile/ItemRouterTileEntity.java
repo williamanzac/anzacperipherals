@@ -24,7 +24,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	private SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
 
 	public ItemRouterTileEntity() {
-		inv.addListner(this);
+		inv.addListener(this);
 	}
 
 	protected SimpleInventory getInventory() {

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import anzac.peripherals.peripherals.CraftingRecipe;
 import anzac.peripherals.peripherals.Recipe;
+import anzac.peripherals.peripherals.Target;
 import anzac.peripherals.tile.NoteTileEntity.Instrument;
 import anzac.peripherals.utility.converters.BooleanConverter;
 import anzac.peripherals.utility.converters.Converter;
@@ -20,6 +21,7 @@ import anzac.peripherals.utility.converters.ItemStackConverter;
 import anzac.peripherals.utility.converters.LongConverter;
 import anzac.peripherals.utility.converters.RecipeConverter;
 import anzac.peripherals.utility.converters.StringConverter;
+import anzac.peripherals.utility.converters.TargetConverter;
 
 public class TypeConverter {
 
@@ -42,6 +44,7 @@ public class TypeConverter {
 		converters.put(Recipe.class, recipeConverter);
 		converters.put(CraftingRecipe.class, recipeConverter);
 		converters.put(ItemStack.class, new ItemStackConverter());
+		converters.put(Target.class, new TargetConverter());
 	}
 
 	public static Object[] convertArguments(final Object[] arguments, final Method method) throws Exception {

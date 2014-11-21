@@ -23,6 +23,7 @@ tile.anzacperipherals:chargestation.name=Charging Station
 tile.anzacperipherals:chargestation1.name=Iron Charging Station
 tile.anzacperipherals:chargestation2.name=Gold Charging Station
 tile.anzacperipherals:chargestation3.name=Diamond Charging Station
+tile.anzacperipherals:turtleteleporter.name=Turtle Teleporter
 tile.anzacperipherals:turtleteleporter1.name=Iron Turtle Teleporter
 tile.anzacperipherals:turtleteleporter2.name=Gold Turtle Teleporter
 tile.anzacperipherals:turtleteleporter3.name=Diamond Turtle Teleporter

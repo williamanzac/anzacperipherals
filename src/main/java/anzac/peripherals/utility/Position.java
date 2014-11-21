@@ -24,8 +24,7 @@ public class Position {
 	}
 
 	public Position(final ChunkCoordinates c, int d) {
-		this(c.posX, c.posY, c.posZ, ForgeDirection.UNKNOWN);
-
+		this(c.posX, c.posY, c.posZ, ForgeDirection.getOrientation(d));
 	}
 
 	public Position(final Position p) {
