@@ -64,18 +64,24 @@ public class Recipes {
 				ModItems.basicframe, 'n', noteblock));
 		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.craftingrouter), ModBlocks.itemrouter,
 				ModBlocks.recipestorage);
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.ironchargestation, "iri", "rpr", "ifi", 'i', ironIngot,
-				'r', redstoneBlock, 'p', ModBlocks.redstone, 'f', furnace));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.goldchargestation, "iri", "rpr", "ifi", 'i', goldIngot,
-				'r', redstoneBlock, 'p', ModBlocks.ironchargestation, 'f', furnace));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.diamondchargestation, "iri", "rpr", "ifi", 'i', diamond,
-				'r', redstoneBlock, 'p', ModBlocks.goldchargestation, 'f', furnace));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.ironturtleteleporter, "igi", "gpg", "igi", 'i', ironIngot,
-				'g', glass, 'p', ModItems.teleportframe));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.goldturtleteleporter, "iri", "rpr", "iri", 'i', goldIngot,
-				'r', enderPearl, 'p', ModBlocks.ironturtleteleporter));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.diamondturtleteleporter, "iri", "rpr", "iri", 'i',
-				diamond, 'r', enderPearl, 'p', ModBlocks.goldturtleteleporter));
+		final ItemStack ironchargestation = new ItemStack(ModBlocks.chargestation, 1, 1);
+		final ItemStack goldchargestation = new ItemStack(ModBlocks.chargestation, 1, 2);
+		final ItemStack diamondchargestation = new ItemStack(ModBlocks.chargestation, 1, 3);
+		GameRegistry.addRecipe(new ShapedOreRecipe(ironchargestation, "iri", "rpr", "ifi", 'i', ironIngot, 'r',
+				redstoneBlock, 'p', ModBlocks.redstone, 'f', furnace));
+		GameRegistry.addRecipe(new ShapedOreRecipe(goldchargestation, "iri", "rpr", "ifi", 'i', goldIngot, 'r',
+				redstoneBlock, 'p', ironchargestation, 'f', furnace));
+		GameRegistry.addRecipe(new ShapedOreRecipe(diamondchargestation, "iri", "rpr", "ifi", 'i', diamond, 'r',
+				redstoneBlock, 'p', goldchargestation, 'f', furnace));
+		final ItemStack ironturtleteleporter = new ItemStack(ModBlocks.turtleteleporter, 1, 1);
+		final ItemStack goldturtleteleporter = new ItemStack(ModBlocks.turtleteleporter, 1, 2);
+		final ItemStack diamondturtleteleporter = new ItemStack(ModBlocks.turtleteleporter, 1, 3);
+		GameRegistry.addRecipe(new ShapedOreRecipe(ironturtleteleporter, "igi", "gpg", "igi", 'i', ironIngot, 'g',
+				glass, 'p', ModItems.teleportframe));
+		GameRegistry.addRecipe(new ShapedOreRecipe(goldturtleteleporter, "iri", "rpr", "iri", 'i', goldIngot, 'r',
+				enderPearl, 'p', ironturtleteleporter));
+		GameRegistry.addRecipe(new ShapedOreRecipe(diamondturtleteleporter, "iri", "rpr", "iri", 'i', diamond, 'r',
+				enderPearl, 'p', goldturtleteleporter));
 	}
 
 	private static Object getOreDict(final Block block) {

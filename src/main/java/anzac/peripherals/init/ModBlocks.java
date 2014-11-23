@@ -12,6 +12,7 @@ import anzac.peripherals.block.RecipeStorage;
 import anzac.peripherals.block.Redstone;
 import anzac.peripherals.block.TurtleTeleporter;
 import anzac.peripherals.block.Workbench;
+import anzac.peripherals.item.TieredItem;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Reference;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
@@ -41,12 +42,8 @@ public class ModBlocks {
 	public static final BaseBlock redstone = new Redstone();
 	public static final BaseBlock note = new Note();
 	public static final BaseBlock craftingrouter = new CraftingRouter();
-	public static final ChargingStation ironchargestation = new ChargingStation(1);
-	public static final ChargingStation goldchargestation = new ChargingStation(2);
-	public static final ChargingStation diamondchargestation = new ChargingStation(3);
-	public static final TurtleTeleporter ironturtleteleporter = new TurtleTeleporter(1);
-	public static final TurtleTeleporter goldturtleteleporter = new TurtleTeleporter(2);
-	public static final TurtleTeleporter diamondturtleteleporter = new TurtleTeleporter(3);
+	public static final ChargingStation chargestation = new ChargingStation();
+	public static final TurtleTeleporter turtleteleporter = new TurtleTeleporter();
 
 	public static void init() {
 		GameRegistry.registerBlock(workbench, Names.Blocks.workbench);
@@ -58,12 +55,8 @@ public class ModBlocks {
 		GameRegistry.registerBlock(redstone, Names.Blocks.redstone);
 		GameRegistry.registerBlock(note, Names.Blocks.note);
 		GameRegistry.registerBlock(craftingrouter, Names.Blocks.craftingrouter);
-		GameRegistry.registerBlock(ironchargestation, Names.Blocks.ironchargestation);
-		GameRegistry.registerBlock(goldchargestation, Names.Blocks.goldchargestation);
-		GameRegistry.registerBlock(diamondchargestation, Names.Blocks.diamondchargestation);
-		GameRegistry.registerBlock(ironturtleteleporter, Names.Blocks.ironturtleteleporter);
-		GameRegistry.registerBlock(goldturtleteleporter, Names.Blocks.goldturtleteleporter);
-		GameRegistry.registerBlock(diamondturtleteleporter, Names.Blocks.diamondturtleteleporter);
+		GameRegistry.registerBlock(chargestation, TieredItem.class, Names.Blocks.chargestation);
+		GameRegistry.registerBlock(turtleteleporter, TieredItem.class, Names.Blocks.turtleteleporter);
 
 		GameRegistry.registerTileEntity(NoteTileEntity.class, "anzac.peripherals.tile.NoteTileEntity");
 		GameRegistry.registerTileEntity(RedstoneTileEntity.class, "anzac.peripherals.tile.RedstoneTileEntity");
