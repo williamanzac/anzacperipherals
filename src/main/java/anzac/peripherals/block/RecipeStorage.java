@@ -2,10 +2,12 @@ package anzac.peripherals.block;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+import anzac.peripherals.annotations.BlockInfo;
 import anzac.peripherals.reference.Names;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@BlockInfo(name = Names.Blocks.recipestorage)
 public class RecipeStorage extends BaseBlock {
 	@SideOnly(Side.CLIENT)
 	private IIcon top;
@@ -13,10 +15,6 @@ public class RecipeStorage extends BaseBlock {
 	private IIcon front;
 	@SideOnly(Side.CLIENT)
 	private IIcon side;
-
-	public RecipeStorage() {
-		setBlockName(Names.Blocks.recipestorage);
-	}
 
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -12,6 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import anzac.peripherals.annotations.BlockInfo;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.tile.RedstoneTileEntity;
 import anzac.peripherals.utility.LogHelper;
@@ -19,11 +20,8 @@ import anzac.peripherals.utility.Position;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@BlockInfo(name = Names.Blocks.redstone)
 public class Redstone extends BaseBlock {
-
-	public Redstone() {
-		setBlockName(Names.Blocks.redstone);
-	}
 
 	@Override
 	@SideOnly(Side.CLIENT)

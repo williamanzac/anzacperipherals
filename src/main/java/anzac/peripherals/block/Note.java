@@ -4,16 +4,14 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import anzac.peripherals.annotations.BlockInfo;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.tile.NoteTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@BlockInfo(name = Names.Blocks.note)
 public class Note extends BaseBlock {
-
-	public Note() {
-		setBlockName(Names.Blocks.note);
-	}
 
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -2,17 +2,15 @@ package anzac.peripherals.block;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+import anzac.peripherals.annotations.BlockInfo;
 import anzac.peripherals.reference.Names;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@BlockInfo(name = Names.Blocks.fluidstorage)
 public class FluidStorage extends BaseBlock {
 	@SideOnly(Side.CLIENT)
 	private IIcon side;
-
-	public FluidStorage() {
-		setBlockName(Names.Blocks.fluidstorage);
-	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
