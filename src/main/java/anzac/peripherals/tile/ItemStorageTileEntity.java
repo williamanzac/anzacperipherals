@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import anzac.peripherals.annotations.Peripheral;
 import anzac.peripherals.annotations.PeripheralMethod;
 import anzac.peripherals.utility.InvUtils;
@@ -25,7 +26,7 @@ public class ItemStorageTileEntity extends BaseTileEntity implements ISidedInven
 	 */
 	@PeripheralMethod
 	public Map<Integer, ItemStack> contents() throws Exception {
-		return InvUtils.contents(this);
+		return InvUtils.contents(this, ForgeDirection.UNKNOWN);
 	}
 
 	@Override

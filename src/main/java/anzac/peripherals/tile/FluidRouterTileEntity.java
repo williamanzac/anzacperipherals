@@ -1,29 +1,35 @@
 package anzac.peripherals.tile;
 
-import static cpw.mods.fml.common.registry.GameRegistry.findUniqueIdentifierFor;
-
-import java.util.Map;
-
+import static net.minecraftforge.fluids.FluidContainerRegistry.fillFluidContainer;
+import static net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilledItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import anzac.peripherals.annotations.Event;
 import anzac.peripherals.annotations.Peripheral;
 import anzac.peripherals.annotations.PeripheralMethod;
 import anzac.peripherals.peripherals.PeripheralEvent;
-import anzac.peripherals.utility.InvUtils;
+import anzac.peripherals.utility.FluidUtils;
 import anzac.peripherals.utility.Position;
 
-@Peripheral(type = "itemrouter")
-public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInventory {
+@Peripheral(type = "fluidrouter")
+public class FluidRouterTileEntity extends BaseTileEntity implements ISidedInventory, IFluidHandler {
 
-	private SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
+	private static final String TANK_TAG = "tank";
+	private final SimpleInventory inv = new SimpleFluidInventory(1, "Fluid Router");
+	private final FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
 
-	public ItemRouterTileEntity() {
+	public FluidRouterTileEntity() {
 		inv.addListener(this);
 	}
 
@@ -38,7 +44,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public Map<Integer, ItemStack> contents() throws Exception {
+	public FluidTankInfo[] contents() throws Exception {
 		return contents(ForgeDirection.UNKNOWN);
 	}
 
@@ -52,7 +58,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public Map<Integer, ItemStack> contents(final ForgeDirection direction) throws Exception {
+	public FluidTankInfo[] contents(final ForgeDirection direction) throws Exception {
 		return contents(direction, direction.getOpposite());
 	}
 
@@ -68,7 +74,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public Map<Integer, ItemStack> contents(final ForgeDirection direction, final ForgeDirection dir) throws Exception {
+	public FluidTankInfo[] contents(final ForgeDirection direction, final ForgeDirection dir) throws Exception {
 		final TileEntity te;
 		if (direction == ForgeDirection.UNKNOWN) {
 			te = this;
@@ -76,12 +82,12 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 			final Position pos = new Position(xCoord, yCoord, zCoord, direction);
 			pos.moveForwards(1);
 			te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-			if (te == null || !(te instanceof IInventory)) {
-				throw new Exception("Inventory not found");
+			if (te == null || !(te instanceof IFluidHandler)) {
+				throw new Exception("fluid handler not found");
 			}
 		}
-		final IInventory handler = (IInventory) te;
-		return InvUtils.contents(handler, dir);
+		final IFluidHandler handler = (IFluidHandler) te;
+		return FluidUtils.contents(handler, dir);
 	}
 
 	/**
@@ -89,7 +95,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	 * 
 	 * @param fromDir
 	 *            which side of this block to extract from.
-	 * @param itemstack
+	 * @param fluidstack
 	 *            the uuid of the items to extract.
 	 * @param amount
 	 *            the number of items to extract.
@@ -97,8 +103,9 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public int extractFrom(final ForgeDirection fromDir, final ItemStack itemstack, final int amount) throws Exception {
-		return extractFrom(fromDir, itemstack, amount, fromDir.getOpposite());
+	public int extractFrom(final ForgeDirection fromDir, final FluidStack fluidstack, final int amount)
+			throws Exception {
+		return extractFrom(fromDir, fluidstack, amount, fromDir.getOpposite());
 	}
 
 	/**
@@ -107,7 +114,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	 * 
 	 * @param fromDir
 	 *            which side of this block to extract from.
-	 * @param itemstack
+	 * @param fluidstack
 	 *            the uuid of the items to extract.
 	 * @param amount
 	 *            the number of items to extract.
@@ -117,7 +124,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public int extractFrom(final ForgeDirection fromDir, final ItemStack itemstack, final int amount,
+	public int extractFrom(final ForgeDirection fromDir, final FluidStack fluidstack, final int amount,
 			final ForgeDirection extractSide) throws Exception {
 		if (getStackInSlot(0) != null) {
 			throw new Exception("Internal cache is not empty");
@@ -125,16 +132,14 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 		final Position pos = new Position(xCoord, yCoord, zCoord, fromDir);
 		pos.moveForwards(1);
 		final TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-		if (te == null || !(te instanceof IInventory)) {
+		if (te == null || !(te instanceof IFluidHandler)) {
 			throw new Exception("Inventory not found");
 		}
-		final IInventory inv = (IInventory) te;
-		final int[] slots = InvUtils.accessibleSlots(ForgeDirection.UNKNOWN, inv);
-		for (final int i : slots) {
-			final ItemStack stackInSlot = getInventory().getStackInSlot(i);
-			if (InvUtils.stacksMatch(stackInSlot, itemstack)) {
-				return InvUtils.addItem(this, stackInSlot, true, ForgeDirection.UNKNOWN);
-			}
+		final IFluidHandler inv = (IFluidHandler) te;
+		final FluidStack drain = inv.drain(extractSide, fluidstack, true);
+		if (drain != null && drain.amount > 0) {
+			final int fill = fill(fromDir.getOpposite(), drain, true);
+			return fill;
 		}
 		return 0;
 	}
@@ -169,22 +174,16 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	 */
 	@PeripheralMethod
 	public int routeTo(final ForgeDirection toDir, final ForgeDirection insertDir, final int amount) throws Exception {
-		final int[] slots = InvUtils.accessibleSlots(ForgeDirection.UNKNOWN, inv);
-		for (final int i : slots) {
-			final ItemStack stackInSlot = getStackInSlot(i);
-			if (stackInSlot != null) {
-				final ItemStack copy = stackInSlot.copy();
-				copy.stackSize = amount;
-				final int amount1 = copy.stackSize;
-				copy.stackSize -= InvUtils.routeTo(worldObj, xCoord, yCoord, zCoord, toDir, insertDir, copy);
-				final int toDec = amount1 - copy.stackSize;
-				if (toDec > 0) {
-					decrStackSize(i, toDec);
-				}
-				return amount - copy.stackSize;
-			}
+		final FluidStack drain = tank.drain(amount, true);
+		final Position pos = new Position(xCoord, yCoord, zCoord, toDir);
+		pos.moveForwards(1);
+		final TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+		if (te == null || !(te instanceof IFluidHandler)) {
+			throw new Exception("fluid handler not found");
 		}
-		return 0;
+		final IFluidHandler inv = (IFluidHandler) te;
+		final int fill = inv.fill(insertDir, drain, true);
+		return fill;
 	}
 
 	//
@@ -224,17 +223,17 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(final int side) {
-		return InvUtils.createSlotArray(getInventory());
+		return new int[0];
 	}
 
 	@Override
 	public boolean canInsertItem(final int slot, final ItemStack stack, final int side) {
-		return isItemValidForSlot(slot, stack);
+		return false;
 	}
 
 	@Override
 	public boolean canExtractItem(final int slot, final ItemStack stack, final int side) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -260,18 +259,15 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	@Override
 	public void setInventorySlotContents(final int slot, final ItemStack stack) {
 		getInventory().setInventorySlotContents(slot, stack);
-		if (stack != null) {
-			fireRouteEvent(findUniqueIdentifierFor(stack.getItem()).toString(), stack.stackSize);
-		}
 	}
 
 	/**
 	 * @param name
 	 * @param stackSize
 	 */
-	@Event(PeripheralEvent.item_route)
+	@Event(PeripheralEvent.fluid_route)
 	private void fireRouteEvent(final String name, final int stackSize) {
-		fireEvent(PeripheralEvent.item_route, name, stackSize);
+		fireEvent(PeripheralEvent.fluid_route, name, stackSize);
 	}
 
 	@Override
@@ -314,11 +310,103 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 		super.readFromNBT(tagCompound);
 
 		getInventory().readFromNBT(tagCompound);
+		if (tagCompound.hasKey(TANK_TAG)) {
+			tank.readFromNBT(tagCompound.getCompoundTag(TANK_TAG));
+		}
 	}
 
 	public void writeToNBT(final NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 
 		getInventory().writeToNBT(tagCompound);
+		final NBTTagCompound tankTag = new NBTTagCompound();
+		tank.writeToNBT(tankTag);
+		tagCompound.setTag(TANK_TAG, tankTag);
+	}
+
+	public int getFluidAmount() {
+		return tank.getFluidAmount();
+	}
+
+	public void setFluidAmount(final int amount) {
+		if (tank.getFluid() != null) {
+			tank.getFluid().amount = amount;
+		}
+	}
+
+	public int getFluid() {
+		return tank.getFluid() == null ? 0 : tank.getFluid().fluidID;
+	}
+
+	public void setFluid(final int fluidId) {
+		final Fluid fluid = FluidRegistry.getFluid(fluidId);
+		if (fluid != null) {
+			tank.setFluid(new FluidStack(fluid, getFluidAmount()));
+		}
+	}
+
+	public FluidTankInfo getInfo() {
+		return tank.getInfo();
+	}
+
+	@Override
+	public int fill(final ForgeDirection from, final FluidStack resource, final boolean doFill) {
+		final int fill = tank.fill(resource, doFill);
+		if (fill > 0) {
+			fireRouteEvent(resource.getLocalizedName(), fill);
+		}
+		return fill;
+	}
+
+	@Override
+	public FluidStack drain(final ForgeDirection from, final FluidStack resource, final boolean doDrain) {
+		// do not allow drain
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(final ForgeDirection from, final int maxDrain, final boolean doDrain) {
+		// do not allow drain
+		return null;
+	}
+
+	@Override
+	public boolean canFill(final ForgeDirection from, final Fluid fluid) {
+		final Fluid tankFluid = tank.getFluid() != null ? tank.getFluid().getFluid() : null;
+		return tankFluid == null || tankFluid == fluid;
+	}
+
+	@Override
+	public boolean canDrain(final ForgeDirection from, final Fluid fluid) {
+		// do not allow drain
+		return false;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(final ForgeDirection from) {
+		return new FluidTankInfo[] { tank.getInfo() };
+	}
+
+	@Override
+	public void updateEntity() {
+		super.updateEntity();
+
+		final ItemStack current = inv.getStackInSlot(0);
+		if (current != null && worldObj.getTotalWorldTime() % 10 == 0) {
+			final FluidStack available = tank.getFluid();
+
+			if (available != null) {
+				final ItemStack filled = fillFluidContainer(available, current);
+
+				final FluidStack liquid = getFluidForFilledItem(filled);
+
+				if (liquid != null) {
+					inv.setInventorySlotContents(0, null);
+					inv.setInventorySlotContents(0, filled);
+
+					tank.drain(liquid.amount, true);
+				}
+			}
+		}
 	}
 }

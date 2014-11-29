@@ -117,7 +117,7 @@ public class WorkbenchTileEntity extends BaseTileEntity implements ISidedInvento
 	 */
 	@PeripheralMethod
 	public Map<Integer, ItemStack> contents() throws Exception {
-		return InvUtils.contents(this);
+		return InvUtils.contents(this, ForgeDirection.UNKNOWN);
 	}
 
 	/**

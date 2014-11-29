@@ -5,12 +5,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import anzac.peripherals.client.gui.ChargeStationGUI;
 import anzac.peripherals.client.gui.CraftingRouterGUI;
+import anzac.peripherals.client.gui.FluidRouterGUI;
 import anzac.peripherals.client.gui.ItemRouterGUI;
 import anzac.peripherals.client.gui.ItemStorageGUI;
 import anzac.peripherals.client.gui.TurtleTeleporterGUI;
 import anzac.peripherals.client.gui.WorkbenchGUI;
 import anzac.peripherals.inventory.ChargeStationContainer;
 import anzac.peripherals.inventory.CraftingRouterContainer;
+import anzac.peripherals.inventory.FluidRouterContainer;
 import anzac.peripherals.inventory.ItemRouterContainer;
 import anzac.peripherals.inventory.ItemStorageContainer;
 import anzac.peripherals.inventory.TurtleTeleporterContainer;
@@ -18,6 +20,7 @@ import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
 import anzac.peripherals.tile.ChargeStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
+import anzac.peripherals.tile.FluidRouterTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
 import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.TurtleTeleporterTileEntity;
@@ -66,6 +69,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new TurtleTeleporterContainer(player.inventory, (TurtleTeleporterTileEntity) tile);
+		case GuiIds.FLUIDROUTER:
+			if (!(tile instanceof FluidRouterTileEntity)) {
+				return null;
+			}
+			return new FluidRouterContainer(player.inventory, (FluidRouterTileEntity) tile);
 		default:
 			return null;
 		}
@@ -111,6 +119,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new TurtleTeleporterGUI(player.inventory, (TurtleTeleporterTileEntity) tile);
+		case GuiIds.FLUIDROUTER:
+			if (!(tile instanceof FluidRouterTileEntity)) {
+				return null;
+			}
+			return new FluidRouterGUI(player.inventory, (FluidRouterTileEntity) tile);
 		default:
 			return null;
 		}

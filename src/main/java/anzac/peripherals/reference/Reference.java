@@ -22,5 +22,6 @@ public class Reference {
 		public static final int CRAFTINGROUTER = 4;
 		public static final int CHARGESTATION = 5;
 		public static final int TURTLETELEPORTER = 6;
+		public static final int FLUIDROUTER = 7;
 	}
 }

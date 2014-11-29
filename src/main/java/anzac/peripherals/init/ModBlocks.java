@@ -18,6 +18,7 @@ import anzac.peripherals.reference.Reference;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.DiamondChargeStationTileEntity;
 import anzac.peripherals.tile.DiamondTurtleTeleporterTileEntity;
+import anzac.peripherals.tile.FluidRouterTileEntity;
 import anzac.peripherals.tile.GoldChargeStationTileEntity;
 import anzac.peripherals.tile.GoldTurtleTeleporterTileEntity;
 import anzac.peripherals.tile.IronChargeStationTileEntity;
@@ -77,5 +78,6 @@ public class ModBlocks {
 				"anzac.peripherals.tile.GoldTurtleTeleporterTileEntity");
 		GameRegistry.registerTileEntity(DiamondTurtleTeleporterTileEntity.class,
 				"anzac.peripherals.tile.DiamondTurtleTeleporterTileEntity");
+		GameRegistry.registerTileEntity(FluidRouterTileEntity.class, "anzac.peripherals.tile.FluidRouterTileEntity");
 	}
 }

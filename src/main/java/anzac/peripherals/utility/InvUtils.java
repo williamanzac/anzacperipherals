@@ -33,12 +33,12 @@ public class InvUtils {
 		return createSlotArray(0, count);
 	}
 
-	public static Map<Integer, ItemStack> contents(final IInventory inventory) throws Exception {
+	public static Map<Integer, ItemStack> contents(final IInventory inventory, final ForgeDirection from)
+			throws Exception {
 		LogHelper.info("contents for " + inventory);
 		final Map<Integer, ItemStack> table = new HashMap<Integer, ItemStack>();
-		final int sizeInventory = inventory.getSizeInventory();
-		LogHelper.info("sizeInventory " + sizeInventory);
-		for (int slot = 0; slot < sizeInventory; slot++) {
+		final int[] accessibleSlots = accessibleSlots(from, inventory);
+		for (final int slot : accessibleSlots) {
 			final ItemStack stackInSlot = inventory.getStackInSlot(slot);
 			if (stackInSlot != null) {
 				table.put(slot, stackInSlot);
@@ -205,7 +205,7 @@ public class InvUtils {
 		throw new Exception("No inventory or pipe found.");
 	}
 
-	public static ItemStack consumeItem(ItemStack stack) {
+	public static ItemStack consumeItem(final ItemStack stack) {
 		if (stack.stackSize == 1) {
 			if (stack.getItem().hasContainerItem(stack)) {
 				return stack.getItem().getContainerItem(stack);
