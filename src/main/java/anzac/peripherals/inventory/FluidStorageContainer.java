@@ -4,18 +4,18 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import anzac.peripherals.tile.FluidRouterTileEntity;
+import anzac.peripherals.tile.FluidStorageTileEntity;
 
-public class FluidRouterContainer extends BaseContainer<FluidRouterTileEntity> {
+public class FluidStorageContainer extends BaseContainer<FluidStorageTileEntity> {
 
-	private int lastAmount;
-	private int lastId;
+	private final int[] lastAmount = new int[8];
+	private final int[] lastId = new int[8];
 
-	public FluidRouterContainer(final InventoryPlayer inventoryPlayer, final FluidRouterTileEntity te) {
+	public FluidStorageContainer(final InventoryPlayer inventoryPlayer, final FluidStorageTileEntity te) {
 		super(te);
 
 		// inventory
-		addSlotToContainer(new Slot(te, 0, 62, 53) {
+		addSlotToContainer(new Slot(te, 0, 152, 53) {
 			@Override
 			public boolean isItemValid(final ItemStack stack) {
 				return inventory.isItemValidForSlot(slotNumber, stack);
@@ -42,34 +42,40 @@ public class FluidRouterContainer extends BaseContainer<FluidRouterTileEntity> {
 	}
 
 	private void sendUpdate(final ICrafting par1iCrafting) {
-		final int amount = tileEntity.getFluidAmount();
-		final int id = tileEntity.getFluid();
-		par1iCrafting.sendProgressBarUpdate(this, 0, amount);
-		par1iCrafting.sendProgressBarUpdate(this, 1, id);
+		for (int i = 0; i < lastAmount.length; i++) {
+			final int amount = tileEntity.getFluidAmount(i);
+			final int id = tileEntity.getFluid(i);
+			par1iCrafting.sendProgressBarUpdate(this, i, amount);
+			par1iCrafting.sendProgressBarUpdate(this, i + lastAmount.length, id);
+		}
 	}
 
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		final int amount = tileEntity.getFluidAmount();
-		final int id = tileEntity.getFluid();
-		if (lastAmount != amount || lastId != id) {
+		boolean changed = false;
+		for (int i = 0; i < lastAmount.length; i++) {
+			final int amount = tileEntity.getFluidAmount(i);
+			final int id = tileEntity.getFluid(i);
+			if (lastAmount[i] != amount || lastId[i] != id) {
+				changed = true;
+			}
+			lastAmount[i] = amount;
+			lastId[i] = id;
+		}
+		if (changed) {
 			for (final Object crafting : crafters) {
 				sendUpdate((ICrafting) crafting);
 			}
 		}
-		lastAmount = amount;
-		lastId = id;
 	}
 
 	@Override
 	public void updateProgressBar(final int index, final int value) {
-		switch (index) {
-		case 0:
-			tileEntity.setFluidAmount(value);
-			break;
-		case 1:
-			tileEntity.setFluid(value);
+		if (index < lastAmount.length) {
+			tileEntity.setFluidAmount(index, value);
+		} else {
+			tileEntity.setFluid(index - lastAmount.length, value);
 		}
 	}
 }

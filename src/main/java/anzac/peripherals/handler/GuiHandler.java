@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import anzac.peripherals.client.gui.ChargeStationGUI;
 import anzac.peripherals.client.gui.CraftingRouterGUI;
 import anzac.peripherals.client.gui.FluidRouterGUI;
+import anzac.peripherals.client.gui.FluidStorageGUI;
 import anzac.peripherals.client.gui.ItemRouterGUI;
 import anzac.peripherals.client.gui.ItemStorageGUI;
 import anzac.peripherals.client.gui.TurtleTeleporterGUI;
@@ -13,6 +14,7 @@ import anzac.peripherals.client.gui.WorkbenchGUI;
 import anzac.peripherals.inventory.ChargeStationContainer;
 import anzac.peripherals.inventory.CraftingRouterContainer;
 import anzac.peripherals.inventory.FluidRouterContainer;
+import anzac.peripherals.inventory.FluidStorageContainer;
 import anzac.peripherals.inventory.ItemRouterContainer;
 import anzac.peripherals.inventory.ItemStorageContainer;
 import anzac.peripherals.inventory.TurtleTeleporterContainer;
@@ -21,6 +23,7 @@ import anzac.peripherals.reference.Reference.GuiIds;
 import anzac.peripherals.tile.ChargeStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.FluidRouterTileEntity;
+import anzac.peripherals.tile.FluidStorageTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
 import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.TurtleTeleporterTileEntity;
@@ -74,6 +77,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new FluidRouterContainer(player.inventory, (FluidRouterTileEntity) tile);
+		case GuiIds.FLUIDSTORAGE:
+			if (!(tile instanceof FluidStorageTileEntity)) {
+				return null;
+			}
+			return new FluidStorageContainer(player.inventory, (FluidStorageTileEntity) tile);
 		default:
 			return null;
 		}
@@ -124,6 +132,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new FluidRouterGUI(player.inventory, (FluidRouterTileEntity) tile);
+		case GuiIds.FLUIDSTORAGE:
+			if (!(tile instanceof FluidStorageTileEntity)) {
+				return null;
+			}
+			return new FluidStorageGUI(player.inventory, (FluidStorageTileEntity) tile);
 		default:
 			return null;
 		}

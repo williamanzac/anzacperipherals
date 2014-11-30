@@ -62,7 +62,7 @@ public class FluidRouterGUI extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int p_146979_1_, final int p_146979_2_) {
 		super.drawGuiContainerForegroundLayer(p_146979_1_, p_146979_2_);
-		final String title = StatCollector.translateToLocal(Names.getGUIKey(Blocks.chargestation));
+		final String title = StatCollector.translateToLocal(Names.getGUIKey(Blocks.fluidrouter));
 		fontRendererObj.drawString(title, 8, 6, 4210752);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 4210752);
 	}

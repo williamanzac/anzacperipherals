@@ -27,7 +27,7 @@ public class FluidRouterTileEntity extends BaseTileEntity implements ISidedInven
 
 	private static final String TANK_TAG = "tank";
 	private final SimpleInventory inv = new SimpleFluidInventory(1, "Fluid Router");
-	private final FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
+	private final FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 16);
 
 	public FluidRouterTileEntity() {
 		inv.addListener(this);
