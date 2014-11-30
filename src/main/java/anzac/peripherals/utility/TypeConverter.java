@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import anzac.peripherals.peripherals.CraftingRecipe;
 import anzac.peripherals.peripherals.Recipe;
 import anzac.peripherals.peripherals.Target;
@@ -15,6 +17,8 @@ import anzac.peripherals.tile.NoteTileEntity.Instrument;
 import anzac.peripherals.utility.converters.BooleanConverter;
 import anzac.peripherals.utility.converters.Converter;
 import anzac.peripherals.utility.converters.DirectionConverter;
+import anzac.peripherals.utility.converters.FluidStackConverter;
+import anzac.peripherals.utility.converters.FluidTankInfoConverter;
 import anzac.peripherals.utility.converters.InstrumentConverter;
 import anzac.peripherals.utility.converters.IntConverter;
 import anzac.peripherals.utility.converters.ItemStackConverter;
@@ -45,6 +49,8 @@ public class TypeConverter {
 		converters.put(CraftingRecipe.class, recipeConverter);
 		converters.put(ItemStack.class, new ItemStackConverter());
 		converters.put(Target.class, new TargetConverter());
+		converters.put(FluidStack.class, new FluidStackConverter());
+		converters.put(FluidTankInfo.class, new FluidTankInfoConverter());
 	}
 
 	public static Object[] convertArguments(final Object[] arguments, final Method method) throws Exception {
