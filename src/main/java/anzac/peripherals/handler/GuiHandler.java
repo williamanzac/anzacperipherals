@@ -9,6 +9,7 @@ import anzac.peripherals.client.gui.FluidRouterGUI;
 import anzac.peripherals.client.gui.FluidStorageGUI;
 import anzac.peripherals.client.gui.ItemRouterGUI;
 import anzac.peripherals.client.gui.ItemStorageGUI;
+import anzac.peripherals.client.gui.RecipeStorageGUI;
 import anzac.peripherals.client.gui.TurtleTeleporterGUI;
 import anzac.peripherals.client.gui.WorkbenchGUI;
 import anzac.peripherals.inventory.ChargeStationContainer;
@@ -17,6 +18,7 @@ import anzac.peripherals.inventory.FluidRouterContainer;
 import anzac.peripherals.inventory.FluidStorageContainer;
 import anzac.peripherals.inventory.ItemRouterContainer;
 import anzac.peripherals.inventory.ItemStorageContainer;
+import anzac.peripherals.inventory.RecipeStorageContainer;
 import anzac.peripherals.inventory.TurtleTeleporterContainer;
 import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
@@ -26,6 +28,7 @@ import anzac.peripherals.tile.FluidRouterTileEntity;
 import anzac.peripherals.tile.FluidStorageTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
 import anzac.peripherals.tile.ItemStorageTileEntity;
+import anzac.peripherals.tile.RecipeStorageTileEntity;
 import anzac.peripherals.tile.TurtleTeleporterTileEntity;
 import anzac.peripherals.tile.WorkbenchTileEntity;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -82,6 +85,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new FluidStorageContainer(player.inventory, (FluidStorageTileEntity) tile);
+		case GuiIds.RECIPESTORAGE:
+			if (!(tile instanceof RecipeStorageTileEntity)) {
+				return null;
+			}
+			return new RecipeStorageContainer(player.inventory, (RecipeStorageTileEntity) tile);
 		default:
 			return null;
 		}
@@ -137,6 +145,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new FluidStorageGUI(player.inventory, (FluidStorageTileEntity) tile);
+		case GuiIds.RECIPESTORAGE:
+			if (!(tile instanceof RecipeStorageTileEntity)) {
+				return null;
+			}
+			return new RecipeStorageGUI(player.inventory, (RecipeStorageTileEntity) tile);
 		default:
 			return null;
 		}

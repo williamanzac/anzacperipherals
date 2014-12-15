@@ -27,6 +27,7 @@ import anzac.peripherals.tile.IronTurtleTeleporterTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
 import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.NoteTileEntity;
+import anzac.peripherals.tile.RecipeStorageTileEntity;
 import anzac.peripherals.tile.RedstoneTileEntity;
 import anzac.peripherals.tile.WorkbenchTileEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -81,5 +82,7 @@ public class ModBlocks {
 				"anzac.peripherals.tile.DiamondTurtleTeleporterTileEntity");
 		GameRegistry.registerTileEntity(FluidRouterTileEntity.class, "anzac.peripherals.tile.FluidRouterTileEntity");
 		GameRegistry.registerTileEntity(FluidStorageTileEntity.class, "anzac.peripherals.tile.FluidStorageTileEntity");
+		GameRegistry
+				.registerTileEntity(RecipeStorageTileEntity.class, "anzac.peripherals.tile.RecipeStorageTileEntity");
 	}
 }
