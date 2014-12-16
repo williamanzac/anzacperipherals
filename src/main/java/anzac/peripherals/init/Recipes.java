@@ -82,6 +82,10 @@ public class Recipes {
 				enderPearl, 'p', ironturtleteleporter));
 		GameRegistry.addRecipe(new ShapedOreRecipe(diamondturtleteleporter, "iri", "rpr", "iri", 'i', diamond, 'r',
 				enderPearl, 'p', goldturtleteleporter));
+		final Block peripheral = GameRegistry.findBlock("ComputerCraft", "CC-Peripheral");
+		final Block cable = GameRegistry.findBlock("ComputerCraft", "CC-Cable");
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ModBlocks.remoteproxy, ModItems.basicframe, new ItemStack(
+				peripheral, 1, 1), new ItemStack(cable, 1, 1)));
 	}
 
 	private static Object getOreDict(final Block block) {

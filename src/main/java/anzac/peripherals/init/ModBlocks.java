@@ -10,6 +10,7 @@ import anzac.peripherals.block.ItemStorage;
 import anzac.peripherals.block.Note;
 import anzac.peripherals.block.RecipeStorage;
 import anzac.peripherals.block.Redstone;
+import anzac.peripherals.block.RemoteProxy;
 import anzac.peripherals.block.TurtleTeleporter;
 import anzac.peripherals.block.Workbench;
 import anzac.peripherals.item.TieredItem;
@@ -29,6 +30,7 @@ import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.NoteTileEntity;
 import anzac.peripherals.tile.RecipeStorageTileEntity;
 import anzac.peripherals.tile.RedstoneTileEntity;
+import anzac.peripherals.tile.RemoteProxyTileEntity;
 import anzac.peripherals.tile.WorkbenchTileEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.ObjectHolder;
@@ -47,6 +49,7 @@ public class ModBlocks {
 	public static final BaseBlock craftingrouter = new CraftingRouter();
 	public static final ChargingStation chargestation = new ChargingStation();
 	public static final TurtleTeleporter turtleteleporter = new TurtleTeleporter();
+	public static final RemoteProxy remoteproxy = new RemoteProxy();
 
 	public static void init() {
 		GameRegistry.registerBlock(workbench, Names.Blocks.workbench);
@@ -60,6 +63,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(craftingrouter, Names.Blocks.craftingrouter);
 		GameRegistry.registerBlock(chargestation, TieredItem.class, Names.Blocks.chargestation);
 		GameRegistry.registerBlock(turtleteleporter, TieredItem.class, Names.Blocks.turtleteleporter);
+		GameRegistry.registerBlock(remoteproxy, Names.Blocks.remoteproxy);
 
 		GameRegistry.registerTileEntity(NoteTileEntity.class, "anzac.peripherals.tile.NoteTileEntity");
 		GameRegistry.registerTileEntity(RedstoneTileEntity.class, "anzac.peripherals.tile.RedstoneTileEntity");
@@ -84,5 +88,6 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(FluidStorageTileEntity.class, "anzac.peripherals.tile.FluidStorageTileEntity");
 		GameRegistry
 				.registerTileEntity(RecipeStorageTileEntity.class, "anzac.peripherals.tile.RecipeStorageTileEntity");
+		GameRegistry.registerTileEntity(RemoteProxyTileEntity.class, "anzac.peripherals.tile.RemoteProxyTileEntity");
 	}
 }

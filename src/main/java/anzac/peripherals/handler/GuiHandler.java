@@ -10,6 +10,7 @@ import anzac.peripherals.client.gui.FluidStorageGUI;
 import anzac.peripherals.client.gui.ItemRouterGUI;
 import anzac.peripherals.client.gui.ItemStorageGUI;
 import anzac.peripherals.client.gui.RecipeStorageGUI;
+import anzac.peripherals.client.gui.RemoteProxyGUI;
 import anzac.peripherals.client.gui.TurtleTeleporterGUI;
 import anzac.peripherals.client.gui.WorkbenchGUI;
 import anzac.peripherals.inventory.ChargeStationContainer;
@@ -19,6 +20,7 @@ import anzac.peripherals.inventory.FluidStorageContainer;
 import anzac.peripherals.inventory.ItemRouterContainer;
 import anzac.peripherals.inventory.ItemStorageContainer;
 import anzac.peripherals.inventory.RecipeStorageContainer;
+import anzac.peripherals.inventory.RemoteProxyContainer;
 import anzac.peripherals.inventory.TurtleTeleporterContainer;
 import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
@@ -29,6 +31,7 @@ import anzac.peripherals.tile.FluidStorageTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
 import anzac.peripherals.tile.ItemStorageTileEntity;
 import anzac.peripherals.tile.RecipeStorageTileEntity;
+import anzac.peripherals.tile.RemoteProxyTileEntity;
 import anzac.peripherals.tile.TurtleTeleporterTileEntity;
 import anzac.peripherals.tile.WorkbenchTileEntity;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -90,6 +93,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new RecipeStorageContainer(player.inventory, (RecipeStorageTileEntity) tile);
+		case GuiIds.REMOTEPROXY:
+			if (!(tile instanceof RemoteProxyTileEntity)) {
+				return null;
+			}
+			return new RemoteProxyContainer(player.inventory, (RemoteProxyTileEntity) tile);
 		default:
 			return null;
 		}
@@ -150,6 +158,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new RecipeStorageGUI(player.inventory, (RecipeStorageTileEntity) tile);
+		case GuiIds.REMOTEPROXY:
+			if (!(tile instanceof RemoteProxyTileEntity)) {
+				return null;
+			}
+			return new RemoteProxyGUI(player.inventory, (RemoteProxyTileEntity) tile);
 		default:
 			return null;
 		}
