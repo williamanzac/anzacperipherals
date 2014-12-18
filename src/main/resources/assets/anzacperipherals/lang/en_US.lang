@@ -29,5 +29,8 @@ tile.anzacperipherals:turtleteleporter.2.name=Gold Turtle Teleporter
 tile.anzacperipherals:turtleteleporter.3.name=Diamond Turtle Teleporter
 tile.anzacperipherals:remoteproxy.name=Remote Peripheral Proxy
 
+# Upgrades
+upgrade.furnace.adjective=Smelting
+
 # Creative Tabs
 itemGroup.anzacperipherals=ANZAC Peripherals

@@ -44,6 +44,10 @@ public class Names {
 		return "tile." + Reference.MOD_ID.toLowerCase() + ":" + unwrapUnlocalizedName(unlocalizedName);
 	}
 
+	public static String getUpgradeKey(final String unlocalizedName) {
+		return "upgrade." + unwrapUnlocalizedName(unlocalizedName) + ".adjective";
+	}
+
 	public static String unwrapUnlocalizedName(final String unlocalizedName) {
 		return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
 	}
