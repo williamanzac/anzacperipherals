@@ -1,5 +1,6 @@
 package anzac.peripherals;
 
+import net.minecraftforge.common.MinecraftForge;
 import anzac.peripherals.client.handler.KeyInputEventHandler;
 import anzac.peripherals.handler.ConfigurationHandler;
 import anzac.peripherals.handler.GuiHandler;
@@ -9,6 +10,7 @@ import anzac.peripherals.init.ModBlocks;
 import anzac.peripherals.init.ModItems;
 import anzac.peripherals.init.Recipes;
 import anzac.peripherals.init.TurtleUpgrades;
+import anzac.peripherals.proxy.CommonProxy;
 import anzac.peripherals.proxy.IProxy;
 import anzac.peripherals.reference.Reference;
 import anzac.peripherals.utility.LogHelper;
@@ -47,6 +49,7 @@ public class Peripherals {
 		AnzacPeripheralProvider.init();
 		AnzacRedstoneProvider.init();
 		TurtleUpgrades.init();
+		MinecraftForge.EVENT_BUS.register(new CommonProxy.ForgeHandlers());
 		LogHelper.info("Initialization Complete!");
 	}
 

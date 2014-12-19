@@ -36,17 +36,14 @@ public class FurnaceUpgradePeripheral extends BasePeripheral {
 	@PeripheralMethod
 	public void smelt(final int amount) throws Exception {
 		final int selectedSlot = turtle.getSelectedSlot();
-		final ItemStack stackInSlot = turtle.getInventory().getStackInSlot(selectedSlot);
-		if (stackInSlot == null || stackInSlot.stackSize <= 0) {
-			throw new Exception("Selected slot is empty");
-		}
-		final ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(stackInSlot);
-		if (itemstack == null) {
-			throw new Exception("No Smelting recipe found");
-		}
 		for (int i = 0; i < amount; i++) {
+			final ItemStack stackInSlot = turtle.getInventory().getStackInSlot(selectedSlot);
 			if (stackInSlot == null || stackInSlot.stackSize <= 0) {
 				throw new Exception("Selected slot is empty");
+			}
+			final ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(stackInSlot);
+			if (itemstack == null) {
+				throw new Exception("No Smelting recipe found");
 			}
 			if (!turtle.consumeFuel(FUEL_TO_CONSUME)) {
 				throw new Exception("Not enough fuel");

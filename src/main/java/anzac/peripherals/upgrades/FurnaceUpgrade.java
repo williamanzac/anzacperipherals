@@ -3,7 +3,10 @@ package anzac.peripherals.upgrades;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import anzac.peripherals.annotations.UpgradeInfo;
 import anzac.peripherals.peripherals.FurnaceUpgradePeripheral;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.turtle.ITurtleAccess;
 import dan200.computercraft.api.turtle.TurtleSide;
@@ -15,6 +18,7 @@ import dan200.computercraft.api.turtle.TurtleSide;
  * 
  * @author Tony
  */
+@UpgradeInfo(name = "furnace")
 public class FurnaceUpgrade extends PeripheralUpgrade {
 
 	public FurnaceUpgrade(final int upgradeId) {
@@ -27,6 +31,7 @@ public class FurnaceUpgrade extends PeripheralUpgrade {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerIcons(final IIconRegister par1IconRegister) {
 		icon = par1IconRegister.registerIcon("anzacperipherals:furnace_upgrade");
 	}

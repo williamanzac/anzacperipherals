@@ -3,48 +3,26 @@ package anzac.peripherals.upgrades;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import anzac.peripherals.reference.Names;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dan200.computercraft.api.turtle.ITurtleAccess;
-import dan200.computercraft.api.turtle.ITurtleUpgrade;
 import dan200.computercraft.api.turtle.TurtleCommandResult;
 import dan200.computercraft.api.turtle.TurtleSide;
 import dan200.computercraft.api.turtle.TurtleUpgradeType;
 import dan200.computercraft.api.turtle.TurtleVerb;
 
-public abstract class PeripheralUpgrade implements ITurtleUpgrade {
-
-	private final ItemStack itemStack;
-	private final int upgradeId;
+public abstract class PeripheralUpgrade extends BaseUpgrade {
 
 	@SideOnly(Side.CLIENT)
 	protected IIcon icon;
 
 	public PeripheralUpgrade(final ItemStack itemStack, final int upgradeId) {
-		super();
-		this.itemStack = itemStack;
-		this.upgradeId = upgradeId;
-	}
-
-	@Override
-	public int getUpgradeID() {
-		return upgradeId;
-	}
-
-	@Override
-	public String getUnlocalisedAdjective() {
-		return Names.getUpgradeKey(itemStack.getUnlocalizedName());
+		super(itemStack, upgradeId);
 	}
 
 	@Override
 	public TurtleUpgradeType getType() {
 		return TurtleUpgradeType.Peripheral;
-	}
-
-	@Override
-	public ItemStack getCraftingItem() {
-		return itemStack.copy();
 	}
 
 	@Override
