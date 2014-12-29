@@ -34,6 +34,7 @@ public class Names {
 		public static final String goldturtleteleporter = "goldturtleteleporter";
 		public static final String diamondturtleteleporter = "diamondturtleteleporter";
 		public static final String remoteproxy = "remoteproxy";
+		public static final String brewingstation = "brewingstation";
 	}
 
 	public static String getItemKey(final String unlocalizedName) {

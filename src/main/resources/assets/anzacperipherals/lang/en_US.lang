@@ -28,6 +28,7 @@ tile.anzacperipherals:turtleteleporter.1.name=Iron Turtle Teleporter
 tile.anzacperipherals:turtleteleporter.2.name=Gold Turtle Teleporter
 tile.anzacperipherals:turtleteleporter.3.name=Diamond Turtle Teleporter
 tile.anzacperipherals:remoteproxy.name=Remote Peripheral Proxy
+tile.anzacperipherals:brewingstation.name=Brewing Station
 
 # Upgrades
 upgrade.furnace.adjective=Smelting

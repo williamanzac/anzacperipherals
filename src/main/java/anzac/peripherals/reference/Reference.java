@@ -26,5 +26,6 @@ public class Reference {
 		public static final int FLUIDSTORAGE = 8;
 		public static final int RECIPESTORAGE = 9;
 		public static final int REMOTEPROXY = 10;
+		public static final int BREWINGSTATION = 11;
 	}
 }

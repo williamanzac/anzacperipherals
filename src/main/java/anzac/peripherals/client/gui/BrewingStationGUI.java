@@ -10,21 +10,21 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.lwjgl.opengl.GL11;
 
-import anzac.peripherals.inventory.FluidRouterContainer;
+import anzac.peripherals.inventory.BrewingStationContainer;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Names.Blocks;
 import anzac.peripherals.reference.Reference;
-import anzac.peripherals.tile.FluidRouterTileEntity;
+import anzac.peripherals.tile.BrewingTileEntity;
 
-public class FluidRouterGUI extends GuiContainer {
+public class BrewingStationGUI extends GuiContainer {
 
 	public static final ResourceLocation gui = new ResourceLocation(Reference.MOD_ID.toLowerCase(),
-			"textures/gui/fluidrouter.png");
-	private final FluidRouterTileEntity entity;
+			"textures/gui/brewingstation.png");
+	private final BrewingTileEntity entity;
 
-	public FluidRouterGUI(final InventoryPlayer inventoryPlayer, final FluidRouterTileEntity tileEntity) {
-		super(new FluidRouterContainer(inventoryPlayer, tileEntity));
-		ySize = 166;
+	public BrewingStationGUI(final InventoryPlayer inventoryPlayer, final BrewingTileEntity tileEntity) {
+		super(new BrewingStationContainer(inventoryPlayer, tileEntity));
+		ySize = 201;
 		this.entity = tileEntity;
 	}
 
@@ -50,10 +50,10 @@ public class FluidRouterGUI extends GuiContainer {
 			if (stillIcon != null) {
 				for (int row = 0; row <= 47 / 16; row++) {
 					// AnzacPeripheralsCore.logger.info("col: " + col + ", row: " + row);
-					drawTexturedModelRectFromIcon(x + 8, 63 + y + row * 16, stillIcon, 16, 16);
+					drawTexturedModelRectFromIcon(x + 8, 16 + y + row * 16, stillIcon, 16, 16);
 				}
 				this.mc.renderEngine.bindTexture(gui);
-				drawTexturedModalRect(x + 8, y + 63, 8, 63, 16, 47 - (int) Math.floor(47 * scale) + 1);
+				drawTexturedModalRect(x + 8, y + 16, 8, 16, 16, 47 - (int) Math.floor(47 * scale) + 1);
 				// drawTexturedModalRect(x + 8, y + 29, 177, 1, 16, 47);
 			}
 		}
@@ -62,13 +62,13 @@ public class FluidRouterGUI extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int p_146979_1_, final int p_146979_2_) {
 		super.drawGuiContainerForegroundLayer(p_146979_1_, p_146979_2_);
-		final String title = StatCollector.translateToLocal(Names.getGUIKey(Blocks.fluidrouter));
+		final String title = StatCollector.translateToLocal(Names.getGUIKey(Blocks.brewingstation));
 		fontRendererObj.drawString(title, 8, 6, 4210752);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 4210752);
 	}
 
 	@Override
-	public void drawScreen(final int i, final int j, final float f) {
+	public void drawScreen(int i, int j, float f) {
 		super.drawScreen(i, j, f);
 
 		final FluidTankInfo info = entity.getInfo();
@@ -77,7 +77,7 @@ public class FluidRouterGUI extends GuiContainer {
 		final int capacity = info.capacity;
 		final int amount = info.fluid != null ? info.fluid.amount : 0;
 		// AnzacPeripheralsCore.logger.info("amount: " + amount + ", capacity: " + capacity + ", ratio: " + energy);
-		if (func_146978_c(8, 64, 16, 47, i, j)) {
+		if (func_146978_c(8, 17, 16, 47, i, j)) {
 			drawCreativeTabHoveringText("Stored: " + amount + " / " + capacity, i, j);
 		}
 	}

@@ -3,29 +3,57 @@ package anzac.peripherals.inventory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import anzac.peripherals.tile.FluidRouterTileEntity;
+import net.minecraft.item.ItemStack;
+import anzac.peripherals.tile.BrewingTileEntity;
 
-public class FluidRouterContainer extends BaseContainer<FluidRouterTileEntity> {
+public class BrewingStationContainer extends BaseContainer<BrewingTileEntity> {
 
 	private int lastAmount;
 	private int lastId;
 
-	public FluidRouterContainer(final InventoryPlayer inventoryPlayer, final FluidRouterTileEntity te) {
+	public BrewingStationContainer(final InventoryPlayer inventoryPlayer, final BrewingTileEntity te) {
 		super(te);
 
-		// inventory
-		addSlotToContainer(new ValidatingSlot(te, 0, 62, 53));
+		// empty bottles
+		addSlotToContainer(new Slot(te, 0, 8, 89));
 
 		int row;
 		int col;
+
+		// potion input
+		for (row = 0; row < 3; ++row) {
+			addSlotToContainer(new ValidatingSlot(te, 1 + row, 44, 53 + row * 18));
+		}
+
+		// input
+		for (row = 0; row < 3; ++row) {
+			for (col = 0; col < 3; ++col) {
+				addSlotToContainer(new Slot(te, 4 + col + row * 3, 80 + col * 18, 53 + row * 18));
+			}
+		}
+		// potion output
+		for (row = 0; row < 3; ++row) {
+			addSlotToContainer(new SlotOutput(te, 13 + row, 152, 53 + row * 18));
+		}
+
+		// ingredients
+		for (col = 0; col < 6; ++col) {
+			addSlotToContainer(new SlotPhantom(te.ingredients, col, 44 + col * 18, 17) {
+				@Override
+				public boolean isItemValid(final ItemStack stack) {
+					return stack.getItem().isPotionIngredient(stack);
+				}
+			});
+		}
+
 		// player inventory
 		for (row = 0; row < 3; ++row) {
 			for (col = 0; col < 9; ++col) {
-				addSlotToContainer(new Slot(inventoryPlayer, 9 + col + row * 9, 8 + col * 18, 84 + row * 18));
+				addSlotToContainer(new Slot(inventoryPlayer, 9 + col + row * 9, 8 + col * 18, 120 + row * 18));
 			}
 		}
 		for (row = 0; row < 9; ++row) {
-			addSlotToContainer(new Slot(inventoryPlayer, row, 8 + row * 18, 142));
+			addSlotToContainer(new Slot(inventoryPlayer, row, 8 + row * 18, 178));
 		}
 	}
 
@@ -64,6 +92,7 @@ public class FluidRouterContainer extends BaseContainer<FluidRouterTileEntity> {
 			break;
 		case 1:
 			tileEntity.setFluid(value);
+			break;
 		}
 	}
 }

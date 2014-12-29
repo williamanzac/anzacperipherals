@@ -2,7 +2,6 @@ package anzac.peripherals.inventory;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import anzac.peripherals.tile.TurtleTeleporterTileEntity;
 
 public class TurtleTeleporterContainer extends BaseContainer<TurtleTeleporterTileEntity> {
@@ -16,12 +15,7 @@ public class TurtleTeleporterContainer extends BaseContainer<TurtleTeleporterTil
 		// inventory
 		for (col = 0; col < 4; ++col) {
 			if (col < te.getSizeInventory()) {
-				addSlotToContainer(new Slot(te, col, 53 + col * 18, 35) {
-					@Override
-					public boolean isItemValid(final ItemStack stack) {
-						return inventory.isItemValidForSlot(getSlotIndex(), stack);
-					}
-				});
+				addSlotToContainer(new ValidatingSlot(te, col, 53 + col * 18, 35));
 			}
 		}
 

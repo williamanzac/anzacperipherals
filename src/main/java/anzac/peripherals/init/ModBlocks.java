@@ -1,6 +1,7 @@
 package anzac.peripherals.init;
 
 import anzac.peripherals.block.BaseBlock;
+import anzac.peripherals.block.BrewingStation;
 import anzac.peripherals.block.ChargingStation;
 import anzac.peripherals.block.CraftingRouter;
 import anzac.peripherals.block.FluidRouter;
@@ -16,6 +17,7 @@ import anzac.peripherals.block.Workbench;
 import anzac.peripherals.item.TieredItem;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Reference;
+import anzac.peripherals.tile.BrewingTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.DiamondChargeStationTileEntity;
 import anzac.peripherals.tile.DiamondTurtleTeleporterTileEntity;
@@ -50,6 +52,7 @@ public class ModBlocks {
 	public static final ChargingStation chargestation = new ChargingStation();
 	public static final TurtleTeleporter turtleteleporter = new TurtleTeleporter();
 	public static final RemoteProxy remoteproxy = new RemoteProxy();
+	public static final BrewingStation brewingstation = new BrewingStation();
 
 	public static void init() {
 		GameRegistry.registerBlock(workbench, Names.Blocks.workbench);
@@ -64,6 +67,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(chargestation, TieredItem.class, Names.Blocks.chargestation);
 		GameRegistry.registerBlock(turtleteleporter, TieredItem.class, Names.Blocks.turtleteleporter);
 		GameRegistry.registerBlock(remoteproxy, Names.Blocks.remoteproxy);
+		GameRegistry.registerBlock(brewingstation, Names.Blocks.brewingstation);
 
 		GameRegistry.registerTileEntity(NoteTileEntity.class, "anzac.peripherals.tile.NoteTileEntity");
 		GameRegistry.registerTileEntity(RedstoneTileEntity.class, "anzac.peripherals.tile.RedstoneTileEntity");
@@ -89,5 +93,6 @@ public class ModBlocks {
 		GameRegistry
 				.registerTileEntity(RecipeStorageTileEntity.class, "anzac.peripherals.tile.RecipeStorageTileEntity");
 		GameRegistry.registerTileEntity(RemoteProxyTileEntity.class, "anzac.peripherals.tile.RemoteProxyTileEntity");
+		GameRegistry.registerTileEntity(BrewingTileEntity.class, "anzac.peripherals.tile.BrewingTileEntity");
 	}
 }

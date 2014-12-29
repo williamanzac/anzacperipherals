@@ -3,6 +3,7 @@ package anzac.peripherals.handler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import anzac.peripherals.client.gui.BrewingStationGUI;
 import anzac.peripherals.client.gui.ChargeStationGUI;
 import anzac.peripherals.client.gui.CraftingRouterGUI;
 import anzac.peripherals.client.gui.FluidRouterGUI;
@@ -13,6 +14,7 @@ import anzac.peripherals.client.gui.RecipeStorageGUI;
 import anzac.peripherals.client.gui.RemoteProxyGUI;
 import anzac.peripherals.client.gui.TurtleTeleporterGUI;
 import anzac.peripherals.client.gui.WorkbenchGUI;
+import anzac.peripherals.inventory.BrewingStationContainer;
 import anzac.peripherals.inventory.ChargeStationContainer;
 import anzac.peripherals.inventory.CraftingRouterContainer;
 import anzac.peripherals.inventory.FluidRouterContainer;
@@ -24,6 +26,7 @@ import anzac.peripherals.inventory.RemoteProxyContainer;
 import anzac.peripherals.inventory.TurtleTeleporterContainer;
 import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
+import anzac.peripherals.tile.BrewingTileEntity;
 import anzac.peripherals.tile.ChargeStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.FluidRouterTileEntity;
@@ -98,6 +101,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new RemoteProxyContainer(player.inventory, (RemoteProxyTileEntity) tile);
+		case GuiIds.BREWINGSTATION:
+			if (!(tile instanceof BrewingTileEntity)) {
+				return null;
+			}
+			return new BrewingStationContainer(player.inventory, (BrewingTileEntity) tile);
 		default:
 			return null;
 		}
@@ -163,6 +171,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new RemoteProxyGUI(player.inventory, (RemoteProxyTileEntity) tile);
+		case GuiIds.BREWINGSTATION:
+			if (!(tile instanceof BrewingTileEntity)) {
+				return null;
+			}
+			return new BrewingStationGUI(player.inventory, (BrewingTileEntity) tile);
 		default:
 			return null;
 		}

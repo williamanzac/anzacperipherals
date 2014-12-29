@@ -3,7 +3,6 @@ package anzac.peripherals.inventory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import anzac.peripherals.tile.FluidStorageTileEntity;
 
 public class FluidStorageContainer extends BaseContainer<FluidStorageTileEntity> {
@@ -15,12 +14,7 @@ public class FluidStorageContainer extends BaseContainer<FluidStorageTileEntity>
 		super(te);
 
 		// inventory
-		addSlotToContainer(new Slot(te, 0, 152, 53) {
-			@Override
-			public boolean isItemValid(final ItemStack stack) {
-				return inventory.isItemValidForSlot(slotNumber, stack);
-			}
-		});
+		addSlotToContainer(new ValidatingSlot(te, 0, 152, 53));
 
 		int row;
 		int col;

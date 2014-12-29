@@ -86,6 +86,9 @@ public class Recipes {
 		final Block cable = GameRegistry.findBlock("ComputerCraft", "CC-Cable");
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ModBlocks.remoteproxy, ModItems.basicframe, new ItemStack(
 				peripheral, 1, 1), new ItemStack(cable, 1, 1)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.brewingstation, "ici", "bBb", "ifi", 'i', ironIngot, 'c',
+				ModItems.itemstorageunit, 'b', Blocks.brewing_stand, 'B', ModItems.basicframe, 'f',
+				ModItems.fluidstorageunit));
 	}
 
 	private static Object getOreDict(final Block block) {

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -23,6 +24,7 @@ import anzac.peripherals.utility.converters.InstrumentConverter;
 import anzac.peripherals.utility.converters.IntConverter;
 import anzac.peripherals.utility.converters.ItemStackConverter;
 import anzac.peripherals.utility.converters.LongConverter;
+import anzac.peripherals.utility.converters.PotionEffectConverter;
 import anzac.peripherals.utility.converters.RecipeConverter;
 import anzac.peripherals.utility.converters.StringConverter;
 import anzac.peripherals.utility.converters.TargetConverter;
@@ -51,6 +53,7 @@ public class TypeConverter {
 		converters.put(Target.class, new TargetConverter());
 		converters.put(FluidStack.class, new FluidStackConverter());
 		converters.put(FluidTankInfo.class, new FluidTankInfoConverter());
+		converters.put(PotionEffect.class, new PotionEffectConverter());
 	}
 
 	public static Object[] convertArguments(final Object[] arguments, final Method method) throws Exception {
