@@ -142,7 +142,7 @@ public class BrewingTileEntity extends BaseTileEntity implements ISidedInventory
 					continue;
 				}
 				final ItemStack copy = invStack.copy();
-				final boolean itemEqual = InvUtils.stacksMatch(copy, stackInSlot);
+				final boolean itemEqual = InvUtils.itemMatched(copy, stackInSlot, true, true, true);
 				if (itemEqual) {
 					foundMatch = true;
 					break;
@@ -200,7 +200,7 @@ public class BrewingTileEntity extends BaseTileEntity implements ISidedInventory
 						continue;
 					}
 					final ItemStack copy = invStack.copy();
-					final boolean itemEqual = InvUtils.stacksMatch(copy, stackInSlot);
+					final boolean itemEqual = InvUtils.itemMatched(copy, stackInSlot, true, true, true);
 					if (itemEqual) {
 						input.decrStackSize(j, 1);
 						break;

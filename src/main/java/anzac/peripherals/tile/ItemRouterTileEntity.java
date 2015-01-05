@@ -6,7 +6,6 @@ import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +18,7 @@ import anzac.peripherals.utility.InvUtils;
 import anzac.peripherals.utility.Position;
 
 @Peripheral(type = "itemrouter")
-public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInventory {
+public class ItemRouterTileEntity extends BaseTileEntity implements IInventory {
 
 	private SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
 
@@ -132,7 +131,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 		final int[] slots = InvUtils.accessibleSlots(ForgeDirection.UNKNOWN, inv);
 		for (final int i : slots) {
 			final ItemStack stackInSlot = getInventory().getStackInSlot(i);
-			if (InvUtils.stacksMatch(stackInSlot, itemstack)) {
+			if (InvUtils.itemMatched(stackInSlot, itemstack, true, true, false)) {
 				return InvUtils.addItem(this, stackInSlot, true, ForgeDirection.UNKNOWN);
 			}
 		}
@@ -221,21 +220,6 @@ public class ItemRouterTileEntity extends BaseTileEntity implements ISidedInvent
 	// public int requestFrom(final String label, final int uuid, final int amount) throws Exception {
 	// return getEntity().requestFrom(label, uuid, amount);
 	// }
-
-	@Override
-	public int[] getAccessibleSlotsFromSide(final int side) {
-		return InvUtils.createSlotArray(getInventory());
-	}
-
-	@Override
-	public boolean canInsertItem(final int slot, final ItemStack stack, final int side) {
-		return isItemValidForSlot(slot, stack);
-	}
-
-	@Override
-	public boolean canExtractItem(final int slot, final ItemStack stack, final int side) {
-		return true;
-	}
 
 	@Override
 	public int getSizeInventory() {

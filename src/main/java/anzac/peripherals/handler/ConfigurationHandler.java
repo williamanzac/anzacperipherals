@@ -11,7 +11,7 @@ import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ConfigurationHandler {
-	private static final int DEFAULT_STORAGE_SIZE = 1024000;
+	private static final int DEFAULT_STORAGE_SIZE = 1048576;
 	private static final int DEFAULT_MJ_MULTIPLIER = 20;
 	private static final int DEFAULT_RF_MULTIPLIER = DEFAULT_MJ_MULTIPLIER * 10;
 	private static final boolean DEFAULT_MODIFY = true;

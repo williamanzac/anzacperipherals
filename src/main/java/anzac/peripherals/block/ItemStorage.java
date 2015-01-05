@@ -6,12 +6,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import anzac.peripherals.annotations.BlockInfo;
 import anzac.peripherals.reference.Names;
-import anzac.peripherals.reference.Reference.GuiIds;
 import anzac.peripherals.tile.ItemStorageTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@BlockInfo(name = Names.Blocks.itemstorage, guiId = GuiIds.ITEMSTORAGE)
+@BlockInfo(name = Names.Blocks.itemstorage/* , guiId = GuiIds.ITEMSTORAGE */)
 public class ItemStorage extends BaseBlock {
 	@SideOnly(Side.CLIENT)
 	private IIcon front;

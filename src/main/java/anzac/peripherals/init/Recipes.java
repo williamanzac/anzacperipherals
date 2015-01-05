@@ -42,9 +42,9 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModItems.teleportframe, "oeo", "eae", "oeo", 'o', obsidian, 'e',
 				enderPearl, 'a', ModItems.advancedcpu));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ModItems.memorycard, ModItems.basiccpu, paper));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ModItems.itemstorageunit, ModItems.hdd, chest,
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ModItems.itemstorageunit, ModItems.memorycard, chest,
 				ModItems.advancedcpu));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ModItems.fluidstorageunit, ModItems.hdd, cauldron,
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ModItems.fluidstorageunit, ModItems.memorycard, cauldron,
 				ModItems.advancedcpu));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.workbench, "iwi", "ifi", "isi", 'i', ironIngot, 'w',
 				workbench, 'f', ModItems.basicframe, 's', ModItems.itemstorageunit));
@@ -54,10 +54,10 @@ public class Recipes {
 				ironIngot, 'a', ModItems.advancedframe, 's', ModItems.itemstorageunit));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.fluidrouter, "bib", "iai", "isi", 'b', bucket, 'i',
 				ironIngot, 'a', ModItems.advancedframe, 's', ModItems.fluidstorageunit));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.itemstorage, "sss", "sas", "sss", 'a',
-				ModItems.advancedframe, 's', ModItems.itemstorageunit));
-		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.fluidstorage, "sss", "sas", "sss", 'a',
-				ModItems.advancedframe, 's', ModItems.fluidstorageunit));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.itemstorage, "ihi", "iai", "isi", 'a',
+				ModItems.advancedframe, 's', ModItems.itemstorageunit, 'i', ironIngot, 'h', ModItems.hdd));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.fluidstorage, "ihi", "iai", "isi", 'a',
+				ModItems.advancedframe, 's', ModItems.fluidstorageunit, 'i', ironIngot, 'h', ModItems.hdd));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.redstone, "iri", "rar", "iri", 'i', ironIngot, 'a',
 				ModItems.advancedframe, 'r', redstoneBlock));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.note, "ini", "nbn", "ini", 'i', ironIngot, 'b',
@@ -84,8 +84,10 @@ public class Recipes {
 				enderPearl, 'p', goldturtleteleporter));
 		final Block peripheral = GameRegistry.findBlock("ComputerCraft", "CC-Peripheral");
 		final Block cable = GameRegistry.findBlock("ComputerCraft", "CC-Cable");
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ModBlocks.remoteproxy, ModItems.basicframe, new ItemStack(
-				peripheral, 1, 1), new ItemStack(cable, 1, 1)));
+		final ItemStack wirelessStack = new ItemStack(peripheral, 1, 1);
+		final ItemStack wiredStack = new ItemStack(cable, 1, 1);
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ModBlocks.remoteproxy, ModItems.basicframe, wirelessStack,
+				wiredStack));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.brewingstation, "ici", "bBb", "ifi", 'i', ironIngot, 'c',
 				ModItems.itemstorageunit, 'b', Blocks.brewing_stand, 'B', ModItems.basicframe, 'f',
 				ModItems.fluidstorageunit));

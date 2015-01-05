@@ -7,6 +7,7 @@ import anzac.peripherals.handler.GuiHandler;
 import anzac.peripherals.init.AnzacPeripheralProvider;
 import anzac.peripherals.init.AnzacRedstoneProvider;
 import anzac.peripherals.init.ModBlocks;
+import anzac.peripherals.init.ModFluids;
 import anzac.peripherals.init.ModItems;
 import anzac.peripherals.init.Recipes;
 import anzac.peripherals.init.TurtleUpgrades;
@@ -38,6 +39,7 @@ public class Peripherals {
 		proxy.registerKeyBindings();
 		ModItems.init();
 		ModBlocks.init();
+		ModFluids.init();
 		LogHelper.info("Pre Initialization Complete!");
 	}
 

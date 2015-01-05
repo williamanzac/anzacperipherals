@@ -6,12 +6,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import anzac.peripherals.annotations.BlockInfo;
 import anzac.peripherals.reference.Names;
-import anzac.peripherals.reference.Reference.GuiIds;
 import anzac.peripherals.tile.FluidStorageTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@BlockInfo(name = Names.Blocks.fluidstorage, guiId = GuiIds.FLUIDSTORAGE)
+@BlockInfo(name = Names.Blocks.fluidstorage/* , guiId = GuiIds.FLUIDSTORAGE */)
 public class FluidStorage extends BaseBlock {
 	@SideOnly(Side.CLIENT)
 	private IIcon side;

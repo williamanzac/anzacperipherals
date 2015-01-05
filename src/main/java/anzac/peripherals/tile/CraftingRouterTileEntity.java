@@ -146,7 +146,7 @@ public class CraftingRouterTileEntity extends ItemRouterTileEntity {
 
 	@Override
 	public boolean isItemValidForSlot(final int i, final ItemStack itemstack) {
-		return InvUtils.stacksMatch(itemstack, craftMatrix.getStackInSlot(i));
+		return InvUtils.itemMatched(itemstack, craftMatrix.getStackInSlot(i), true, true, true);
 	}
 
 	@Override

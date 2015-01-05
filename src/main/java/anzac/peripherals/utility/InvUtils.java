@@ -5,7 +5,9 @@ import java.util.Map;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -49,13 +51,68 @@ public class InvUtils {
 		return table;
 	}
 
-	public static boolean stacksMatch(final ItemStack targetStack, final ItemStack sourceStack) {
-		return OreDictionary.itemMatches(targetStack, sourceStack, false);
+	public static boolean itemMatched(final ItemStack target, final ItemStack source, final boolean matchMeta,
+			final boolean matchNBT, final boolean useOreDict) {
+		if (source == null) {
+			return false;
+		}
+		boolean matched = false;
+		if (target != null && Item.getIdFromItem(source.getItem()) == Item.getIdFromItem(target.getItem())) {
+			matched = true;
+			if (matchMeta && source.getItemDamage() != target.getItemDamage()) {
+				matched = false;
+			} else if (matchNBT && !isNBTMatch(source, target)) {
+				matched = false;
+			}
+		}
+		if (!matched && useOreDict && isOreDicMatch(target, source)) {
+			matched = true;
+		}
+		return matched;
+	}
+
+	private static boolean isOreDicMatch(final ItemStack target, final ItemStack source) {
+		if (source == null) {
+			return false;
+		}
+		final int[] ids1 = OreDictionary.getOreIDs(target);
+		if (ids1 == null || ids1.length == 0) {
+			return false;
+		}
+		final int[] ids2 = OreDictionary.getOreIDs(source);
+		if (ids2 == null || ids2.length == 0) {
+			return false;
+		}
+		for (final int id1 : ids1) {
+			for (final int id2 : ids2) {
+				if (id1 == id2) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean isNBTMatch(final ItemStack target, final ItemStack source) {
+		if (target.stackTagCompound == null && source.stackTagCompound == null) {
+			return true;
+		}
+		if (target.stackTagCompound == null || source.stackTagCompound == null) {
+			return false;
+		}
+		if (!target.getTagCompound().hasKey("GEN")) {
+			return target.stackTagCompound.equals(source.stackTagCompound);
+		}
+		final NBTTagCompound filterTag = (NBTTagCompound) target.getTagCompound().copy();
+		final NBTTagCompound itemTag = (NBTTagCompound) source.getTagCompound().copy();
+		filterTag.removeTag("GEN");
+		itemTag.removeTag("GEN");
+		return filterTag.equals(itemTag);
 	}
 
 	public static boolean canMergeItemStack(final ItemStack sourceStack, final ItemStack targetStack) {
 		if (sourceStack.isStackable()) {
-			if (stacksMatch(targetStack, sourceStack)) {
+			if (itemMatched(targetStack, sourceStack, true, true, false)) {
 				final int l = targetStack.stackSize + sourceStack.stackSize;
 				final int maxStackSize = sourceStack.getMaxStackSize();
 				if (l <= maxStackSize) {
@@ -76,7 +133,7 @@ public class InvUtils {
 	 */
 	public static boolean mergeItemStack(final ItemStack sourceStack, final ItemStack targetStack) {
 		if (sourceStack.isStackable()) {
-			if (stacksMatch(targetStack, sourceStack)) {
+			if (itemMatched(targetStack, sourceStack, true, true, false)) {
 				final int l = targetStack.stackSize + sourceStack.stackSize;
 				final int maxStackSize = sourceStack.getMaxStackSize();
 				if (l <= maxStackSize) {
@@ -131,7 +188,7 @@ public class InvUtils {
 		final int[] availableSlots = accessibleSlots(from, inv);
 		for (final int slot : availableSlots) {
 			final ItemStack stackInSlot = inv.getStackInSlot(slot);
-			if (stackInSlot != null && stacksMatch(stackInSlot, copy)) {
+			if (stackInSlot != null && itemMatched(stackInSlot, copy, true, true, false)) {
 				final ItemStack target = copy.copy();
 				final int l = stackInSlot.stackSize + copy.stackSize;
 				target.stackSize = l;
@@ -143,7 +200,7 @@ public class InvUtils {
 						target.stackSize = inventoryStackLimit;
 					}
 				}
-				copy.stackSize -= (target.stackSize - stackInSlot.stackSize);
+				copy.stackSize -= target.stackSize - stackInSlot.stackSize;
 			}
 			if (copy.stackSize == 0) {
 				break;
