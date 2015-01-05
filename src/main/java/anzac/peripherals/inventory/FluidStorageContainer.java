@@ -14,7 +14,7 @@ public class FluidStorageContainer extends BaseContainer<FluidStorageTileEntity>
 		super(te);
 
 		// inventory
-		addSlotToContainer(new ValidatingSlot(te, 0, 152, 53));
+		// addSlotToContainer(new ValidatingSlot(te, 0, 152, 53));
 
 		int row;
 		int col;

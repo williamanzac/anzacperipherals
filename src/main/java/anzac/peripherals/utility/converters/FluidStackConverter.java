@@ -30,11 +30,13 @@ public class FluidStackConverter implements Converter<FluidStack> {
 	public Object javaToLUA(final Object object) {
 		final FluidStack fluidStack = (FluidStack) object;
 		final Map<String, Object> map = new HashMap<String, Object>();
-		map.put(AMOUNT, fluidStack.amount);
-		map.put(NAME, fluidStack.getFluid().getName());
-		if (fluidStack.tag != null) {
-			final Map<String, Object> tagMap = (Map<String, Object>) nbtToJava(fluidStack.tag);
-			map.put(TAG, tagMap);
+		if (fluidStack != null) {
+			map.put(AMOUNT, fluidStack.amount);
+			map.put(NAME, fluidStack.getFluid().getName());
+			if (fluidStack.tag != null) {
+				final Map<String, Object> tagMap = (Map<String, Object>) nbtToJava(fluidStack.tag);
+				map.put(TAG, tagMap);
+			}
 		}
 		return map;
 	}
