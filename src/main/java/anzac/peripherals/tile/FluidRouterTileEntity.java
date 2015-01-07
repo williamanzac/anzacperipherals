@@ -97,15 +97,12 @@ public class FluidRouterTileEntity extends BaseTileEntity implements ISidedInven
 	 *            which side of this block to extract from.
 	 * @param fluidstack
 	 *            the uuid of the items to extract.
-	 * @param amount
-	 *            the number of items to extract.
 	 * @return The actual number of items extracted.
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public int extractFrom(final ForgeDirection fromDir, final FluidStack fluidstack, final int amount)
-			throws Exception {
-		return extractFrom(fromDir, fluidstack, amount, fromDir.getOpposite());
+	public int extractFrom(final ForgeDirection fromDir, final FluidStack fluidstack) throws Exception {
+		return extractFrom(fromDir, fluidstack, fromDir.getOpposite());
 	}
 
 	/**
@@ -116,16 +113,14 @@ public class FluidRouterTileEntity extends BaseTileEntity implements ISidedInven
 	 *            which side of this block to extract from.
 	 * @param fluidstack
 	 *            the uuid of the items to extract.
-	 * @param amount
-	 *            the number of items to extract.
 	 * @param extractSide
 	 *            which side of the inventory to extract from.
 	 * @return The actual number of items extracted.
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public int extractFrom(final ForgeDirection fromDir, final FluidStack fluidstack, final int amount,
-			final ForgeDirection extractSide) throws Exception {
+	public int extractFrom(final ForgeDirection fromDir, final FluidStack fluidstack, final ForgeDirection extractSide)
+			throws Exception {
 		if (getStackInSlot(0) != null) {
 			throw new Exception("Internal cache is not empty");
 		}
@@ -174,7 +169,7 @@ public class FluidRouterTileEntity extends BaseTileEntity implements ISidedInven
 	 */
 	@PeripheralMethod
 	public int routeTo(final ForgeDirection toDir, final ForgeDirection insertDir, final int amount) throws Exception {
-		final FluidStack drain = tank.drain(amount, true);
+		final FluidStack drain = tank.drain(amount, false);
 		final Position pos = new Position(xCoord, yCoord, zCoord, toDir);
 		pos.moveForwards(1);
 		final TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
@@ -183,6 +178,7 @@ public class FluidRouterTileEntity extends BaseTileEntity implements ISidedInven
 		}
 		final IFluidHandler inv = (IFluidHandler) te;
 		final int fill = inv.fill(insertDir, drain, true);
+		tank.drain(fill, true);
 		return fill;
 	}
 

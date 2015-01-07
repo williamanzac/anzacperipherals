@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -18,6 +19,7 @@ import anzac.peripherals.annotations.Peripheral;
 import anzac.peripherals.annotations.PeripheralMethod;
 import anzac.peripherals.handler.ConfigurationHandler;
 import anzac.peripherals.utility.FluidUtils;
+import anzac.peripherals.utility.Position;
 
 @Peripheral(type = "fluidstorage")
 public class FluidStorageTileEntity extends BaseTileEntity implements IFluidHandler {
@@ -43,6 +45,36 @@ public class FluidStorageTileEntity extends BaseTileEntity implements IFluidHand
 	@PeripheralMethod
 	public FluidTankInfo[] contents() throws Exception {
 		return FluidUtils.contents(this, ForgeDirection.UNKNOWN);
+	}
+
+	@PeripheralMethod
+	public int routeTo(final int index, final ForgeDirection toDir, final int amount) throws Exception {
+		return routeTo(index, toDir, toDir.getOpposite(), amount);
+	}
+
+	@PeripheralMethod
+	public int routeTo(final int index, final ForgeDirection toDir, final ForgeDirection insertDir, final int amount)
+			throws Exception {
+		final FluidTank tank = tanks.get(index);
+		final FluidStack drain = tank.drain(amount, false);
+		final Position pos = new Position(xCoord, yCoord, zCoord, toDir);
+		pos.moveForwards(1);
+		final TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+		if (te == null || !(te instanceof IFluidHandler)) {
+			throw new Exception("fluid handler not found");
+		}
+		final IFluidHandler inv = (IFluidHandler) te;
+		final int fill = inv.fill(insertDir, drain, true);
+		tank.drain(fill, true);
+		if (tank.getFluidAmount() < tank.getCapacity() - FluidContainerRegistry.BUCKET_VOLUME) {
+			tank.setCapacity(tank.getCapacity() - FluidContainerRegistry.BUCKET_VOLUME);
+			emptyTank.setCapacity(emptyTank.getCapacity() + FluidContainerRegistry.BUCKET_VOLUME);
+		}
+		if (tank.getFluidAmount() == 0) {
+			emptyTank.setCapacity(emptyTank.getCapacity() + tank.getCapacity());
+			tanks.remove(tank);
+		}
+		return fill;
 	}
 
 	public void readFromNBT(final NBTTagCompound tagCompound) {

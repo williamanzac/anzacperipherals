@@ -49,7 +49,7 @@ dependencies {
     //compile "dan200.computercraft:ComputerCraft:1.64pr4"
       
     // real examples
-    compile 'com.mod-buildcraft:buildcraft:6.2.6:dev'  // adds buildcraft to the dev env
+    compile 'com.mod-buildcraft:buildcraft:6.3.0:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
     //compile "thermalexpansion:ThermalExpansion:4.0.0B3"
 	compile "codechicken:CodeChickenLib:1.7.10-1.1.1.106:dev"
