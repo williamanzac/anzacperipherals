@@ -11,6 +11,7 @@ import anzac.peripherals.annotations.PeripheralMethod;
 import anzac.peripherals.utility.InvUtils;
 import anzac.peripherals.utility.Position;
 import dan200.computercraft.api.turtle.ITurtleAccess;
+import dan200.computercraft.api.turtle.TurtleSide;
 
 @Peripheral(type = "furnace")
 public class FurnaceUpgradePeripheral extends BasePeripheral {
@@ -19,8 +20,13 @@ public class FurnaceUpgradePeripheral extends BasePeripheral {
 
 	private final ITurtleAccess turtle;
 
-	public FurnaceUpgradePeripheral(final ITurtleAccess paramITurtleAccess) {
-		this.turtle = paramITurtleAccess;
+	// private final TurtleSide side;
+	// private final NBTTagCompound nbt;
+
+	public FurnaceUpgradePeripheral(final ITurtleAccess paramITurtleAccess, final TurtleSide side) {
+		turtle = paramITurtleAccess;
+		// this.side = side;
+		// nbt = turtle.getUpgradeNBTData(side);
 	}
 
 	/**
@@ -55,7 +61,7 @@ public class FurnaceUpgradePeripheral extends BasePeripheral {
 	}
 
 	protected void storeOrDrop(final ItemStack stack) {
-		stack.stackSize -= InvUtils.addItem(turtle.getInventory(), stack, true, ForgeDirection.UNKNOWN);
+		stack.stackSize -= InvUtils.addItem(turtle.getInventory(), stack, ForgeDirection.UNKNOWN);
 		if (stack.stackSize > 0) {
 			dropItemStack(stack);
 		}

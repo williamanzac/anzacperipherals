@@ -12,6 +12,8 @@ public class Names {
 		public static final String memorycard = "memorycard";
 		public static final String itemstorageunit = "itemstorageunit";
 		public static final String fluidstorageunit = "fluidstorageunit";
+		public static final String furnaceupgrade = "furnaceupgrade";
+		public static final String enderchestupgrade = "enderchestupgrade";
 	}
 
 	public static class Blocks {

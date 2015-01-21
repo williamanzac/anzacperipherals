@@ -3,6 +3,7 @@ package anzac.peripherals.upgrades;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import anzac.peripherals.annotations.UpgradeInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dan200.computercraft.api.turtle.ITurtleAccess;
@@ -41,6 +42,8 @@ public abstract class PeripheralUpgrade extends BaseUpgrade {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public abstract void registerIcons(final IIconRegister par1IconRegister);
-
+	public void registerIcons(final IIconRegister par1IconRegister) {
+		final UpgradeInfo info = getClass().getAnnotation(UpgradeInfo.class);
+		icon = par1IconRegister.registerIcon("anzacperipherals:" + info.name() + "_upgrade");
+	}
 }

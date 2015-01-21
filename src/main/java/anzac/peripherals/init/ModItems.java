@@ -5,7 +5,9 @@ import anzac.peripherals.item.AdvancedProcessor;
 import anzac.peripherals.item.BaseItem;
 import anzac.peripherals.item.BasicPeripheralFrame;
 import anzac.peripherals.item.BasicProcessor;
+import anzac.peripherals.item.EnderChestUpgrade;
 import anzac.peripherals.item.FluidStorageUnit;
+import anzac.peripherals.item.FurnaceUpgrade;
 import anzac.peripherals.item.HDD;
 import anzac.peripherals.item.ItemStorageUnit;
 import anzac.peripherals.item.MemoryCard;
@@ -27,6 +29,8 @@ public class ModItems {
 	public static final BaseItem memorycard = new MemoryCard();
 	public static final BaseItem itemstorageunit = new ItemStorageUnit();
 	public static final BaseItem fluidstorageunit = new FluidStorageUnit();
+	public static final BaseItem furnaceupgrade = new FurnaceUpgrade();
+	public static final BaseItem enderchestupgrade = new EnderChestUpgrade();
 
 	public static void init() {
 		GameRegistry.registerItem(basiccpu, Names.Items.basiccpu);
@@ -38,5 +42,7 @@ public class ModItems {
 		GameRegistry.registerItem(memorycard, Names.Items.memorycard);
 		GameRegistry.registerItem(itemstorageunit, Names.Items.itemstorageunit);
 		GameRegistry.registerItem(fluidstorageunit, Names.Items.fluidstorageunit);
+		GameRegistry.registerItem(furnaceupgrade, Names.Items.furnaceupgrade);
+		GameRegistry.registerItem(enderchestupgrade, Names.Items.enderchestupgrade);
 	}
 }

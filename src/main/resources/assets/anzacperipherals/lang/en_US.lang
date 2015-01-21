@@ -8,6 +8,8 @@ item.anzacperipherals:teleportframe.name=Teleporter Frame
 item.anzacperipherals:memorycard.name=Memory Card
 item.anzacperipherals:itemstorageunit.name=Item Storage Unit
 item.anzacperipherals:fluidstorageunit.name=Fluid Storage Unit
+item.anzacperipherals:furnaceupgrade.name=Furnace Turtle Upgrade
+item.anzacperipherals:enderchestupgrade.name=Ender Chest Turtle Upgrade
 
 # Blocks
 tile.anzacperipherals:workbench.name=Computerised Workbench
@@ -32,8 +34,9 @@ tile.anzacperipherals:brewingstation.name=Brewing Station
 
 # Upgrades
 upgrade.furnace.adjective=Smelting
-upgrade.shears.adjective=Sharing
+upgrade.shears.adjective=Shearing
 upgrade.flint.adjective=Firestarter
+upgrade.enderchest.adjective=Ender Chest
 
 # Creative Tabs
 itemGroup.anzacperipherals=ANZAC Peripherals

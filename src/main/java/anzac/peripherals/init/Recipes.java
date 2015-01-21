@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Recipes {
@@ -91,6 +92,11 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.brewingstation, "ici", "bBb", "ifi", 'i', ironIngot, 'c',
 				ModItems.itemstorageunit, 'b', Blocks.brewing_stand, 'B', ModItems.basicframe, 'f',
 				ModItems.fluidstorageunit));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ModItems.furnaceupgrade, ModItems.basicframe, Blocks.furnace));
+		if (Loader.isModLoaded("EnderStorage")) {
+			final Block block = GameRegistry.findBlock("EnderStorage", "enderChest");
+			GameRegistry.addRecipe(new ShapelessOreRecipe(ModItems.enderchestupgrade, ModItems.advancedframe, block));
+		}
 	}
 
 	private static Object getOreDict(final Block block) {

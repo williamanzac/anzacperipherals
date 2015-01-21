@@ -157,7 +157,7 @@ public class WorkbenchTileEntity extends BaseTileEntity implements ISidedInvento
 		craftMatrix.setCrafting(true);
 		craftSlot.onPickupFromSlot(internalPlayer, resultStack);
 		craftMatrix.setCrafting(false);
-		InvUtils.addItem(output, resultStack, true, ForgeDirection.UNKNOWN);
+		InvUtils.addItem(output, resultStack, ForgeDirection.UNKNOWN);
 
 		// clean fake player inventory (crafting handler support)
 		final int sizeInventory = internalPlayer.inventory.getSizeInventory();

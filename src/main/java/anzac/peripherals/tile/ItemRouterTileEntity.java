@@ -132,7 +132,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements IInventory {
 		for (final int i : slots) {
 			final ItemStack stackInSlot = getInventory().getStackInSlot(i);
 			if (InvUtils.itemMatched(stackInSlot, itemstack, true, true, false)) {
-				return InvUtils.addItem(this, stackInSlot, true, ForgeDirection.UNKNOWN);
+				return InvUtils.addItem(this, stackInSlot, ForgeDirection.UNKNOWN);
 			}
 		}
 		return 0;

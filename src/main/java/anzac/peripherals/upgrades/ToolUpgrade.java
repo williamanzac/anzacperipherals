@@ -121,7 +121,7 @@ public abstract class ToolUpgrade extends BaseUpgrade {
 	}
 
 	protected void storeOrDrop(final ITurtleAccess turtle, final ItemStack stack) {
-		stack.stackSize -= InvUtils.addItem(turtle.getInventory(), stack, true, ForgeDirection.UNKNOWN);
+		stack.stackSize -= InvUtils.addItem(turtle.getInventory(), stack, ForgeDirection.UNKNOWN);
 		if (stack.stackSize > 0) {
 			dropItemStack(turtle, stack);
 		}
