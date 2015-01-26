@@ -4,6 +4,7 @@ import anzac.peripherals.block.BaseBlock;
 import anzac.peripherals.block.BrewingStation;
 import anzac.peripherals.block.ChargingStation;
 import anzac.peripherals.block.CraftingRouter;
+import anzac.peripherals.block.Enchanter;
 import anzac.peripherals.block.FluidRouter;
 import anzac.peripherals.block.FluidStorage;
 import anzac.peripherals.block.ItemRouter;
@@ -21,6 +22,7 @@ import anzac.peripherals.tile.BrewingTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.DiamondChargeStationTileEntity;
 import anzac.peripherals.tile.DiamondTurtleTeleporterTileEntity;
+import anzac.peripherals.tile.EnchanterTileEntity;
 import anzac.peripherals.tile.FluidRouterTileEntity;
 import anzac.peripherals.tile.FluidStorageTileEntity;
 import anzac.peripherals.tile.GoldChargeStationTileEntity;
@@ -53,6 +55,7 @@ public class ModBlocks {
 	public static final TurtleTeleporter turtleteleporter = new TurtleTeleporter();
 	public static final RemoteProxy remoteproxy = new RemoteProxy();
 	public static final BrewingStation brewingstation = new BrewingStation();
+	public static final Enchanter enchanter = new Enchanter();
 
 	public static void init() {
 		GameRegistry.registerBlock(workbench, Names.Blocks.workbench);
@@ -68,6 +71,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(turtleteleporter, TieredItem.class, Names.Blocks.turtleteleporter);
 		GameRegistry.registerBlock(remoteproxy, Names.Blocks.remoteproxy);
 		GameRegistry.registerBlock(brewingstation, Names.Blocks.brewingstation);
+		GameRegistry.registerBlock(enchanter, Names.Blocks.enchanter);
 
 		GameRegistry.registerTileEntity(NoteTileEntity.class, "anzac.peripherals.tile.NoteTileEntity");
 		GameRegistry.registerTileEntity(RedstoneTileEntity.class, "anzac.peripherals.tile.RedstoneTileEntity");
@@ -94,5 +98,6 @@ public class ModBlocks {
 				.registerTileEntity(RecipeStorageTileEntity.class, "anzac.peripherals.tile.RecipeStorageTileEntity");
 		GameRegistry.registerTileEntity(RemoteProxyTileEntity.class, "anzac.peripherals.tile.RemoteProxyTileEntity");
 		GameRegistry.registerTileEntity(BrewingTileEntity.class, "anzac.peripherals.tile.BrewingTileEntity");
+		GameRegistry.registerTileEntity(EnchanterTileEntity.class, "anzac.peripherals.tile.EnchanterTileEntity");
 	}
 }

@@ -10,20 +10,20 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.lwjgl.opengl.GL11;
 
-import anzac.peripherals.inventory.FluidRouterContainer;
+import anzac.peripherals.inventory.EnchanterContainer;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Names.Blocks;
 import anzac.peripherals.reference.Reference;
-import anzac.peripherals.tile.FluidRouterTileEntity;
+import anzac.peripherals.tile.EnchanterTileEntity;
 
-public class FluidRouterGUI extends GuiContainer {
+public class EnchanterGUI extends GuiContainer {
 
 	public static final ResourceLocation gui = new ResourceLocation(Reference.MOD_ID.toLowerCase(),
-			"textures/gui/fluidrouter.png");
-	private final FluidRouterTileEntity entity;
+			"textures/gui/enchanter.png");
+	private final EnchanterTileEntity entity;
 
-	public FluidRouterGUI(final InventoryPlayer inventoryPlayer, final FluidRouterTileEntity tileEntity) {
-		super(new FluidRouterContainer(inventoryPlayer, tileEntity));
+	public EnchanterGUI(final InventoryPlayer inventoryPlayer, final EnchanterTileEntity tileEntity) {
+		super(new EnchanterContainer(inventoryPlayer, tileEntity));
 		ySize = 166;
 		this.entity = tileEntity;
 	}

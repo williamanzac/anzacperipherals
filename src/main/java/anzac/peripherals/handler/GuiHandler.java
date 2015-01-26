@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import anzac.peripherals.client.gui.BrewingStationGUI;
 import anzac.peripherals.client.gui.ChargeStationGUI;
 import anzac.peripherals.client.gui.CraftingRouterGUI;
+import anzac.peripherals.client.gui.EnchanterGUI;
 import anzac.peripherals.client.gui.FluidRouterGUI;
 import anzac.peripherals.client.gui.FluidStorageGUI;
 import anzac.peripherals.client.gui.ItemRouterGUI;
@@ -17,6 +18,7 @@ import anzac.peripherals.client.gui.WorkbenchGUI;
 import anzac.peripherals.inventory.BrewingStationContainer;
 import anzac.peripherals.inventory.ChargeStationContainer;
 import anzac.peripherals.inventory.CraftingRouterContainer;
+import anzac.peripherals.inventory.EnchanterContainer;
 import anzac.peripherals.inventory.FluidRouterContainer;
 import anzac.peripherals.inventory.FluidStorageContainer;
 import anzac.peripherals.inventory.ItemRouterContainer;
@@ -29,6 +31,7 @@ import anzac.peripherals.reference.Reference.GuiIds;
 import anzac.peripherals.tile.BrewingTileEntity;
 import anzac.peripherals.tile.ChargeStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
+import anzac.peripherals.tile.EnchanterTileEntity;
 import anzac.peripherals.tile.FluidRouterTileEntity;
 import anzac.peripherals.tile.FluidStorageTileEntity;
 import anzac.peripherals.tile.ItemRouterTileEntity;
@@ -106,6 +109,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new BrewingStationContainer(player.inventory, (BrewingTileEntity) tile);
+		case GuiIds.ENCHANTER:
+			if (!(tile instanceof EnchanterTileEntity)) {
+				return null;
+			}
+			return new EnchanterContainer(player.inventory, (EnchanterTileEntity) tile);
 		default:
 			return null;
 		}
@@ -176,6 +184,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new BrewingStationGUI(player.inventory, (BrewingTileEntity) tile);
+		case GuiIds.ENCHANTER:
+			if (!(tile instanceof EnchanterTileEntity)) {
+				return null;
+			}
+			return new EnchanterGUI(player.inventory, (EnchanterTileEntity) tile);
 		default:
 			return null;
 		}

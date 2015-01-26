@@ -30,6 +30,7 @@ public class Recipes {
 		final Object diamond = getOreDict(Items.diamond);
 		final Object glass = getOreDict(Blocks.glass);
 		final Object furnace = getOreDict(Blocks.furnace);
+		final Object enchantingTable = getOreDict(Blocks.enchanting_table);
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModItems.basiccpu, " r ", "rir", " r ", 'i', ironIngot, 'r',
 				redstoneDust));
@@ -97,6 +98,9 @@ public class Recipes {
 			final Block block = GameRegistry.findBlock("EnderStorage", "enderChest");
 			GameRegistry.addRecipe(new ShapelessOreRecipe(ModItems.enderchestupgrade, ModItems.advancedframe, block));
 		}
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.enchanter, "gtg", "fai", "gtg", 'g', goldIngot, 't',
+				enchantingTable, 'f', ModItems.fluidstorageunit, 'a', ModItems.advancedframe, 'i',
+				ModItems.itemstorageunit));
 	}
 
 	private static Object getOreDict(final Block block) {
