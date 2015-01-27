@@ -56,7 +56,7 @@ public class WorkbenchTileEntity extends BaseTileEntity implements ISidedInvento
 	 * 
 	 * @param recipe
 	 *            a table containing the definition of the recipe. The recipe can also be obtained from a connected
-	 *            {@link RecipeStorageTileEntity} using the {@link RecipeStorageTileEntity#loadRecipe(int)} method.
+	 *            {@link RecipeStorageTileEntity} using the {@link RecipeStorageTileEntity#getRecipe(int)} method.
 	 * @return {@code true} if the recipe was successfully defined.
 	 */
 	@PeripheralMethod
