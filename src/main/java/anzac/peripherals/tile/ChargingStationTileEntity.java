@@ -31,7 +31,7 @@ import dan200.computercraft.api.turtle.ITurtleAccess;
  * @author Tony
  */
 @Peripheral(type = "chargestation")
-public abstract class ChargeStationTileEntity extends BaseTileEntity implements IEnergyHandler, IInventory {
+public abstract class ChargingStationTileEntity extends BaseTileEntity implements IEnergyHandler, IInventory {
 
 	private final EnergyStorage storage;
 	private final SimpleInventory inv = new SimpleInventory(1, "Charge Station", 64);
@@ -47,7 +47,7 @@ public abstract class ChargeStationTileEntity extends BaseTileEntity implements 
 	private double esum = 0;
 	private int currentOutput = 0;
 
-	protected ChargeStationTileEntity() {
+	protected ChargingStationTileEntity() {
 		super();
 		this.storage = new EnergyStorage(250 * maxNumTurtles() * ConfigurationHandler.rfMultiplier, maxNumTurtles()
 				* ConfigurationHandler.rfMultiplier);

@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import anzac.peripherals.annotations.BlockInfo;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Reference.GuiIds;
-import anzac.peripherals.tile.BrewingTileEntity;
+import anzac.peripherals.tile.BrewingStationTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -39,7 +39,7 @@ public class BrewingStation extends BaseBlock {
 
 	@Override
 	public TileEntity createNewTileEntity(final World world, final int meta) {
-		return new BrewingTileEntity();
+		return new BrewingStationTileEntity();
 	}
 
 }

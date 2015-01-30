@@ -28,8 +28,8 @@ import anzac.peripherals.inventory.RemoteProxyContainer;
 import anzac.peripherals.inventory.TurtleTeleporterContainer;
 import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
-import anzac.peripherals.tile.BrewingTileEntity;
-import anzac.peripherals.tile.ChargeStationTileEntity;
+import anzac.peripherals.tile.BrewingStationTileEntity;
+import anzac.peripherals.tile.ChargingStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.EnchanterTileEntity;
 import anzac.peripherals.tile.FluidRouterTileEntity;
@@ -75,10 +75,10 @@ public class GuiHandler implements IGuiHandler {
 			}
 			return new CraftingRouterContainer(player.inventory, (CraftingRouterTileEntity) tile);
 		case GuiIds.CHARGESTATION:
-			if (!(tile instanceof ChargeStationTileEntity)) {
+			if (!(tile instanceof ChargingStationTileEntity)) {
 				return null;
 			}
-			return new ChargeStationContainer(player.inventory, (ChargeStationTileEntity) tile);
+			return new ChargeStationContainer(player.inventory, (ChargingStationTileEntity) tile);
 		case GuiIds.TURTLETELEPORTER:
 			if (!(tile instanceof TurtleTeleporterTileEntity)) {
 				return null;
@@ -105,10 +105,10 @@ public class GuiHandler implements IGuiHandler {
 			}
 			return new RemoteProxyContainer(player.inventory, (RemoteProxyTileEntity) tile);
 		case GuiIds.BREWINGSTATION:
-			if (!(tile instanceof BrewingTileEntity)) {
+			if (!(tile instanceof BrewingStationTileEntity)) {
 				return null;
 			}
-			return new BrewingStationContainer(player.inventory, (BrewingTileEntity) tile);
+			return new BrewingStationContainer(player.inventory, (BrewingStationTileEntity) tile);
 		case GuiIds.ENCHANTER:
 			if (!(tile instanceof EnchanterTileEntity)) {
 				return null;
@@ -150,10 +150,10 @@ public class GuiHandler implements IGuiHandler {
 			}
 			return new CraftingRouterGUI(player.inventory, (CraftingRouterTileEntity) tile);
 		case GuiIds.CHARGESTATION:
-			if (!(tile instanceof ChargeStationTileEntity)) {
+			if (!(tile instanceof ChargingStationTileEntity)) {
 				return null;
 			}
-			return new ChargeStationGUI(player.inventory, (ChargeStationTileEntity) tile);
+			return new ChargeStationGUI(player.inventory, (ChargingStationTileEntity) tile);
 		case GuiIds.TURTLETELEPORTER:
 			if (!(tile instanceof TurtleTeleporterTileEntity)) {
 				return null;
@@ -180,10 +180,10 @@ public class GuiHandler implements IGuiHandler {
 			}
 			return new RemoteProxyGUI(player.inventory, (RemoteProxyTileEntity) tile);
 		case GuiIds.BREWINGSTATION:
-			if (!(tile instanceof BrewingTileEntity)) {
+			if (!(tile instanceof BrewingStationTileEntity)) {
 				return null;
 			}
-			return new BrewingStationGUI(player.inventory, (BrewingTileEntity) tile);
+			return new BrewingStationGUI(player.inventory, (BrewingStationTileEntity) tile);
 		case GuiIds.ENCHANTER:
 			if (!(tile instanceof EnchanterTileEntity)) {
 				return null;

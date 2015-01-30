@@ -27,7 +27,7 @@ import dan200.computercraft.api.peripheral.IComputerAccess;
  * table. This block is only usable when connected to a Computer. You must have all the items required for the recipe
  * and they are consumed when storing the recipe.The {@link PeripheralEvent#recipe_changed} event is fired when a valid
  * recipe has been defined. To save the recipe you need to call the {@link #storeRecipe()} method from a connected
- * Computer.The {@link #loadRecipe(int)} method can be used to load a recipe in to a variable. That variable can then be
+ * Computer.The {@link #getRecipe(int)} method can be used to load a recipe in to a variable. That variable can then be
  * used to {@link WorkbenchTileEntity#setRecipe(Recipe)} on a connected {@link WorkbenchTileEntity}.
  */
 @Peripheral(type = "recipestorage")

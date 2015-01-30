@@ -1,6 +1,6 @@
 package anzac.peripherals.tile;
 
-public class IronChargeStationTileEntity extends ChargeStationTileEntity {
+public class IronChargeStationTileEntity extends ChargingStationTileEntity {
 
 	@Override
 	protected int maxNumTurtles() {

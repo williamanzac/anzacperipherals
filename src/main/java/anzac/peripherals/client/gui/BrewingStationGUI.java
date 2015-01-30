@@ -14,15 +14,15 @@ import anzac.peripherals.inventory.BrewingStationContainer;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Names.Blocks;
 import anzac.peripherals.reference.Reference;
-import anzac.peripherals.tile.BrewingTileEntity;
+import anzac.peripherals.tile.BrewingStationTileEntity;
 
 public class BrewingStationGUI extends GuiContainer {
 
 	public static final ResourceLocation gui = new ResourceLocation(Reference.MOD_ID.toLowerCase(),
 			"textures/gui/brewingstation.png");
-	private final BrewingTileEntity entity;
+	private final BrewingStationTileEntity entity;
 
-	public BrewingStationGUI(final InventoryPlayer inventoryPlayer, final BrewingTileEntity tileEntity) {
+	public BrewingStationGUI(final InventoryPlayer inventoryPlayer, final BrewingStationTileEntity tileEntity) {
 		super(new BrewingStationContainer(inventoryPlayer, tileEntity));
 		ySize = 201;
 		this.entity = tileEntity;

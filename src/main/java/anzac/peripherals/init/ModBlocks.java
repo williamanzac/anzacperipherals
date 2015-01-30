@@ -18,7 +18,7 @@ import anzac.peripherals.block.Workbench;
 import anzac.peripherals.item.TieredItem;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Reference;
-import anzac.peripherals.tile.BrewingTileEntity;
+import anzac.peripherals.tile.BrewingStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.DiamondChargeStationTileEntity;
 import anzac.peripherals.tile.DiamondTurtleTeleporterTileEntity;
@@ -97,7 +97,7 @@ public class ModBlocks {
 		GameRegistry
 				.registerTileEntity(RecipeStorageTileEntity.class, "anzac.peripherals.tile.RecipeStorageTileEntity");
 		GameRegistry.registerTileEntity(RemoteProxyTileEntity.class, "anzac.peripherals.tile.RemoteProxyTileEntity");
-		GameRegistry.registerTileEntity(BrewingTileEntity.class, "anzac.peripherals.tile.BrewingTileEntity");
+		GameRegistry.registerTileEntity(BrewingStationTileEntity.class, "anzac.peripherals.tile.BrewingTileEntity");
 		GameRegistry.registerTileEntity(EnchanterTileEntity.class, "anzac.peripherals.tile.EnchanterTileEntity");
 	}
 }

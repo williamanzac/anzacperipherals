@@ -4,14 +4,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import anzac.peripherals.tile.BrewingTileEntity;
+import anzac.peripherals.tile.BrewingStationTileEntity;
 
-public class BrewingStationContainer extends BaseContainer<BrewingTileEntity> {
+public class BrewingStationContainer extends BaseContainer<BrewingStationTileEntity> {
 
 	private int lastAmount;
 	private int lastId;
 
-	public BrewingStationContainer(final InventoryPlayer inventoryPlayer, final BrewingTileEntity te) {
+	public BrewingStationContainer(final InventoryPlayer inventoryPlayer, final BrewingStationTileEntity te) {
 		super(te);
 
 		// empty bottles

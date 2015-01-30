@@ -28,7 +28,7 @@ import anzac.peripherals.annotations.PeripheralMethod;
 import anzac.peripherals.utility.InvUtils;
 
 @Peripheral(type = "brewing")
-public class BrewingTileEntity extends BaseTileEntity implements ISidedInventory, IFluidHandler {
+public class BrewingStationTileEntity extends BaseTileEntity implements ISidedInventory, IFluidHandler {
 	private static final String INVENTORY = "inventory";
 	private static final String SLOT = "slot";
 	private static final String INGREDIENTS = "ingredients";

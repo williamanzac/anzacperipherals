@@ -3,15 +3,15 @@ package anzac.peripherals.inventory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import anzac.peripherals.tile.ChargeStationTileEntity;
+import anzac.peripherals.tile.ChargingStationTileEntity;
 
-public class ChargeStationContainer extends BaseContainer<ChargeStationTileEntity> {
+public class ChargeStationContainer extends BaseContainer<ChargingStationTileEntity> {
 
 	private int lastStored;
 	private int lastTime;
 	private int lastTotalTime;
 
-	public ChargeStationContainer(final InventoryPlayer inventoryPlayer, final ChargeStationTileEntity te) {
+	public ChargeStationContainer(final InventoryPlayer inventoryPlayer, final ChargingStationTileEntity te) {
 		super(te);
 
 		// inventory

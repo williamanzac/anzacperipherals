@@ -11,15 +11,15 @@ import anzac.peripherals.inventory.ChargeStationContainer;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Names.Blocks;
 import anzac.peripherals.reference.Reference;
-import anzac.peripherals.tile.ChargeStationTileEntity;
+import anzac.peripherals.tile.ChargingStationTileEntity;
 
 public class ChargeStationGUI extends GuiContainer {
 
 	public static final ResourceLocation gui = new ResourceLocation(Reference.MOD_ID.toLowerCase(),
 			"textures/gui/chargestation.png");
-	private final ChargeStationTileEntity entity;
+	private final ChargingStationTileEntity entity;
 
-	public ChargeStationGUI(final InventoryPlayer inventoryPlayer, final ChargeStationTileEntity tileEntity) {
+	public ChargeStationGUI(final InventoryPlayer inventoryPlayer, final ChargingStationTileEntity tileEntity) {
 		super(new ChargeStationContainer(inventoryPlayer, tileEntity));
 		ySize = 166;
 		this.entity = tileEntity;
