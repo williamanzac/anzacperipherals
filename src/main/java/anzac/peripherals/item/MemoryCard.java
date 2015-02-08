@@ -8,11 +8,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import anzac.peripherals.annotations.ItemInfo;
 import anzac.peripherals.reference.Names;
 
+@ItemInfo(name = Names.Items.memorycard)
 public class MemoryCard extends BaseItem {
 	public MemoryCard() {
-		setUnlocalizedName(Names.Items.memorycard);
 		setMaxStackSize(1);
 	}
 

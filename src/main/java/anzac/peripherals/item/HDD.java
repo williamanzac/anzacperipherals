@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import anzac.peripherals.annotations.ItemInfo;
 import anzac.peripherals.handler.ConfigurationHandler;
 import anzac.peripherals.reference.Names;
 import cpw.mods.fml.relauncher.Side;
@@ -19,11 +20,8 @@ import dan200.computercraft.api.media.IMedia;
  * This item is used as a storage device by some of the peripherals added by this mod. It has a similar capacity to that
  * of a standard ComputerCraft computer.
  */
+@ItemInfo(name = Names.Items.hdd)
 public class HDD extends BaseItem implements IMedia {
-	public HDD() {
-		setUnlocalizedName(Names.Items.hdd);
-	}
-
 	@Override
 	public String getLabel(ItemStack stack) {
 		final NBTTagCompound tag = stack.getTagCompound();

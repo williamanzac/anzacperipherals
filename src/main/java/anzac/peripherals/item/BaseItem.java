@@ -3,6 +3,7 @@ package anzac.peripherals.item;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import anzac.peripherals.annotations.ItemInfo;
 import anzac.peripherals.creativetab.CreativeTab;
 import anzac.peripherals.reference.Names;
 import cpw.mods.fml.relauncher.Side;
@@ -15,12 +16,14 @@ public abstract class BaseItem extends Item {
 
 	@Override
 	public String getUnlocalizedName() {
-		return Names.getItemKey(super.getUnlocalizedName());
+		final ItemInfo itemInfo = getClass().getAnnotation(ItemInfo.class);
+		final String key = itemInfo.name();
+		return Names.getItemKey(key);
 	}
 
 	@Override
 	public String getUnlocalizedName(final ItemStack stack) {
-		return Names.getItemKey(super.getUnlocalizedName());
+		return getUnlocalizedName();
 	}
 
 	@Override
