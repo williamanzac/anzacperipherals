@@ -36,10 +36,9 @@ public class EnchanterTileEntity extends BaseTileEntity implements ISidedInvento
 	private static final String XPJUICE = "xpjuice";
 	private static final String INVENTORY = "inventory";
 	private static final String SLOT = "slot";
-	private static final String INGREDIENTS = "ingredients";
 	private static final String TANK_TAG = "tank";
 
-	private final FluidTank tank = new FluidTank(experienceToLiquid(getExperienceForLevel(30)));
+	private final FluidTank tank = new FluidTank(experienceToLiquid(getExperienceForLevel(40)));
 	private final SimpleInventory input = new SimpleInventory(1, "", 1);
 	private final SimpleInventory output = new SimpleInventory(1, "", 1);
 
@@ -93,7 +92,7 @@ public class EnchanterTileEntity extends BaseTileEntity implements ISidedInvento
 		if (canEnchantItem()) {
 			final ItemStack itemstack = input.getStackInSlot(0);
 			final ItemStack copy = itemstack.copy();
-			final List<EnchantmentData> list = buildEnchantmentList(this.rand, copy, enchantmentLevel);
+			final List<EnchantmentData> list = buildEnchantmentList(rand, copy, enchantmentLevel);
 			final boolean flag = copy.getItem() == Items.book;
 
 			if (list != null) {
@@ -104,7 +103,7 @@ public class EnchanterTileEntity extends BaseTileEntity implements ISidedInvento
 					copy.func_150996_a(Items.enchanted_book);
 				}
 
-				final int j = flag && list.size() > 1 ? this.rand.nextInt(list.size()) : -1;
+				final int j = flag && list.size() > 1 ? rand.nextInt(list.size()) : -1;
 
 				for (int k = 0; k < list.size(); ++k) {
 					final EnchantmentData enchantmentdata = list.get(k);
@@ -264,20 +263,6 @@ public class EnchanterTileEntity extends BaseTileEntity implements ISidedInvento
 	@Override
 	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
-
-		// read craft slots
-		if (tagCompound.hasKey(INGREDIENTS)) {
-			final NBTTagList list = tagCompound.getTagList(INGREDIENTS, Constants.NBT.TAG_COMPOUND);
-			for (byte entry = 0; entry < list.tagCount(); entry++) {
-				final NBTTagCompound itemTag = list.getCompoundTagAt(entry);
-				final int slot = itemTag.getByte(SLOT);
-				if (slot >= 0 && slot < getSizeInventory()) {
-					final ItemStack stack = loadItemStackFromNBT(itemTag);
-					setInventorySlotContents(slot, stack);
-				}
-			}
-		}
-
 		// read inventory slots
 		if (tagCompound.hasKey(INVENTORY)) {
 			final NBTTagList list = tagCompound.getTagList(INVENTORY, Constants.NBT.TAG_COMPOUND);
@@ -302,19 +287,6 @@ public class EnchanterTileEntity extends BaseTileEntity implements ISidedInvento
 
 		// write craft slots
 		NBTTagList list = new NBTTagList();
-		for (byte slot = 0; slot < getSizeInventory(); slot++) {
-			final ItemStack stack = getStackInSlot(slot);
-			if (stack != null) {
-				final NBTTagCompound itemTag = new NBTTagCompound();
-				itemTag.setByte(SLOT, slot);
-				stack.writeToNBT(itemTag);
-				list.appendTag(itemTag);
-			}
-		}
-		tagCompound.setTag(INGREDIENTS, list);
-
-		// write craft slots
-		list = new NBTTagList();
 		for (byte slot = 0; slot < getSizeInventory(); slot++) {
 			final ItemStack stack = getStackInSlot(slot);
 			if (stack != null) {

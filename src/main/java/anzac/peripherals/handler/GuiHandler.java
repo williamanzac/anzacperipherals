@@ -3,6 +3,7 @@ package anzac.peripherals.handler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import anzac.peripherals.client.gui.AnvilGUI;
 import anzac.peripherals.client.gui.BrewingStationGUI;
 import anzac.peripherals.client.gui.ChargeStationGUI;
 import anzac.peripherals.client.gui.CraftingRouterGUI;
@@ -15,6 +16,7 @@ import anzac.peripherals.client.gui.RecipeStorageGUI;
 import anzac.peripherals.client.gui.RemoteProxyGUI;
 import anzac.peripherals.client.gui.TurtleTeleporterGUI;
 import anzac.peripherals.client.gui.WorkbenchGUI;
+import anzac.peripherals.inventory.AnvilContainer;
 import anzac.peripherals.inventory.BrewingStationContainer;
 import anzac.peripherals.inventory.ChargeStationContainer;
 import anzac.peripherals.inventory.CraftingRouterContainer;
@@ -28,6 +30,7 @@ import anzac.peripherals.inventory.RemoteProxyContainer;
 import anzac.peripherals.inventory.TurtleTeleporterContainer;
 import anzac.peripherals.inventory.WorkbenchContainer;
 import anzac.peripherals.reference.Reference.GuiIds;
+import anzac.peripherals.tile.AnvilTileEntity;
 import anzac.peripherals.tile.BrewingStationTileEntity;
 import anzac.peripherals.tile.ChargingStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
@@ -114,6 +117,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new EnchanterContainer(player.inventory, (EnchanterTileEntity) tile);
+		case GuiIds.ANVIL:
+			if (!(tile instanceof AnvilTileEntity)) {
+				return null;
+			}
+			return new AnvilContainer(player.inventory, (AnvilTileEntity) tile);
 		default:
 			return null;
 		}
@@ -189,6 +197,11 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			}
 			return new EnchanterGUI(player.inventory, (EnchanterTileEntity) tile);
+		case GuiIds.ANVIL:
+			if (!(tile instanceof AnvilTileEntity)) {
+				return null;
+			}
+			return new AnvilGUI(player.inventory, (AnvilTileEntity) tile);
 		default:
 			return null;
 		}

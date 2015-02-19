@@ -21,7 +21,7 @@ public class Recipes {
 		final Object enderPearl = getOreDict(Items.ender_pearl);
 		final Object paper = getOreDict(Items.paper);
 		final Object chest = getOreDict(Blocks.chest);
-		final Object cauldron = getOreDict(Blocks.cauldron);
+		final Object cauldron = Blocks.cauldron;
 		final Object workbench = getOreDict(Blocks.crafting_table);
 		final Object hopper = getOreDict(Blocks.hopper);
 		final Object bucket = getOreDict(Items.bucket);
@@ -31,6 +31,7 @@ public class Recipes {
 		final Object glass = getOreDict(Blocks.glass);
 		final Object furnace = getOreDict(Blocks.furnace);
 		final Object enchantingTable = getOreDict(Blocks.enchanting_table);
+		final Object anvil = getOreDict(Blocks.anvil);
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModItems.basiccpu, " r ", "rir", " r ", 'i', ironIngot, 'r',
 				redstoneDust));
@@ -101,6 +102,8 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.enchanter, "gtg", "fai", "gtg", 'g', goldIngot, 't',
 				enchantingTable, 'f', ModItems.fluidstorageunit, 'a', ModItems.advancedframe, 'i',
 				ModItems.itemstorageunit));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.anvil, "gtg", "fai", "gtg", 'g', goldIngot, 't', anvil,
+				'f', ModItems.fluidstorageunit, 'a', ModItems.advancedframe, 'i', ModItems.itemstorageunit));
 	}
 
 	private static Object getOreDict(final Block block) {

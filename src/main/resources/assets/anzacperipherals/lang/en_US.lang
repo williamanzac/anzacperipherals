@@ -32,6 +32,7 @@ tile.anzacperipherals:turtleteleporter.3.name=Diamond Turtle Teleporter
 tile.anzacperipherals:remoteproxy.name=Remote Peripheral Proxy
 tile.anzacperipherals:brewingstation.name=Brewing Station
 tile.anzacperipherals:enchanter.name=Computerised Enchanter
+tile.anzacperipherals:anvil.name=Computerised Anvil
 
 # Upgrades
 upgrade.furnace.adjective=Smelting

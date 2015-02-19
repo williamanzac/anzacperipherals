@@ -77,24 +77,24 @@ public class ItemStackConverter implements Converter<ItemStack> {
 			return ((NBTTagString) nbt).func_150285_a_();
 		case 9:
 			final NBTTagList tagList = (NBTTagList) nbt;
-			final Object[] objects = new Object[tagList.tagCount()];
+			final Map<Integer, Object> objects = new HashMap<Integer, Object>(tagList.tagCount());
 			final int tagType = tagList.func_150303_d();
 			for (int i = 0; i < tagList.tagCount(); i++) {
 				switch (tagType) {
 				case 10:
-					objects[i] = nbtToJava(tagList.getCompoundTagAt(i));
+					objects.put(i + 1, nbtToJava(tagList.getCompoundTagAt(i)));
 					break;
 				case 11:
-					objects[i] = tagList.func_150306_c(i);
+					objects.put(i + 1, tagList.func_150306_c(i));
 					break;
 				case 6:
-					objects[i] = tagList.func_150309_d(i);
+					objects.put(i + 1, tagList.func_150309_d(i));
 					break;
 				case 5:
-					objects[i] = tagList.func_150308_e(i);
+					objects.put(i + 1, tagList.func_150308_e(i));
 					break;
 				case 8:
-					objects[i] = tagList.getStringTagAt(i);
+					objects.put(i + 1, tagList.getStringTagAt(i));
 					break;
 				}
 			}

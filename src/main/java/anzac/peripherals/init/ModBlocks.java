@@ -1,5 +1,8 @@
 package anzac.peripherals.init;
 
+import static cpw.mods.fml.common.registry.GameRegistry.registerBlock;
+import static cpw.mods.fml.common.registry.GameRegistry.registerTileEntity;
+import anzac.peripherals.block.Anvil;
 import anzac.peripherals.block.BaseBlock;
 import anzac.peripherals.block.BrewingStation;
 import anzac.peripherals.block.ChargingStation;
@@ -18,6 +21,7 @@ import anzac.peripherals.block.Workbench;
 import anzac.peripherals.item.TieredItem;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Reference;
+import anzac.peripherals.tile.AnvilTileEntity;
 import anzac.peripherals.tile.BrewingStationTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.DiamondChargeStationTileEntity;
@@ -36,7 +40,6 @@ import anzac.peripherals.tile.RecipeStorageTileEntity;
 import anzac.peripherals.tile.RedstoneTileEntity;
 import anzac.peripherals.tile.RemoteProxyTileEntity;
 import anzac.peripherals.tile.WorkbenchTileEntity;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.ObjectHolder;
 
 @ObjectHolder(Reference.MOD_ID)
@@ -56,48 +59,47 @@ public class ModBlocks {
 	public static final RemoteProxy remoteproxy = new RemoteProxy();
 	public static final BrewingStation brewingstation = new BrewingStation();
 	public static final Enchanter enchanter = new Enchanter();
+	public static final Anvil anvil = new Anvil();
 
 	public static void init() {
-		GameRegistry.registerBlock(workbench, Names.Blocks.workbench);
-		GameRegistry.registerBlock(recipestorage, Names.Blocks.recipestorage);
-		GameRegistry.registerBlock(itemrouter, Names.Blocks.itemrouter);
-		GameRegistry.registerBlock(fluidrouter, Names.Blocks.fluidrouter);
-		GameRegistry.registerBlock(itemstorage, Names.Blocks.itemstorage);
-		GameRegistry.registerBlock(fluidstorage, Names.Blocks.fluidstorage);
-		GameRegistry.registerBlock(redstone, Names.Blocks.redstone);
-		GameRegistry.registerBlock(note, Names.Blocks.note);
-		GameRegistry.registerBlock(craftingrouter, Names.Blocks.craftingrouter);
-		GameRegistry.registerBlock(chargestation, TieredItem.class, Names.Blocks.chargestation);
-		GameRegistry.registerBlock(turtleteleporter, TieredItem.class, Names.Blocks.turtleteleporter);
-		GameRegistry.registerBlock(remoteproxy, Names.Blocks.remoteproxy);
-		GameRegistry.registerBlock(brewingstation, Names.Blocks.brewingstation);
-		GameRegistry.registerBlock(enchanter, Names.Blocks.enchanter);
+		registerBlock(workbench, Names.Blocks.workbench);
+		registerBlock(recipestorage, Names.Blocks.recipestorage);
+		registerBlock(itemrouter, Names.Blocks.itemrouter);
+		registerBlock(fluidrouter, Names.Blocks.fluidrouter);
+		registerBlock(itemstorage, Names.Blocks.itemstorage);
+		registerBlock(fluidstorage, Names.Blocks.fluidstorage);
+		registerBlock(redstone, Names.Blocks.redstone);
+		registerBlock(note, Names.Blocks.note);
+		registerBlock(craftingrouter, Names.Blocks.craftingrouter);
+		registerBlock(chargestation, TieredItem.class, Names.Blocks.chargestation);
+		registerBlock(turtleteleporter, TieredItem.class, Names.Blocks.turtleteleporter);
+		registerBlock(remoteproxy, Names.Blocks.remoteproxy);
+		registerBlock(brewingstation, Names.Blocks.brewingstation);
+		registerBlock(enchanter, Names.Blocks.enchanter);
+		registerBlock(anvil, Names.Blocks.anvil);
 
-		GameRegistry.registerTileEntity(NoteTileEntity.class, "anzac.peripherals.tile.NoteTileEntity");
-		GameRegistry.registerTileEntity(RedstoneTileEntity.class, "anzac.peripherals.tile.RedstoneTileEntity");
-		GameRegistry.registerTileEntity(WorkbenchTileEntity.class, "anzac.peripherals.tile.WorkbenchTileEntity");
-		GameRegistry.registerTileEntity(ItemStorageTileEntity.class, "anzac.peripherals.tile.ItemStorageTileEntity");
-		GameRegistry.registerTileEntity(ItemRouterTileEntity.class, "anzac.peripherals.tile.ItemRouterTileEntity");
-		GameRegistry.registerTileEntity(CraftingRouterTileEntity.class,
-				"anzac.peripherals.tile.CraftingRouterTileEntity");
-		GameRegistry.registerTileEntity(IronChargeStationTileEntity.class,
-				"anzac.peripherals.tile.IronChargeStationTileEntity");
-		GameRegistry.registerTileEntity(GoldChargeStationTileEntity.class,
-				"anzac.peripherals.tile.GoldChargeStationTileEntity");
-		GameRegistry.registerTileEntity(DiamondChargeStationTileEntity.class,
+		registerTileEntity(NoteTileEntity.class, "anzac.peripherals.tile.NoteTileEntity");
+		registerTileEntity(RedstoneTileEntity.class, "anzac.peripherals.tile.RedstoneTileEntity");
+		registerTileEntity(WorkbenchTileEntity.class, "anzac.peripherals.tile.WorkbenchTileEntity");
+		registerTileEntity(ItemStorageTileEntity.class, "anzac.peripherals.tile.ItemStorageTileEntity");
+		registerTileEntity(ItemRouterTileEntity.class, "anzac.peripherals.tile.ItemRouterTileEntity");
+		registerTileEntity(CraftingRouterTileEntity.class, "anzac.peripherals.tile.CraftingRouterTileEntity");
+		registerTileEntity(IronChargeStationTileEntity.class, "anzac.peripherals.tile.IronChargeStationTileEntity");
+		registerTileEntity(GoldChargeStationTileEntity.class, "anzac.peripherals.tile.GoldChargeStationTileEntity");
+		registerTileEntity(DiamondChargeStationTileEntity.class,
 				"anzac.peripherals.tile.DiamondChargeStationTileEntity");
-		GameRegistry.registerTileEntity(IronTurtleTeleporterTileEntity.class,
+		registerTileEntity(IronTurtleTeleporterTileEntity.class,
 				"anzac.peripherals.tile.IronTurtleTeleporterTileEntity");
-		GameRegistry.registerTileEntity(GoldTurtleTeleporterTileEntity.class,
+		registerTileEntity(GoldTurtleTeleporterTileEntity.class,
 				"anzac.peripherals.tile.GoldTurtleTeleporterTileEntity");
-		GameRegistry.registerTileEntity(DiamondTurtleTeleporterTileEntity.class,
+		registerTileEntity(DiamondTurtleTeleporterTileEntity.class,
 				"anzac.peripherals.tile.DiamondTurtleTeleporterTileEntity");
-		GameRegistry.registerTileEntity(FluidRouterTileEntity.class, "anzac.peripherals.tile.FluidRouterTileEntity");
-		GameRegistry.registerTileEntity(FluidStorageTileEntity.class, "anzac.peripherals.tile.FluidStorageTileEntity");
-		GameRegistry
-				.registerTileEntity(RecipeStorageTileEntity.class, "anzac.peripherals.tile.RecipeStorageTileEntity");
-		GameRegistry.registerTileEntity(RemoteProxyTileEntity.class, "anzac.peripherals.tile.RemoteProxyTileEntity");
-		GameRegistry.registerTileEntity(BrewingStationTileEntity.class, "anzac.peripherals.tile.BrewingTileEntity");
-		GameRegistry.registerTileEntity(EnchanterTileEntity.class, "anzac.peripherals.tile.EnchanterTileEntity");
+		registerTileEntity(FluidRouterTileEntity.class, "anzac.peripherals.tile.FluidRouterTileEntity");
+		registerTileEntity(FluidStorageTileEntity.class, "anzac.peripherals.tile.FluidStorageTileEntity");
+		registerTileEntity(RecipeStorageTileEntity.class, "anzac.peripherals.tile.RecipeStorageTileEntity");
+		registerTileEntity(RemoteProxyTileEntity.class, "anzac.peripherals.tile.RemoteProxyTileEntity");
+		registerTileEntity(BrewingStationTileEntity.class, "anzac.peripherals.tile.BrewingTileEntity");
+		registerTileEntity(EnchanterTileEntity.class, "anzac.peripherals.tile.EnchanterTileEntity");
+		registerTileEntity(AnvilTileEntity.class, "anzac.peripherals.tile.AnvilTileEntity");
 	}
 }

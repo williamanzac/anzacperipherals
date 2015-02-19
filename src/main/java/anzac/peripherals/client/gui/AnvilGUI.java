@@ -10,20 +10,20 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.lwjgl.opengl.GL11;
 
-import anzac.peripherals.inventory.EnchanterContainer;
+import anzac.peripherals.inventory.AnvilContainer;
 import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Names.Blocks;
 import anzac.peripherals.reference.Reference;
-import anzac.peripherals.tile.EnchanterTileEntity;
+import anzac.peripherals.tile.AnvilTileEntity;
 
-public class EnchanterGUI extends GuiContainer {
+public class AnvilGUI extends GuiContainer {
 
 	public static final ResourceLocation gui = new ResourceLocation(Reference.MOD_ID.toLowerCase(),
-			"textures/gui/enchanter.png");
-	private final EnchanterTileEntity entity;
+			"textures/gui/anvil.png");
+	private final AnvilTileEntity entity;
 
-	public EnchanterGUI(final InventoryPlayer inventoryPlayer, final EnchanterTileEntity tileEntity) {
-		super(new EnchanterContainer(inventoryPlayer, tileEntity));
+	public AnvilGUI(final InventoryPlayer inventoryPlayer, final AnvilTileEntity tileEntity) {
+		super(new AnvilContainer(inventoryPlayer, tileEntity));
 		ySize = 166;
 		this.entity = tileEntity;
 	}
@@ -62,7 +62,7 @@ public class EnchanterGUI extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int p_146979_1_, final int p_146979_2_) {
 		super.drawGuiContainerForegroundLayer(p_146979_1_, p_146979_2_);
-		final String title = StatCollector.translateToLocal(Names.getGUIKey(Blocks.enchanter));
+		final String title = StatCollector.translateToLocal(Names.getGUIKey(Blocks.anvil));
 		fontRendererObj.drawString(title, 8, 6, 4210752);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 4210752);
 	}
