@@ -14,6 +14,7 @@ import java.util.Map;
 
 import anzac.peripherals.annotations.Peripheral;
 import anzac.peripherals.annotations.PeripheralMethod;
+import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IPeripheral;
 
@@ -249,8 +250,8 @@ public class ClassUtils {
 		throw new Exception("Unable to find a method called " + name + " with " + argCount + " arguments");
 	}
 
-	public static Object[] callPeripheralMethod(final IPeripheral object, final String methodName,
-			final Object[] arguments) throws LuaException {
+	public static Object[] callPeripheralMethod(final IPeripheral object, final ILuaContext context,
+			final String methodName, final Object[] arguments) throws LuaException, InterruptedException {
 		try {
 			final Method method = getMethodByName(object.getClass(), methodName, arguments.length);
 			method.setAccessible(true);
@@ -265,7 +266,7 @@ public class ClassUtils {
 			} else {
 				message = e.getMessage();
 			}
-			throw new LuaException(message);
+			return new Object[] { false, message };
 		}
 	}
 

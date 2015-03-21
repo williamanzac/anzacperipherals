@@ -39,7 +39,7 @@ public class BaseTileEntity extends TileEntity implements IPeripheral {
 	public final Object[] callMethod(final IComputerAccess computer, final ILuaContext context, final int method,
 			final Object[] arguments) throws LuaException, InterruptedException {
 		final String methodName = getMethodNames()[method];
-		return callPeripheralMethod(this, methodName, arguments);
+		return callPeripheralMethod(this, context, methodName, arguments);
 	}
 
 	@Override
