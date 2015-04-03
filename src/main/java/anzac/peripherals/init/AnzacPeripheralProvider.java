@@ -21,18 +21,23 @@ public class AnzacPeripheralProvider implements IPeripheralProvider {
 	public IPeripheral getPeripheral(final World world, final int x, final int y, final int z, final int side) {
 		final TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (tileEntity instanceof RemoteProxyTileEntity) {
-			final Target target = ((RemoteProxyTileEntity) tileEntity).getTarget();
-			if (target != null) {
-				final World destWorld = MinecraftServer.getServer().worldServerForDimension(target.dimension);
-				IPeripheral callMethod = ClassUtils.callMethod("dan200.computercraft.ComputerCraft", "getPeripheralAt",
-						new Object[] { destWorld, target.position.x, target.position.y, target.position.z, side },
-						new Class[] { World.class, int.class, int.class, int.class, int.class });
-				return callMethod;
-			}
-			return null;
+			return getRemotePeripheral(side, (RemoteProxyTileEntity) tileEntity);
 		}
 		if (tileEntity instanceof BaseTileEntity) {
 			return (IPeripheral) tileEntity;
+		}
+		return null;
+	}
+
+	public static IPeripheral getRemotePeripheral(final int side, final RemoteProxyTileEntity tileEntity) {
+		final Target target = ((RemoteProxyTileEntity) tileEntity).getTarget();
+		if (target != null) {
+			final World destWorld = MinecraftServer.getServer().worldServerForDimension(target.dimension);
+			final IPeripheral callMethod = ClassUtils.callMethod("dan200.computercraft.ComputerCraft",
+					"getPeripheralAt", new Object[] { destWorld, target.position.x, target.position.y,
+							target.position.z, side }, new Class[] { World.class, int.class, int.class, int.class,
+							int.class });
+			return callMethod;
 		}
 		return null;
 	}

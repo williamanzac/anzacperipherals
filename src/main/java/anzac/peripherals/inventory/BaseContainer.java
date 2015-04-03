@@ -6,11 +6,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import anzac.peripherals.tile.BaseTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import anzac.peripherals.utility.InvUtils;
 import buildcraft.core.gui.slots.SlotPhantom;
 
-public abstract class BaseContainer<T extends BaseTileEntity> extends Container {
+public abstract class BaseContainer<T extends TileEntity> extends Container {
 	protected final T tileEntity;
 
 	public BaseContainer(final T tileEntity) {

@@ -7,10 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import anzac.peripherals.peripherals.Target;
 import anzac.peripherals.utility.Position;
 
-public class RemoteProxyTileEntity extends BaseTileEntity implements IInventory {
+public class RemoteProxyTileEntity extends TileEntity implements IInventory {
 
 	private SimpleTargetInventory inv = new SimpleTargetInventory(1, "Remote Proxy");
 
