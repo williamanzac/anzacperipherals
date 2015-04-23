@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import anzac.peripherals.Peripherals;
 import anzac.peripherals.peripherals.LuaManager;
 import anzac.peripherals.peripherals.PeripheralEvent;
 import anzac.peripherals.utility.ClassUtils;
@@ -46,12 +47,14 @@ public class BaseTileEntity extends TileEntity implements IPeripheral {
 	public void attach(final IComputerAccess computer) {
 		computers.add(computer);
 		LuaManager.mount(computer);
+		Peripherals.peripheralMappings.put(computer, computer.getAttachmentName(), this);
 	}
 
 	@Override
 	public void detach(final IComputerAccess computer) {
 		computers.remove(computer);
 		LuaManager.unmount(computer);
+		Peripherals.peripheralMappings.remove(computer, computer.getAttachmentName());
 	}
 
 	public boolean isConnected() {

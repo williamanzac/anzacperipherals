@@ -11,10 +11,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
+import anzac.peripherals.Peripherals;
 import anzac.peripherals.annotations.Peripheral;
 import anzac.peripherals.annotations.PeripheralMethod;
 import anzac.peripherals.handler.ConfigurationHandler;
 import anzac.peripherals.utility.InvUtils;
+import anzac.peripherals.utility.LogHelper;
+import dan200.computercraft.api.peripheral.IComputerAccess;
 
 @Peripheral(type = "itemstorage")
 public class ItemStorageTileEntity extends BaseTileEntity implements IInventory {
@@ -37,6 +40,7 @@ public class ItemStorageTileEntity extends BaseTileEntity implements IInventory 
 	 */
 	@PeripheralMethod
 	public List<ItemStack> contents() throws Exception {
+		LogHelper.info("inventory: " + internalInv);
 		return internalInv;
 	}
 
@@ -57,10 +61,46 @@ public class ItemStorageTileEntity extends BaseTileEntity implements IInventory 
 			if (toDec > 0) {
 				stackInSlot.splitStack(toDec);
 				final int maxStackSize = stackInSlot.getMaxStackSize();
-				int stackSize = (int) ((float) toDec / (float) maxStackSize * 64);
+				final int stackSize = (int) ((float) toDec / (float) maxStackSize * 64);
 				totalCount -= stackSize;
 			}
 			return toDec;
+		}
+		return 0;
+	}
+
+	/**
+	 * Transfer {@code amount} number of items from the internal cache to another connected peripheral with
+	 * {@code label} label. The peripheral must be connected to the same computer.
+	 *
+	 * @param label
+	 *            the label of the peripheral.
+	 * @param amount
+	 *            the number of items to transfer.
+	 * @return the actual number of items transferred.
+	 * @throws Exception
+	 */
+	@PeripheralMethod
+	public int sendTo(final int slot, final String label, final int amount) throws Exception {
+		for (final IComputerAccess computer : computers) {
+			final BaseTileEntity entity = Peripherals.peripheralMappings.get(computer, label);
+			if (entity != null && (entity instanceof IInventory)) {
+				final ItemStack stackInSlot = internalInv.get(slot);
+				if (stackInSlot != null) {
+					final ItemStack copy = stackInSlot.copy();
+					copy.stackSize = amount;
+					final int amount1 = copy.stackSize;
+					copy.stackSize -= InvUtils.addItem(entity, copy, ForgeDirection.UNKNOWN);
+					final int toDec = amount1 - copy.stackSize;
+					if (toDec > 0) {
+						stackInSlot.splitStack(toDec);
+						final int maxStackSize = stackInSlot.getMaxStackSize();
+						final int stackSize = (int) ((float) toDec / (float) maxStackSize * 64);
+						totalCount -= stackSize;
+					}
+					return amount - copy.stackSize;
+				}
+			}
 		}
 		return 0;
 	}
@@ -165,19 +205,27 @@ public class ItemStorageTileEntity extends BaseTileEntity implements IInventory 
 			internalInv.clear();
 			final NBTTagList tagList = tagCompound.getTagList(INVENTORY_TAG, NBT.TAG_COMPOUND);
 			for (int i = 0; i < tagList.tagCount(); i++) {
-				final Item item = Item.getItemById(tagCompound.getShort(ITEM_ID_TAG));
-				final int stackSize = tagCompound.getByte(ITEM_COUNT_TAG);
-				int itemDamage = tagCompound.getShort(ITEM_DAMAGE_TAG);
+				final NBTTagCompound tagAt = tagList.getCompoundTagAt(i);
+				final int id = tagAt.getShort(ITEM_ID_TAG);
+				final Item item = Item.getItemById(id);
+				// LogHelper.info("read id:" + id + ", item: " + item);
+				final int stackSize = tagAt.getInteger(ITEM_COUNT_TAG);
+				int itemDamage = tagAt.getShort(ITEM_DAMAGE_TAG);
 
 				if (itemDamage < 0) {
 					itemDamage = 0;
 				}
-				final ItemStack stack = new ItemStack(item, stackSize, itemDamage);
+				if (item != null) {
+					final ItemStack stack = new ItemStack(item, stackSize, itemDamage);
+					// LogHelper.info("read item:" + stack);
 
-				if (tagCompound.hasKey(ITEM_TAG_TAG, NBT.TAG_COMPOUND)) {
-					stack.setTagCompound(tagCompound.getCompoundTag(ITEM_TAG_TAG));
+					if (tagAt.hasKey(ITEM_TAG_TAG, NBT.TAG_COMPOUND)) {
+						stack.setTagCompound(tagAt.getCompoundTag(ITEM_TAG_TAG));
+					}
+					internalInv.add(stack);
+					// } else {
+					// LogHelper.info("read item: null");
 				}
-				internalInv.add(stack);
 			}
 		}
 
@@ -190,8 +238,16 @@ public class ItemStorageTileEntity extends BaseTileEntity implements IInventory 
 
 		final NBTTagList tagList = new NBTTagList();
 		for (final ItemStack stack : internalInv) {
+			if (stack == null || stack.getItem() == null) {
+				LogHelper.info("write item: null");
+				continue;
+			}
+			// LogHelper.info("write item: " + stack);
 			final NBTTagCompound stackTag = new NBTTagCompound();
-			stackTag.setShort(ITEM_ID_TAG, (short) Item.getIdFromItem(stack.getItem()));
+			final int idFromItem = Item.getIdFromItem(stack.getItem());
+			// final Item item = Item.getItemById(idFromItem);
+			// LogHelper.info("item id: " + idFromItem + "short id: " + ((short) idFromItem) + ", item: " + item);
+			stackTag.setShort(ITEM_ID_TAG, (short) idFromItem);
 			stackTag.setInteger(ITEM_COUNT_TAG, stack.stackSize);
 			stackTag.setShort(ITEM_DAMAGE_TAG, (short) stack.getItemDamage());
 

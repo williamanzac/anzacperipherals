@@ -30,12 +30,15 @@ public class ItemStackConverter implements Converter<ItemStack> {
 	@Override
 	public Object javaToLUA(final Object object) {
 		final ItemStack itemStack = (ItemStack) object;
+		if (itemStack == null || itemStack.getItem() == null) {
+			return null;
+		}
 		final Map<String, Object> map = new HashMap<String, Object>();
 		map.put(SIZE, itemStack.stackSize);
 		map.put(DAMAGE, itemStack.getItemDamage());
 		map.put(NAME, GameRegistry.findUniqueIdentifierFor(itemStack.getItem()).toString());
 		if (itemStack.hasTagCompound()) {
-			final Map<String, Object> tagMap = (Map<String, Object>) nbtToJava(itemStack.getTagCompound());
+			final Map<String, Object> tagMap = (Map<String, Object>) nbtToLUA(itemStack.getTagCompound());
 			map.put(TAG, tagMap);
 		}
 		return map;
@@ -47,17 +50,19 @@ public class ItemStackConverter implements Converter<ItemStack> {
 		final Map<String, Object> map = (Map<String, Object>) object;
 		final int count = ((Double) map.get(SIZE)).intValue();
 		final String name = (String) map.get(NAME);
+		final int damage = ((Double) map.get(DAMAGE)).intValue();
 		final String[] parts = name.split(":");
 		final ItemStack itemStack = GameRegistry.findItemStack(parts[0], parts[1], count);
+		itemStack.setItemDamage(damage);
 		if (map.containsKey(TAG)) {
-			final NBTTagCompound tag = (NBTTagCompound) javaToNBT(map.get(TAG));
+			final NBTTagCompound tag = (NBTTagCompound) luaToNBT(map.get(TAG));
 			itemStack.setTagCompound(tag);
 		}
 		return itemStack;
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object nbtToJava(final NBTBase nbt) {
+	private Object nbtToLUA(final NBTBase nbt) {
 		switch (nbt.getId()) {
 		case 1:
 			return ((NBTTagByte) nbt).func_150290_f();
@@ -82,7 +87,7 @@ public class ItemStackConverter implements Converter<ItemStack> {
 			for (int i = 0; i < tagList.tagCount(); i++) {
 				switch (tagType) {
 				case 10:
-					objects.put(i + 1, nbtToJava(tagList.getCompoundTagAt(i)));
+					objects.put(i + 1, nbtToLUA(tagList.getCompoundTagAt(i)));
 					break;
 				case 11:
 					objects.put(i + 1, tagList.func_150306_c(i));
@@ -104,7 +109,7 @@ public class ItemStackConverter implements Converter<ItemStack> {
 			final Map<String, Object> map = new HashMap<String, Object>();
 			final Set<String> keys = tagCompound.func_150296_c();
 			for (final String key : keys) {
-				map.put(key, nbtToJava(tagCompound.getTag(key)));
+				map.put(key, nbtToLUA(tagCompound.getTag(key)));
 			}
 			return map;
 		case 11:
@@ -113,7 +118,7 @@ public class ItemStackConverter implements Converter<ItemStack> {
 		return null;
 	}
 
-	private NBTBase javaToNBT(final Object object) {
+	private NBTBase luaToNBT(final Object object) {
 		return null;
 	}
 }

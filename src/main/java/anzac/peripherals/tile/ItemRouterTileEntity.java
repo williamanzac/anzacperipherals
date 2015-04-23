@@ -10,17 +10,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import anzac.peripherals.Peripherals;
 import anzac.peripherals.annotations.Event;
 import anzac.peripherals.annotations.Peripheral;
 import anzac.peripherals.annotations.PeripheralMethod;
 import anzac.peripherals.peripherals.PeripheralEvent;
 import anzac.peripherals.utility.InvUtils;
 import anzac.peripherals.utility.Position;
+import dan200.computercraft.api.peripheral.IComputerAccess;
 
 @Peripheral(type = "itemrouter")
 public class ItemRouterTileEntity extends BaseTileEntity implements IInventory {
 
-	private SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
+	private final SimpleInventory inv = new SimpleInventory(1, "Item Router", 64);
 
 	public ItemRouterTileEntity() {
 		inv.addListener(this);
@@ -186,40 +188,76 @@ public class ItemRouterTileEntity extends BaseTileEntity implements IInventory {
 		return 0;
 	}
 
-	//
-	// /**
-	// * Transfer {@code amount} number of items from the internal cache to another connected peripheral with
-	// * {@code label} label. The peripheral must be connected to the same computer.
-	// *
-	// * @param label
-	// * the label of the peripheral.
-	// * @param amount
-	// * the number of items to transfer.
-	// * @return the actual number of items transferred.
-	// * @throws Exception
-	// */
-	// @PeripheralMethod
-	// public int sendTo(final String label, final int amount) throws Exception {
-	// return getEntity().sendTo(label, amount);
-	// }
-	//
-	// /**
-	// * Transfer {@code amount} amount of fluid from another connected peripheral with {@code label} label to the
-	// * internal tank. The peripheral must be connected to the same computer.
-	// *
-	// * @param label
-	// * the label of the peripheral.
-	// * @param uuid
-	// * the uuid of the fluid to transfer.
-	// * @param amount
-	// * the amount of fluid to transfer.
-	// * @return the actual amount transferred.
-	// * @throws Exception
-	// */
-	// @PeripheralMethod
-	// public int requestFrom(final String label, final int uuid, final int amount) throws Exception {
-	// return getEntity().requestFrom(label, uuid, amount);
-	// }
+	/**
+	 * Transfer {@code amount} number of items from the internal cache to another connected peripheral with
+	 * {@code label} label. The peripheral must be connected to the same computer.
+	 *
+	 * @param label
+	 *            the label of the peripheral.
+	 * @param amount
+	 *            the number of items to transfer.
+	 * @return the actual number of items transferred.
+	 * @throws Exception
+	 */
+	@PeripheralMethod
+	public int sendTo(final String label, final int amount) throws Exception {
+		for (final IComputerAccess computer : computers) {
+			final BaseTileEntity entity = Peripherals.peripheralMappings.get(computer, label);
+			if (entity != null && (entity instanceof IInventory)) {
+				final int[] slots = InvUtils.accessibleSlots(ForgeDirection.UNKNOWN, inv);
+				for (final int i : slots) {
+					final ItemStack stackInSlot = getStackInSlot(i);
+					if (stackInSlot != null) {
+						final ItemStack copy = stackInSlot.copy();
+						copy.stackSize = amount;
+						final int amount1 = copy.stackSize;
+						copy.stackSize -= InvUtils.addItem(entity, copy, ForgeDirection.UNKNOWN);
+						final int toDec = amount1 - copy.stackSize;
+						if (toDec > 0) {
+							decrStackSize(i, toDec);
+						}
+						return amount - copy.stackSize;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * Transfer {@code amount} amount of fluid from another connected peripheral with {@code label} label to the
+	 * internal tank. The peripheral must be connected to the same computer.
+	 *
+	 * @param label
+	 *            the label of the peripheral.
+	 * @param itemstack
+	 *            the uuid of the fluid to transfer.
+	 * @param amount
+	 *            the amount of fluid to transfer.
+	 * @return the actual amount transferred.
+	 * @throws Exception
+	 */
+	@PeripheralMethod
+	public int requestFrom(final String label, final ItemStack itemstack, final int amount) throws Exception {
+		if (getStackInSlot(0) != null) {
+			throw new Exception("Internal cache is not empty");
+		}
+		for (final IComputerAccess computer : computers) {
+			final BaseTileEntity te = Peripherals.peripheralMappings.get(computer, label);
+			if (te == null || !(te instanceof IInventory)) {
+				continue;
+			}
+			final IInventory inv = (IInventory) te;
+			final int[] slots = InvUtils.accessibleSlots(ForgeDirection.UNKNOWN, inv);
+			for (final int i : slots) {
+				final ItemStack stackInSlot = getInventory().getStackInSlot(i);
+				if (InvUtils.itemMatched(stackInSlot, itemstack, true, true, false)) {
+					return InvUtils.addItem(this, stackInSlot, ForgeDirection.UNKNOWN);
+				}
+			}
+		}
+		return 0;
+	}
 
 	@Override
 	public int getSizeInventory() {

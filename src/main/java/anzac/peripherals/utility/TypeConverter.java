@@ -74,22 +74,22 @@ public class TypeConverter {
 		}
 		if (object.getClass().isArray()) {
 			final Object[] objects = (Object[]) object;
-			final Object[] rets = new Object[objects.length];
+			final Map<Integer, Object> rets = new HashMap<Integer, Object>();
 			for (int i = 0; i < objects.length; i++) {
 				final Object value = objects[i];
-				rets[i] = javaToLUA(value, value.getClass());
+				rets.put(i + 1, javaToLUA(value, value.getClass()));
 			}
 			// LogHelper.info("returning array: " + rets);
-			return rets;
+			return new Object[] { rets };
 		} else if (object instanceof List) {
 			final List<Object> objects = (List<Object>) object;
-			final Object[] rets = new Object[objects.size()];
+			final Map<Integer, Object> rets = new HashMap<Integer, Object>();
 			for (int i = 0; i < objects.size(); i++) {
 				final Object value = objects.get(i);
-				rets[i] = javaToLUA(value, value.getClass());
+				rets.put(i + 1, javaToLUA(value, value.getClass()));
 			}
 			// LogHelper.info("returning list: " + rets);
-			return rets;
+			return new Object[] { rets };
 		} else if (object instanceof Map) {
 			final Map<Object, Object> objects = (Map<Object, Object>) object;
 			final Map<Object, Object> rets = new HashMap<Object, Object>();

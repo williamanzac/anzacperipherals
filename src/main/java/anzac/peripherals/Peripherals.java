@@ -14,7 +14,12 @@ import anzac.peripherals.init.TurtleUpgrades;
 import anzac.peripherals.proxy.CommonProxy;
 import anzac.peripherals.proxy.IProxy;
 import anzac.peripherals.reference.Reference;
+import anzac.peripherals.tile.BaseTileEntity;
 import anzac.peripherals.utility.LogHelper;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -22,6 +27,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import dan200.computercraft.api.peripheral.IComputerAccess;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies = "after:ComputerCraft;after:EnderStorage")
 public class Peripherals {
@@ -31,6 +37,8 @@ public class Peripherals {
 
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static IProxy proxy;
+
+	public static final Table<IComputerAccess, String, BaseTileEntity> peripheralMappings = HashBasedTable.create();
 
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent e) {
