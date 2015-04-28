@@ -14,12 +14,12 @@ public class CraftingRouterContainer extends BaseContainer<CraftingRouterTileEnt
 
 		// result
 		for (row = 0; row < 3; ++row) {
-			addSlotToContainer(new SlotUntouchable(te.craftResult, row, 68, 17 + row * 18));
+			addSlotToContainer(new SlotPhantom(te.craftResult, row, 68, 17 + row * 18));
 		}
 		// recipe
 		for (row = 0; row < 3; ++row) {
 			for (col = 0; col < 3; ++col) {
-				addSlotToContainer(new SlotUntouchable(te.craftMatrix, col + row * 3, 8 + col * 18, 17 + row * 18));
+				addSlotToContainer(new SlotPhantom(te.craftMatrix, col + row * 3, 8 + col * 18, 17 + row * 18));
 			}
 		}
 

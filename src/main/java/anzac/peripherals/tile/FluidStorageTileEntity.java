@@ -121,7 +121,7 @@ public class FluidStorageTileEntity extends BaseTileEntity implements IFluidHand
 	}
 
 	public int getFluid(final int index) {
-		return tanks.get(index).getFluid() == null ? 0 : tanks.get(index).getFluid().fluidID;
+		return tanks.get(index).getFluid() == null ? 0 : tanks.get(index).getFluid().getFluidID();
 	}
 
 	public void setFluid(final int index, final int fluidId) {

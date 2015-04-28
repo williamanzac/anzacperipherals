@@ -37,7 +37,6 @@ public class InvUtils {
 
 	public static Map<Integer, ItemStack> contents(final IInventory inventory, final ForgeDirection from)
 			throws Exception {
-		LogHelper.info("contents for " + inventory);
 		final Map<Integer, ItemStack> table = new HashMap<Integer, ItemStack>();
 		final int[] accessibleSlots = accessibleSlots(from, inventory);
 		for (final int slot : accessibleSlots) {
@@ -46,8 +45,6 @@ public class InvUtils {
 				table.put(slot, stackInSlot);
 			}
 		}
-		// AnzacPeripheralsCore.logger.info("table:" + table);
-		LogHelper.info("table " + table);
 		return table;
 	}
 
@@ -103,11 +100,11 @@ public class InvUtils {
 		if (!target.getTagCompound().hasKey("GEN")) {
 			return target.stackTagCompound.equals(source.stackTagCompound);
 		}
-		final NBTTagCompound filterTag = (NBTTagCompound) target.getTagCompound().copy();
-		final NBTTagCompound itemTag = (NBTTagCompound) source.getTagCompound().copy();
-		filterTag.removeTag("GEN");
-		itemTag.removeTag("GEN");
-		return filterTag.equals(itemTag);
+		final NBTTagCompound targetTag = (NBTTagCompound) target.getTagCompound().copy();
+		final NBTTagCompound sourceTag = (NBTTagCompound) source.getTagCompound().copy();
+		targetTag.removeTag("GEN");
+		sourceTag.removeTag("GEN");
+		return targetTag.equals(sourceTag);
 	}
 
 	public static boolean canMergeItemStack(final ItemStack sourceStack, final ItemStack targetStack) {
@@ -176,7 +173,7 @@ public class InvUtils {
 		return slots;
 	}
 
-	public static int addItem(Object into, ItemStack item, ForgeDirection side) {
+	public static int addItem(final Object into, final ItemStack item, final ForgeDirection side) {
 		if (into == null || item == null) {
 			return 0;
 		}
@@ -197,21 +194,21 @@ public class InvUtils {
 	// return startedWith - remaining.stackSize;
 	// }
 
-	public static int addItem(ISidedInventory sidedInv, ItemStack item, ForgeDirection inventorySide) {
+	public static int addItem(final ISidedInventory sidedInv, final ItemStack item, ForgeDirection inventorySide) {
 		if (inventorySide == null) {
 			inventorySide = ForgeDirection.UNKNOWN;
 		}
-		int[] slots = sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal());
+		final int[] slots = sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal());
 		if (slots == null) {
 			return 0;
 		}
 		int numInserted = 0;
 		int numToInsert = item.stackSize;
 		for (int i = 0; i < slots.length && numToInsert > 0; i++) {
-			int slot = slots[i];
+			final int slot = slots[i];
 			if (sidedInv.canInsertItem(slot, item, inventorySide.ordinal())) {
-				ItemStack contents = sidedInv.getStackInSlot(slot);
-				ItemStack toInsert = item.copy();
+				final ItemStack contents = sidedInv.getStackInSlot(slot);
+				final ItemStack toInsert = item.copy();
 				toInsert.stackSize = Math.min(toInsert.stackSize, sidedInv.getInventoryStackLimit());
 				toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
 				int inserted = 0;
@@ -240,13 +237,13 @@ public class InvUtils {
 		return numInserted;
 	}
 
-	public static int addItem(IInventory inv, ItemStack item) {
+	public static int addItem(final IInventory inv, final ItemStack item) {
 		int numInserted = 0;
 		int numToInsert = item.stackSize;
 		for (int slot = 0; slot < inv.getSizeInventory() && numToInsert > 0; slot++) {
-			ItemStack contents = inv.getStackInSlot(slot);
+			final ItemStack contents = inv.getStackInSlot(slot);
 			if (!isStackFull(contents)) {
-				ItemStack toInsert = item.copy();
+				final ItemStack toInsert = item.copy();
 				toInsert.stackSize = Math.min(toInsert.stackSize, inv.getInventoryStackLimit());
 				toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
 				int inserted = 0;
@@ -278,14 +275,14 @@ public class InvUtils {
 		return numInserted;
 	}
 
-	public static boolean isStackFull(ItemStack contents) {
+	public static boolean isStackFull(final ItemStack contents) {
 		if (contents == null) {
 			return false;
 		}
 		return contents.stackSize >= contents.getMaxStackSize();
 	}
 
-	public static boolean areStackMergable(ItemStack s1, ItemStack s2) {
+	public static boolean areStackMergable(final ItemStack s1, final ItemStack s2) {
 		if (s1 == null || s2 == null || !s1.isStackable() || !s2.isStackable()) {
 			return false;
 		}
@@ -295,7 +292,7 @@ public class InvUtils {
 		return ItemStack.areItemStackTagsEqual(s1, s2);
 	}
 
-	public static boolean areStacksEqual(ItemStack s1, ItemStack s2) {
+	public static boolean areStacksEqual(final ItemStack s1, final ItemStack s2) {
 		if (s1 == null || s2 == null) {
 			return false;
 		}

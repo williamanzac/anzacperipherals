@@ -5,7 +5,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import anzac.peripherals.utility.InvUtils;
 
 public class InternalInventoryCrafting extends InventoryCrafting {
@@ -21,6 +20,7 @@ public class InternalInventoryCrafting extends InventoryCrafting {
 	private int[] counts;
 	private boolean crafting;
 	private IInventory inventory;
+	private int limit = 1;
 
 	public InternalInventoryCrafting(final int size) {
 		super(new InternalCraftingContainer(), size, size);
@@ -31,9 +31,14 @@ public class InternalInventoryCrafting extends InventoryCrafting {
 		this.inventory = inventory;
 	}
 
+	public InternalInventoryCrafting(final int size, final IInventory inventory, final int limit) {
+		this(size, inventory);
+		this.limit = limit;
+	}
+
 	@Override
 	public int getInventoryStackLimit() {
-		return 1;
+		return limit;
 	}
 
 	@Override
@@ -43,12 +48,12 @@ public class InternalInventoryCrafting extends InventoryCrafting {
 
 	@Override
 	public ItemStack getStackInSlot(final int slot) {
-		if (crafting && inventory != null && bindings != null && bindings.length > 0) {
-			if (bindings[slot] >= 0) {
-				return inventory.getStackInSlot(bindings[slot]);
-			}
-			return null;
-		}
+		// if (crafting && inventory != null && bindings != null && bindings.length > 0) {
+		// if (bindings[slot] >= 0) {
+		// return inventory.getStackInSlot(bindings[slot]);
+		// }
+		// return null;
+		// }
 		return super.getStackInSlot(slot);
 	}
 
@@ -83,6 +88,11 @@ public class InternalInventoryCrafting extends InventoryCrafting {
 
 	@Override
 	public void setInventorySlotContents(final int slot, final ItemStack itemStack) {
+		if (crafting && inventory != null && bindings != null && bindings.length > 0) {
+			if (bindings[slot] >= 0) {
+				inventory.setInventorySlotContents(bindings[slot], itemStack);
+			}
+		}
 		super.setInventorySlotContents(slot, itemStack);
 	}
 
@@ -104,12 +114,12 @@ public class InternalInventoryCrafting extends InventoryCrafting {
 					continue;
 				}
 				final ItemStack copy = invStack.copy();
-				copy.setItemDamage(OreDictionary.WILDCARD_VALUE);
+				// copy.setItemDamage(OreDictionary.WILDCARD_VALUE);
 				final boolean itemEqual = InvUtils.itemMatched(copy, stackInSlot, true, true, true);
-				final boolean b = counts[j] < invStack.stackSize;
+				final boolean b = (counts[j] + stackInSlot.stackSize) < invStack.stackSize;
 				if (itemEqual && b) {
 					bindings[i] = j;
-					counts[j]++;
+					counts[j] += stackInSlot.stackSize;
 					foundMatch = true;
 					break;
 				}

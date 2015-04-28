@@ -66,7 +66,7 @@ public class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.note, "ini", "nbn", "ini", 'i', ironIngot, 'b',
 				ModItems.basicframe, 'n', noteblock));
 		GameRegistry.addShapelessRecipe(new ItemStack(ModBlocks.craftingrouter), ModBlocks.itemrouter,
-				ModBlocks.recipestorage);
+				ModBlocks.recipestorage, ModBlocks.workbench);
 		final ItemStack ironchargestation = new ItemStack(ModBlocks.chargestation, 1, 1);
 		final ItemStack goldchargestation = new ItemStack(ModBlocks.chargestation, 1, 2);
 		final ItemStack diamondchargestation = new ItemStack(ModBlocks.chargestation, 1, 3);

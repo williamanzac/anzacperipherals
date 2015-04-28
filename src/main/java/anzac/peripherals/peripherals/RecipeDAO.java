@@ -1,49 +1,41 @@
 package anzac.peripherals.peripherals;
 
-import static cpw.mods.fml.common.registry.GameRegistry.findUniqueIdentifierFor;
+import static net.minecraft.item.ItemStack.loadItemStackFromNBT;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants.NBT;
+import anzac.peripherals.peripherals.Recipe.RecipeType;
 import anzac.peripherals.tile.InternalInventoryCrafting;
-
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-
 import dan200.computercraft.api.filesystem.IWritableMount;
 
 public class RecipeDAO {
-	@SuppressWarnings("serial")
-	private static final Type NAME_TO_OUTPUT_TYPE = new TypeToken<Map<String, Integer>>() {
-	}.getType();
-	@SuppressWarnings("serial")
-	private static final Type RECIPES_BY_OUTPUT_TYPE = new TypeToken<Map<Integer, List<Integer>>>() {
-	}.getType();
-	@SuppressWarnings("serial")
-	private static final Type RECIPES_TYPE = new TypeToken<List<Integer[]>>() {
-	}.getType();
-	private final ItemStackDAO itemStackDAO;
+	private static final String TYPE_TAG = "type";
+	private static final String OUTPUT_TAG = "output";
+	private static final String INPUT_TAG = "input";
+	private static final String RECIPES_TAG = "recipes";
+	private static final String DATA_TAG = "data";
+
 	private IWritableMount mount;
 
-	private List<Integer[]> recipes = new ArrayList<Integer[]>();
-	private Map<Integer, List<Integer>> recipesByOutput = new HashMap<Integer, List<Integer>>();
-	private Map<String, Integer> nameToOutput = new HashMap<String, Integer>();
+	private final List<Recipe> recipes = new ArrayList<Recipe>();
+	private final Map<ItemStack, List<Recipe>> recipesByOutput = new HashMap<ItemStack, List<Recipe>>();
 
 	public RecipeDAO(final IWritableMount mount) {
 		super();
-		this.itemStackDAO = new ItemStackDAO(mount);
 		this.mount = mount;
 		readFromMount();
 	}
@@ -53,16 +45,41 @@ public class RecipeDAO {
 			return;
 		}
 		try {
-			final OutputStream outputStream = mount.openForWrite("data");
-			final BufferedWriter out = new BufferedWriter(new OutputStreamWriter(outputStream));
-			final Gson gson = new Gson();
-			String json = gson.toJson(recipes, RECIPES_TYPE);
-			out.write(json);
-			json = gson.toJson(recipesByOutput, RECIPES_BY_OUTPUT_TYPE);
-			out.write(json);
-			json = gson.toJson(nameToOutput, NAME_TO_OUTPUT_TYPE);
-			out.write(json);
-			out.close();
+			final OutputStream outputStream = mount.openForWrite(DATA_TAG);
+			final NBTTagCompound data = new NBTTagCompound();
+			final NBTTagList list = new NBTTagList();
+			for (final Recipe recipe : recipes) {
+				final NBTTagCompound tag = new NBTTagCompound();
+				if (recipe.type != null) {
+					tag.setInteger(TYPE_TAG, recipe.type.ordinal());
+				}
+				final NBTTagList inputList = new NBTTagList();
+				final NBTTagList outputList = new NBTTagList();
+				for (final ItemStack stack : recipe.craftMatrix) {
+					if (stack != null) {
+						final NBTTagCompound stackTag = new NBTTagCompound();
+						stack.writeToNBT(stackTag);
+						inputList.appendTag(stackTag);
+					}
+				}
+				for (final ItemStack stack : recipe.craftResult) {
+					if (stack != null) {
+						final NBTTagCompound stackTag = new NBTTagCompound();
+						stack.writeToNBT(stackTag);
+						outputList.appendTag(stackTag);
+					}
+				}
+				tag.setTag(INPUT_TAG, inputList);
+				tag.setTag(OUTPUT_TAG, outputList);
+				list.appendTag(tag);
+			}
+			data.setTag(RECIPES_TAG, list);
+			final DataOutputStream out = new DataOutputStream(outputStream);
+			try {
+				CompressedStreamTools.write(data, out);
+			} finally {
+				out.close();
+			}
 		} catch (final IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,87 +91,95 @@ public class RecipeDAO {
 			return;
 		}
 		try {
-			if (!mount.exists("data")) {
+			if (!mount.exists(DATA_TAG)) {
 				return;
 			}
-			final InputStream inputStream = mount.openForRead("data");
-			final BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-			final Gson gson = new Gson();
-			recipes = gson.fromJson(in, RECIPES_TYPE);
-			recipesByOutput = gson.fromJson(in, RECIPES_BY_OUTPUT_TYPE);
-			nameToOutput = gson.fromJson(in, NAME_TO_OUTPUT_TYPE);
-			in.close();
+			final InputStream inputStream = mount.openForRead(DATA_TAG);
+			final DataInputStream in = new DataInputStream(inputStream);
+			try {
+				recipes.clear();
+				recipesByOutput.clear();
+				final NBTTagCompound data = CompressedStreamTools.read(in);
+				final NBTTagList list = data.getTagList(RECIPES_TAG, NBT.TAG_COMPOUND);
+				for (int i = 0; i < list.tagCount(); i++) {
+					final NBTTagCompound tag = list.getCompoundTagAt(i);
+					final Recipe recipe = new Recipe();
+					if (tag.hasKey(TYPE_TAG)) {
+						final int type = tag.getInteger(TYPE_TAG);
+						recipe.type = RecipeType.values()[type];
+					}
+					final NBTTagList inputList = data.getTagList(INPUT_TAG, NBT.TAG_COMPOUND);
+					for (int j = 0; j < inputList.tagCount(); j++) {
+						final NBTTagCompound stackTag = list.getCompoundTagAt(j);
+						final ItemStack stack = loadItemStackFromNBT(stackTag);
+						recipe.craftMatrix[j] = stack;
+					}
+					final NBTTagList outputList = data.getTagList(OUTPUT_TAG, NBT.TAG_COMPOUND);
+					for (int j = 0; j < outputList.tagCount(); j++) {
+						final NBTTagCompound stackTag = list.getCompoundTagAt(j);
+						final ItemStack stack = loadItemStackFromNBT(stackTag);
+						recipe.craftResult[j] = stack;
+					}
+					recipes.add(recipe);
+				}
+			} finally {
+				in.close();
+			}
 		} catch (final IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public int create(final ItemStack output, final InternalInventoryCrafting craftMatrix) {
-		final int outputId = itemStackDAO.create(output);
-		final Integer[] recipe = new Integer[craftMatrix.getSizeInventory()];
+	public int create(final IInventory craftResult, final InternalInventoryCrafting craftMatrix) {
+		final Recipe recipe = new Recipe();
 		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
 			final ItemStack itemStack = craftMatrix.getStackInSlot(i);
 			if (itemStack != null) {
-				final int itemId = itemStackDAO.create(itemStack);
-				recipe[i] = itemId;
+				recipe.craftMatrix[i] = itemStack;
 			}
 		}
+		for (int i = 0; i < craftResult.getSizeInventory(); i++) {
+			final ItemStack itemStack = craftResult.getStackInSlot(i);
+			if (itemStack != null) {
+				recipe.craftResult[i] = itemStack;
+			}
+		}
+
 		if (!recipes.contains(recipe)) {
 			recipes.add(recipe);
-
 		}
-		final int recipeId = recipes.indexOf(recipe);
-		if (!recipesByOutput.containsKey(outputId)) {
-			recipesByOutput.put(outputId, new ArrayList<Integer>());
-			nameToOutput.put(findUniqueIdentifierFor(output.getItem()).toString(), outputId);
+		for (final ItemStack output : recipe.craftResult) {
+			if (!recipesByOutput.containsKey(output)) {
+				recipesByOutput.put(output, new ArrayList<Recipe>());
+				// nameToOutput.put(findUniqueIdentifierFor(output.getItem()).toString(), outputId);
+			}
+			recipesByOutput.get(output).add(recipe);
 		}
-		recipesByOutput.get(outputId).add(recipeId);
 		writeToMount();
-		return recipeId;
+		return recipes.indexOf(recipe);
 	}
 
 	public Recipe read(final int id) {
-		final Integer[] integers = recipes.get(id);
-		final Recipe recipe = new Recipe();
-		for (int i = 0; i < integers.length; i++) {
-			final Integer itemId = integers[i];
-			if (itemId != null) {
-				recipe.craftMatrix[i] = itemStackDAO.read(itemId);
-			}
-		}
-		return recipe;
+		return recipes.get(id);
 	}
 
 	public List<Recipe> read(final ItemStack output) {
-		final int outputId = itemStackDAO.create(output);
-		return readRecipes(outputId);
-	}
-
-	public List<Recipe> read(final String name) {
-		final int outputId = nameToOutput.get(name);
-		return readRecipes(outputId);
-	}
-
-	private List<Recipe> readRecipes(final int outputId) {
-		final List<Recipe> recipes = new ArrayList<Recipe>();
-		final List<Integer> list = recipesByOutput.get(outputId);
-		if (list != null && !list.isEmpty()) {
-			for (final Integer integer : list) {
-				final Recipe recipe = read(integer);
-				recipes.add(recipe);
-			}
-		}
-		return recipes;
-	}
-
-	public Set<String> listNames() {
-		return nameToOutput.keySet();
+		return recipesByOutput.get(output);
 	}
 
 	public void setMount(final IWritableMount mount) {
-		itemStackDAO.setMount(mount);
 		this.mount = mount;
 		readFromMount();
+	}
+
+	public void remove(final int id) {
+		final Recipe recipe = recipes.remove(id);
+		for (final ItemStack output : recipe.craftResult) {
+			if (recipesByOutput.containsKey(output)) {
+				recipesByOutput.get(output).remove(recipe);
+			}
+		}
+		writeToMount();
 	}
 }

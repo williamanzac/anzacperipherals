@@ -331,7 +331,7 @@ public class FluidRouterTileEntity extends BaseTileEntity implements ISidedInven
 	}
 
 	public int getFluid() {
-		return tank.getFluid() == null ? 0 : tank.getFluid().fluidID;
+		return tank.getFluid() == null ? 0 : tank.getFluid().getFluidID();
 	}
 
 	public void setFluid(final int fluidId) {

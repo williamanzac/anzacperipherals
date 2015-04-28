@@ -11,7 +11,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import anzac.peripherals.peripherals.CraftingRecipe;
 import anzac.peripherals.peripherals.Recipe;
 import anzac.peripherals.peripherals.Target;
 import anzac.peripherals.tile.NoteTileEntity.Instrument;
@@ -48,7 +47,6 @@ public class TypeConverter {
 		converters.put(Instrument.class, new InstrumentConverter());
 		final RecipeConverter recipeConverter = new RecipeConverter();
 		converters.put(Recipe.class, recipeConverter);
-		converters.put(CraftingRecipe.class, recipeConverter);
 		converters.put(ItemStack.class, new ItemStackConverter());
 		converters.put(Target.class, new TargetConverter());
 		converters.put(FluidStack.class, new FluidStackConverter());

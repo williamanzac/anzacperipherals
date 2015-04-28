@@ -2,10 +2,6 @@ package anzac.peripherals.tile;
 
 import static dan200.computercraft.api.ComputerCraftAPI.createSaveDirMount;
 import static net.minecraft.item.ItemStack.loadItemStackFromNBT;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
@@ -50,44 +46,13 @@ public class RecipeStorageTileEntity extends BaseTileEntity {
 	}
 
 	@PeripheralMethod
-	public List<String> getRecipeNames() throws Exception {
-		final List<String> recipes = new ArrayList<String>();
-		recipes.addAll(recipeDAO.listNames());
-		return recipes;
-	}
-
-	@PeripheralMethod
 	public Recipe getRecipe(final int id) throws Exception {
 		return recipeDAO.read(id);
 	}
 
 	@PeripheralMethod
-	public List<Recipe> getRecipe(final String name) throws Exception {
-		return recipeDAO.read(name);
-	}
-
-	@PeripheralMethod
 	public boolean removeRecipe(final int id) throws Exception {
-		// final Recipe recipe = recipies.remove(id);
-		// if (recipe != null) {
-		// final String name = recipiesToName.remove(id);
-		// recipiesByName.get(name).remove(recipe);
-		// if (recipiesByName.get(name).isEmpty()) {
-		// recipiesByName.remove(name);
-		// }
-		// }
-		// markDirty();
-		return true;
-	}
-
-	@PeripheralMethod
-	public boolean removeRecipe(final String name) throws Exception {
-		// final List<Integer> list = recipiesByName.remove(name);
-		// for (final Integer id : list) {
-		// recipies.remove(id);
-		// recipiesToName.remove(id);
-		// }
-		// markDirty();
+		recipeDAO.remove(id);
 		return true;
 	}
 
@@ -96,7 +61,7 @@ public class RecipeStorageTileEntity extends BaseTileEntity {
 		if (!hasValidRecipe()) {
 			return false;
 		}
-		recipeDAO.create(craftResult.getStackInSlot(0), craftMatrix);
+		recipeDAO.create(craftResult, craftMatrix);
 		markDirty();
 		return true;
 	}
