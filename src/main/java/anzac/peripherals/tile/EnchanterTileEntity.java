@@ -141,7 +141,7 @@ public class EnchanterTileEntity extends BaseTileEntity implements ISidedInvento
 	}
 
 	public int getFluid() {
-		return tank.getFluid() == null ? 0 : tank.getFluid().fluidID;
+		return tank.getFluid() == null ? 0 : tank.getFluid().getFluidID();
 	}
 
 	public void setFluid(final int fluidId) {

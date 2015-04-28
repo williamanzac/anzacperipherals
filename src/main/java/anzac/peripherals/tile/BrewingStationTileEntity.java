@@ -121,7 +121,7 @@ public class BrewingStationTileEntity extends BaseTileEntity implements ISidedIn
 	@PeripheralMethod
 	public boolean hasWater() throws Exception {
 		final FluidStack fluid = tank.getFluid();
-		if (fluid == null || fluid.fluidID != FluidRegistry.WATER.getID()
+		if (fluid == null || fluid.getFluidID() != FluidRegistry.WATER.getID()
 				|| fluid.amount < FluidContainerRegistry.BUCKET_VOLUME * 3) {
 			throw new Exception("Not enough water in the tank");
 		}
@@ -243,7 +243,7 @@ public class BrewingStationTileEntity extends BaseTileEntity implements ISidedIn
 	}
 
 	public int getFluid() {
-		return tank.getFluid() == null ? 0 : tank.getFluid().fluidID;
+		return tank.getFluid() == null ? 0 : tank.getFluid().getFluidID();
 	}
 
 	public void setFluid(final int fluidId) {
