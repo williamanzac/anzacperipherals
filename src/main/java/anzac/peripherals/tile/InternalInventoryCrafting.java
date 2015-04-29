@@ -116,7 +116,7 @@ public class InternalInventoryCrafting extends InventoryCrafting {
 				final ItemStack copy = invStack.copy();
 				// copy.setItemDamage(OreDictionary.WILDCARD_VALUE);
 				final boolean itemEqual = InvUtils.itemMatched(copy, stackInSlot, true, true, true);
-				final boolean b = (counts[j] + stackInSlot.stackSize) < invStack.stackSize;
+				final boolean b = (counts[j] + stackInSlot.stackSize) <= invStack.stackSize;
 				if (itemEqual && b) {
 					bindings[i] = j;
 					counts[j] += stackInSlot.stackSize;
