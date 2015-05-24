@@ -53,16 +53,13 @@ public class ItemStorageTileEntity extends BaseTileEntity implements IInventory 
 	public int routeTo(final int slot, final ForgeDirection toDir, final ForgeDirection insertDir, final int amount)
 			throws Exception {
 		final ItemStack stackInSlot = internalInv.get(slot);
-		if (stackInSlot != null) {
+		if (stackInSlot != null && stackInSlot.stackSize > 0) {
 			final ItemStack copy = stackInSlot.copy();
-			copy.stackSize = amount;
+			copy.stackSize = copy.stackSize > amount ? amount : copy.stackSize;
 			copy.stackSize -= InvUtils.routeTo(worldObj, xCoord, yCoord, zCoord, toDir, insertDir, copy);
 			final int toDec = amount - copy.stackSize;
 			if (toDec > 0) {
-				stackInSlot.splitStack(toDec);
-				final int maxStackSize = stackInSlot.getMaxStackSize();
-				final int stackSize = (int) ((float) toDec / (float) maxStackSize * 64);
-				totalCount -= stackSize;
+				decrStackSize(slot, toDec);
 			}
 			return toDec;
 		}
@@ -73,32 +70,41 @@ public class ItemStorageTileEntity extends BaseTileEntity implements IInventory 
 	 * Transfer {@code amount} number of items from the internal cache to another connected peripheral with
 	 * {@code label} label. The peripheral must be connected to the same computer.
 	 *
-	 * @param label
-	 *            the label of the peripheral.
+	 * @param slot
+	 *            the slot number to transfer from
+	 * @param target
+	 *            the target peripheral.
 	 * @param amount
 	 *            the number of items to transfer.
 	 * @return the actual number of items transferred.
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public int sendTo(final int slot, final String label, final int amount) throws Exception {
-		for (final IComputerAccess computer : computers) {
-			final BaseTileEntity entity = Peripherals.peripheralMappings.get(computer, label);
-			if (entity != null && (entity instanceof IInventory)) {
-				final ItemStack stackInSlot = internalInv.get(slot);
-				if (stackInSlot != null) {
-					final ItemStack copy = stackInSlot.copy();
-					copy.stackSize = amount;
-					final int amount1 = copy.stackSize;
-					copy.stackSize -= InvUtils.addItem(entity, copy, ForgeDirection.UNKNOWN);
-					final int toDec = amount1 - copy.stackSize;
-					if (toDec > 0) {
-						stackInSlot.splitStack(toDec);
-						final int maxStackSize = stackInSlot.getMaxStackSize();
-						final int stackSize = (int) ((float) toDec / (float) maxStackSize * 64);
-						totalCount -= stackSize;
+	public int sendTo(final int slot, final String target, final int amount) throws Exception {
+		if (!internalInv.isEmpty()) {
+			for (final IComputerAccess computer : computers) {
+				LogHelper.info("computer: " + computer.getID() + ", label:" + target);
+				final BaseTileEntity entity = Peripherals.peripheralMappings.get(computer.getID(), target);
+				LogHelper.info("entity: " + entity);
+				if (entity != null && (entity instanceof IInventory)) {
+					final ItemStack stackInSlot = internalInv.get(slot);
+					LogHelper.info("slot: " + slot + ", item:" + stackInSlot);
+					if (stackInSlot != null && stackInSlot.stackSize > 0) {
+						final ItemStack copy = stackInSlot.copy();
+						copy.stackSize = copy.stackSize > amount ? amount : copy.stackSize;
+						LogHelper.info("copy: " + copy);
+						final int amount1 = copy.stackSize;
+						copy.stackSize -= InvUtils.addItem(entity, copy, ForgeDirection.UNKNOWN);
+						LogHelper.info("copy: " + copy);
+						final int toDec = amount1 - copy.stackSize;
+						LogHelper.info("toDec: " + toDec);
+						if (toDec > 0) {
+							decrStackSize(slot, toDec);
+							LogHelper.info("item: " + stackInSlot + ", totalCount:" + totalCount);
+						}
+						LogHelper.info("returning: " + (amount - copy.stackSize));
+						return amount - copy.stackSize;
 					}
-					return amount - copy.stackSize;
 				}
 			}
 		}
@@ -117,7 +123,21 @@ public class ItemStorageTileEntity extends BaseTileEntity implements IInventory 
 
 	@Override
 	public ItemStack decrStackSize(final int slot, final int amt) {
-		return null;
+		ItemStack stackInSlot = internalInv.get(slot);
+		if (stackInSlot != null && stackInSlot.stackSize > amt) {
+			ItemStack result = stackInSlot.splitStack(amt);
+			final int maxStackSize = stackInSlot.getMaxStackSize();
+			final int stackSize = (int) ((float) amt / (float) maxStackSize * 64);
+			totalCount -= stackSize;
+			markDirty();
+			return result;
+		}
+		internalInv.remove(slot);
+		final int maxStackSize = stackInSlot.getMaxStackSize();
+		final int stackSize = (int) ((float) stackInSlot.stackSize / (float) maxStackSize * 64);
+		totalCount -= stackSize;
+		markDirty();
+		return stackInSlot;
 	}
 
 	@Override

@@ -27,7 +27,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import dan200.computercraft.api.peripheral.IComputerAccess;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies = "after:ComputerCraft;after:EnderStorage")
 public class Peripherals {
@@ -38,7 +37,7 @@ public class Peripherals {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static IProxy proxy;
 
-	public static final Table<IComputerAccess, String, BaseTileEntity> peripheralMappings = HashBasedTable.create();
+	public static final Table<Integer, String, BaseTileEntity> peripheralMappings = HashBasedTable.create();
 
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent e) {

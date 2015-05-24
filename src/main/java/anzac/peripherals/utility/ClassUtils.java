@@ -169,7 +169,7 @@ public class ClassUtils {
 				// AnzacPeripheralsCore.logger.info("invoking and returning");
 				return (R) method.invoke(object, args);
 			} catch (final Throwable e) {
-				LogHelper.error("Error calling " + name + " for " + clazz, e);
+				// LogHelper.error("Error calling " + name + " for " + clazz, e);
 			}
 			clazz = clazz.getSuperclass();
 			// AnzacPeripheralsCore.logger.info("parent clazz:" + clazz);

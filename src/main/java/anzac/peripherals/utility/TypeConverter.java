@@ -19,6 +19,7 @@ import anzac.peripherals.utility.converters.Converter;
 import anzac.peripherals.utility.converters.DirectionConverter;
 import anzac.peripherals.utility.converters.FluidStackConverter;
 import anzac.peripherals.utility.converters.FluidTankInfoConverter;
+import anzac.peripherals.utility.converters.HashMapConverter;
 import anzac.peripherals.utility.converters.InstrumentConverter;
 import anzac.peripherals.utility.converters.IntConverter;
 import anzac.peripherals.utility.converters.ItemStackConverter;
@@ -52,6 +53,7 @@ public class TypeConverter {
 		converters.put(FluidStack.class, new FluidStackConverter());
 		converters.put(FluidTankInfo.class, new FluidTankInfoConverter());
 		converters.put(PotionEffect.class, new PotionEffectConverter());
+		converters.put(HashMap.class, new HashMapConverter());
 	}
 
 	public static Object[] convertArguments(final Object[] arguments, final Method method) throws Exception {

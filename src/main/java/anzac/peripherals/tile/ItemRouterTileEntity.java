@@ -175,7 +175,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements IInventory {
 			final ItemStack stackInSlot = getStackInSlot(i);
 			if (stackInSlot != null) {
 				final ItemStack copy = stackInSlot.copy();
-				copy.stackSize = amount;
+				copy.stackSize = copy.stackSize > amount ? amount : copy.stackSize;
 				final int amount1 = copy.stackSize;
 				copy.stackSize -= InvUtils.routeTo(worldObj, xCoord, yCoord, zCoord, toDir, insertDir, copy);
 				final int toDec = amount1 - copy.stackSize;
@@ -192,7 +192,7 @@ public class ItemRouterTileEntity extends BaseTileEntity implements IInventory {
 	 * Transfer {@code amount} number of items from the internal cache to another connected peripheral with
 	 * {@code label} label. The peripheral must be connected to the same computer.
 	 *
-	 * @param label
+	 * @param target
 	 *            the label of the peripheral.
 	 * @param amount
 	 *            the number of items to transfer.
@@ -200,16 +200,16 @@ public class ItemRouterTileEntity extends BaseTileEntity implements IInventory {
 	 * @throws Exception
 	 */
 	@PeripheralMethod
-	public int sendTo(final String label, final int amount) throws Exception {
+	public int sendTo(final String target, final int amount) throws Exception {
 		for (final IComputerAccess computer : computers) {
-			final BaseTileEntity entity = Peripherals.peripheralMappings.get(computer, label);
+			final BaseTileEntity entity = Peripherals.peripheralMappings.get(computer.getID(), target);
 			if (entity != null && (entity instanceof IInventory)) {
 				final int[] slots = InvUtils.accessibleSlots(ForgeDirection.UNKNOWN, inv);
 				for (final int i : slots) {
 					final ItemStack stackInSlot = getStackInSlot(i);
 					if (stackInSlot != null) {
 						final ItemStack copy = stackInSlot.copy();
-						copy.stackSize = amount;
+						copy.stackSize = copy.stackSize > amount ? amount : copy.stackSize;
 						final int amount1 = copy.stackSize;
 						copy.stackSize -= InvUtils.addItem(entity, copy, ForgeDirection.UNKNOWN);
 						final int toDec = amount1 - copy.stackSize;

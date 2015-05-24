@@ -13,6 +13,7 @@ import anzac.peripherals.Peripherals;
 import anzac.peripherals.peripherals.LuaManager;
 import anzac.peripherals.peripherals.PeripheralEvent;
 import anzac.peripherals.utility.ClassUtils;
+import anzac.peripherals.utility.LogHelper;
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
@@ -47,14 +48,16 @@ public class BaseTileEntity extends TileEntity implements IPeripheral {
 	public void attach(final IComputerAccess computer) {
 		computers.add(computer);
 		LuaManager.mount(computer);
-		Peripherals.peripheralMappings.put(computer, computer.getAttachmentName(), this);
+		LogHelper.info("attaching; computer: " + computer + ", name: " + computer.getAttachmentName() + ", this: "
+				+ this);
+		Peripherals.peripheralMappings.put(computer.getID(), computer.getAttachmentName(), this);
 	}
 
 	@Override
 	public void detach(final IComputerAccess computer) {
 		computers.remove(computer);
 		LuaManager.unmount(computer);
-		Peripherals.peripheralMappings.remove(computer, computer.getAttachmentName());
+		Peripherals.peripheralMappings.remove(computer.getID(), computer.getAttachmentName());
 	}
 
 	public boolean isConnected() {
@@ -75,8 +78,8 @@ public class BaseTileEntity extends TileEntity implements IPeripheral {
 
 	private void fireEvent(final String eventName, final Object... values) {
 		for (final IComputerAccess computer : computers) {
-			final Object[] clone = ArrayUtils.clone(values);
-			ArrayUtils.add(clone, 0, computer.getAttachmentName());
+			Object[] clone = ArrayUtils.clone(values);
+			clone = ArrayUtils.add(clone, 0, computer.getAttachmentName());
 			computer.queueEvent(eventName, clone);
 		}
 	}
