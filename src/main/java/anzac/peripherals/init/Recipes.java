@@ -104,6 +104,8 @@ public class Recipes {
 				ModItems.itemstorageunit));
 		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.anvil, "gtg", "fai", "gtg", 'g', goldIngot, 't', anvil,
 				'f', ModItems.fluidstorageunit, 'a', ModItems.advancedframe, 'i', ModItems.itemstorageunit));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ModBlocks.chat, "gng", "nan", "gng", 'g', goldIngot, 'a',
+				ModItems.advancedframe, 'n', noteblock));
 	}
 
 	private static Object getOreDict(final Block block) {

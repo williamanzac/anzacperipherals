@@ -6,6 +6,7 @@ import anzac.peripherals.block.Anvil;
 import anzac.peripherals.block.BaseBlock;
 import anzac.peripherals.block.BrewingStation;
 import anzac.peripherals.block.ChargingStation;
+import anzac.peripherals.block.Chat;
 import anzac.peripherals.block.CraftingRouter;
 import anzac.peripherals.block.Enchanter;
 import anzac.peripherals.block.FluidRouter;
@@ -23,6 +24,7 @@ import anzac.peripherals.reference.Names;
 import anzac.peripherals.reference.Reference;
 import anzac.peripherals.tile.AnvilTileEntity;
 import anzac.peripherals.tile.BrewingStationTileEntity;
+import anzac.peripherals.tile.ChatTileEntity;
 import anzac.peripherals.tile.CraftingRouterTileEntity;
 import anzac.peripherals.tile.DiamondChargeStationTileEntity;
 import anzac.peripherals.tile.DiamondTurtleTeleporterTileEntity;
@@ -60,6 +62,7 @@ public class ModBlocks {
 	public static final BrewingStation brewingstation = new BrewingStation();
 	public static final Enchanter enchanter = new Enchanter();
 	public static final Anvil anvil = new Anvil();
+	public static final BaseBlock chat = new Chat();
 
 	public static void init() {
 		registerBlock(workbench, Names.Blocks.workbench);
@@ -77,6 +80,7 @@ public class ModBlocks {
 		registerBlock(brewingstation, Names.Blocks.brewingstation);
 		registerBlock(enchanter, Names.Blocks.enchanter);
 		registerBlock(anvil, Names.Blocks.anvil);
+		registerBlock(chat, Names.Blocks.chat);
 
 		registerTileEntity(NoteTileEntity.class, "anzac.peripherals.tile.NoteTileEntity");
 		registerTileEntity(RedstoneTileEntity.class, "anzac.peripherals.tile.RedstoneTileEntity");
@@ -101,5 +105,6 @@ public class ModBlocks {
 		registerTileEntity(BrewingStationTileEntity.class, "anzac.peripherals.tile.BrewingTileEntity");
 		registerTileEntity(EnchanterTileEntity.class, "anzac.peripherals.tile.EnchanterTileEntity");
 		registerTileEntity(AnvilTileEntity.class, "anzac.peripherals.tile.AnvilTileEntity");
+		registerTileEntity(ChatTileEntity.class, "anzac.peripherals.tile.ChatTileEntity");
 	}
 }

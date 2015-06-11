@@ -44,6 +44,7 @@ public class Peripherals {
 		ConfigurationHandler.init(e.getSuggestedConfigurationFile());
 		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 		proxy.registerKeyBindings();
+		proxy.registerNetwork();
 		ModItems.init();
 		ModBlocks.init();
 		ModFluids.init();

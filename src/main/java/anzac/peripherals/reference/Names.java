@@ -39,6 +39,7 @@ public class Names {
 		public static final String brewingstation = "brewingstation";
 		public static final String enchanter = "enchanter";
 		public static final String anvil = "anvil";
+		public static final String chat = "chat";
 	}
 
 	public static String getItemKey(final String unlocalizedName) {

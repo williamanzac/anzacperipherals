@@ -15,6 +15,7 @@ public class ConfigurationHandler {
 	private static final int DEFAULT_MJ_MULTIPLIER = 20;
 	private static final int DEFAULT_RF_MULTIPLIER = DEFAULT_MJ_MULTIPLIER * 10;
 	private static final boolean DEFAULT_MODIFY = true;
+	private static final int DEFAULT_CHAT_RANGE = 64;
 
 	private static Configuration configuration;
 
@@ -22,6 +23,7 @@ public class ConfigurationHandler {
 	public static int mjMultiplier;
 	public static int rfMultiplier;
 	public static boolean modifyCC;
+	public static int chatRange;
 
 	public static void init(final File configurationFile) {
 		if (configuration == null) {
@@ -39,6 +41,8 @@ public class ConfigurationHandler {
 				"Use to convert between rf and turtle moves");
 		modifyCC = configuration.getBoolean("modify.computercraft", CATEGORY_GENERAL, DEFAULT_MODIFY,
 				"Modify ComputerCraft recpies");
+		chatRange = configuration.getInt("chat.range", CATEGORY_GENERAL, DEFAULT_CHAT_RANGE, 0, MAX_VALUE,
+				"The range that a ChatBox listens for chat messages.");
 
 		if (configuration.hasChanged()) {
 			configuration.save();

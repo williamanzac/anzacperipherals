@@ -1,6 +1,5 @@
 package anzac.peripherals.peripherals;
 
-
 public enum PeripheralEvent {
 	/**
 	 * This event is fired every time an item is successfully crafted.
@@ -43,5 +42,17 @@ public enum PeripheralEvent {
 	 * @param uuid
 	 *            The uuid of the defined recipe. This can be used to see if it is a new recipe.
 	 */
-	recipe_changed, redstone;
+	recipe_changed,
+	/**
+	 * 
+	 */
+	redstone,
+	/**
+	 * 
+	 */
+	chat,
+	/**
+	 * 
+	 */
+	death;
 }
