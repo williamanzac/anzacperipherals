@@ -1,32 +1,22 @@
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.next
-release.properties
+# eclipse
+bin
+*.launch
 .settings
+.metadata
+.classpath
 .project
-/asm/
-/build/
-/config/
-/crash-reports/
-/eclipse/
-/gradle/
-/logs/
-/mods/
-/saves/
-/CREDITS-fml.txt
-/forge-1.7.10-10.13.0.1180-changelog.txt
-/gradlew
-/gradlew.bat
-/LICENSE
-/LICENSE-fml.txt
-/MinecraftForge-Credits.txt
-/MinecraftForge-License.txt
-/options.txt
-/README.txt
-/bin/
-/.gradle/
-/.classpath
-/resourcepacks/
-/usernamecache.json
-/screenshots/
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
